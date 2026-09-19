@@ -10,6 +10,12 @@ GitHub Pages.
 
 ## Desarrollo
 
+> **Usa npm 10** (el que trae Node 22). npm 11.6.2 escribe un
+> `package-lock.json` que su propio `npm ci` rechaza —omite las entradas
+> anidadas de `@emnapi/*` que arrastra el `satteri-wasm32-wasi` de Astro— y eso
+> rompe la CI. Si tienes npm 11, regenera el lock con
+> `npx npm@10 install --package-lock-only`.
+
 ```bash
 npm ci
 npm run dev        # http://localhost:4321/tredops-doc/

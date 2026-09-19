@@ -32,6 +32,13 @@ jobs:
           node-version: 22
           cache: npm
 
+      # npm fijado a la 10: la 11.6.2 escribe un package-lock.json que su propio
+      # `npm ci` rechaza (se deja fuera las entradas anidadas de @emnapi/* que
+      # arrastra el satteri-wasm32-wasi de Astro). Fijarlo aquí evita que una
+      # actualización de la imagen del runner vuelva a romper el install.
+      - name: Pin npm
+        run: npm i -g npm@10
+
       - name: Install
         run: npm ci
 
