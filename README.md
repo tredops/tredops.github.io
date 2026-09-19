@@ -28,6 +28,11 @@ npm run preview    # sirve dist/
 npm run check      # build + enlaces internos + revisión de datos internos
 ```
 
+> **El buscador no funciona con `npm run dev`, y es lo esperado.** El índice lo
+> genera Pagefind durante `astro build`, así que en el servidor de desarrollo
+> `/pagefind/` no existe y la búsqueda no devuelve nada. Para probarla:
+> `npm run build && npm run preview`.
+
 ## Estructura
 
 ```
