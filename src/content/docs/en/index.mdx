@@ -1,0 +1,103 @@
+---
+title: TredOps
+description: Official documentation for TredOps, the algorithmic trading platform with AI bots and agents.
+---
+
+import { CardGrid, LinkCard, Steps } from '@astrojs/starlight/components';
+
+Welcome to the **official TredOps documentation**: the platform that lets you
+create, optimise and monitor trading decisions with bots and AI agents, without
+giving up control of your funds.
+
+Your capital always stays in your external broker account. TredOps connects
+through integrations (Alpaca and others) so the signals your bots and agents
+produce can trade with professional risk management.
+
+## Start here
+
+<Steps>
+
+1. **Learn the vocabulary** — [Key concepts](concepts/): portfolio, bot, signal,
+   agent, order and calibration in five minutes.
+
+2. **Set up your account** — [Quick start](getting-started/): sign-up, broker and
+   risk rules.
+
+3. **Pick a strategy with data** — [Benchmark](benchmark/): which agents and
+   which models have worked, over the same window and the same capital.
+
+4. **Put something to work** — [Your first bot](guides/first-bot/) and
+   [Working with agents](guides/first-agent/).
+
+</Steps>
+
+## Guides
+
+<CardGrid>
+	<LinkCard
+		title="Your first bot"
+		href="guides/first-bot/"
+		description="From chosen asset to a bot in production: genetic optimisation, performance testing and automatic calibration."
+	/>
+	<LinkCard
+		title="Working with agents"
+		href="guides/first-agent/"
+		description="Plan, trading and autonomous modes; how to write a system prompt that works, and when to delegate to sub-agents."
+	/>
+	<LinkCard
+		title="Scheduling tasks (AgentTask)"
+		href="guides/agent-tasks/"
+		description="Turn a chat routine into a task that runs on its own, with examples ready to copy."
+	/>
+	<LinkCard
+		title="Managing risk"
+		href="guides/risk/"
+		description="Take Profit, Stop Loss, position sizing and cash reserve: the rules that override any agent."
+	/>
+</CardGrid>
+
+## Reference
+
+<CardGrid>
+	<LinkCard
+		title="What is TredOps"
+		href="introduction/"
+		description="The four pillars, the non-custodial approach, and who the platform is for."
+	/>
+	<LinkCard
+		title="The four pillars"
+		href="pillars/bots-ci/"
+		description="Bots, Monitoring, AI Agents and Integrations, explained in detail."
+	/>
+	<LinkCard
+		title="Plans & pricing"
+		href="pricing/"
+		description="Free Trial, Premium trial and Premium, and how LLM credits work."
+	/>
+	<LinkCard
+		title="Security"
+		href="security/"
+		description="How your credentials, accounts and data are protected."
+	/>
+	<LinkCard
+		title="Glossary"
+		href="glossary/"
+		description="Every platform term, one line each."
+	/>
+	<LinkCard
+		title="FAQ"
+		href="faq/"
+		description="The questions that come up most, answered plainly."
+	/>
+	<LinkCard
+		title="Blog"
+		href="../blog/"
+		description="Platform updates, announcements and deep-dive guides."
+	/>
+</CardGrid>
+
+:::caution[Not financial advice]
+TredOps is a software tool. Nothing in this documentation — including Benchmark
+results — constitutes investment advice. Trading financial markets carries risk
+of loss.
+:::

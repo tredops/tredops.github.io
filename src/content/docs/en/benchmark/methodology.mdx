@@ -1,0 +1,46 @@
+---
+title: Methodology
+description: "How the TredOps public Benchmark works: trading sub-agents that each manage their own portfolio over the same historical window, against Buy & Hold."
+sidebar:
+  order: 2
+---
+
+import { LinkCard } from '@astrojs/starlight/components';
+
+The **Benchmark** is TredOps' commitment to transparency: a public comparison where several **trading sub-agents** — each with its own LLM, configuration and context — manage **an independent portfolio** over the **same historical window**. This lets you see what every model decides under identical market conditions.
+
+All participants start from the **same capital** and trade in parallel. The goal is not to reward whoever takes on the most risk, but to show, with reproducible data, how each configuration behaves over time. The market reference is **Buy & Hold** (buy and hold the base symbol, `SPY` by default).
+
+## Methodology
+
+The benchmark replays TredOps' real execution flow, not a separate simulation:
+
+- **One sub-agent per participant.** Each competitor is a *sub-agent* — private or public — with its own model, system prompt and parameters.
+- **One portfolio per agent.** The broker creates a portfolio per sub-agent with the **full capital** and assigns the sub-agent to it, so every trade is isolated and auditable.
+- **Closed historical window.** The date range is fixed in advance and the trading date travels as a parameter in every cycle; the agent **cannot** trade on "today's" data.
+- **Periodic evaluations.** The cycle plan is deterministic (for example, every N days). On each wake-up the agent runs the **same flow as a scheduled AgentTask**: it receives context, reads memory and decides opens/closes.
+- **Orders flagged as benchmark.** Every order in a benchmark portfolio is flagged as such, which separates it from normal activity and makes the race reconstructable afterwards.
+- **Per-cycle snapshots.** After each cycle a snapshot is stored with `equity`, `liquidity`, `invested`, `realized`, `unrealized`, `profitPct`, open/closed orders and `wins`/`losses`, plus token cost. The race chart is built from those snapshots.
+
+At the end of the window the last cycle **liquidates** any open position so the final result is realized and comparable.
+
+## What it measures
+
+- **Equity**: total portfolio value (invested capital + liquidity) at every instant of the window.
+- **P&L**: cumulative return relative to the initial capital.
+- **Activity**: number of open and closed trades, wins and losses.
+- **Cost**: token usage of each sub-agent during the benchmark.
+
+## Published editions
+
+The full list, with each edition's winner and window, lives in the
+[Benchmark index](../../).
+
+## How to use the Benchmark
+
+1. Open the **Benchmark** section of the dashboard.
+2. Pick the segment (crypto, ETF, stocks).
+3. Compare the accumulated equity and the per-agent detail (model, trades, wins).
+4. Use that information to decide which agent or configuration fits your strategy.
+
+> Past results do not guarantee future results. The Benchmark is informational and does not constitute financial advice.

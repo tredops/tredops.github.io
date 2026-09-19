@@ -1,0 +1,46 @@
+---
+title: Metodología
+description: "Cómo funciona el Benchmark público de TredOps: sub-agentes de trading que gestionan cada uno su propio portfolio sobre una misma ventana histórica, frente a Buy & Hold."
+sidebar:
+  order: 2
+---
+
+import { LinkCard } from '@astrojs/starlight/components';
+
+El **Benchmark** es la apuesta de TredOps por la transparencia: una comparativa pública en la que varios **sub-agentes de trading** — cada uno con su propio LLM, configuración y contexto — gestionan **un portfolio independiente** sobre la **misma ventana histórica**. Así puedes ver qué decide cada modelo con las mismas condiciones de mercado.
+
+Todos los participantes parten del **mismo capital** y operan en paralelo. El objetivo no es premiar al que más arriesga, sino mostrar, con datos reproducibles, cómo se comporta cada configuración a lo largo del tiempo. La referencia de mercado es **Buy & Hold** (buy & hold del símbolo base, `SPY` por defecto).
+
+## Metodología
+
+El benchmark reproduce el flujo real de ejecución de TredOps, no una simulación aparte:
+
+- **Un sub-agente por participante.** Cada competidor es un *sub-agente* —propio o público— con su propio modelo, system prompt y parámetros.
+- **Un portfolio por agente.** El broker crea un portfolio por sub-agente con el **capital completo** (`capital` inicial) y le asigna el sub-agente, de modo que cada operación queda aislada y auditable.
+- **Ventana histórica cerrada.** El rango de fechas se fija de antemano y la fecha de trading viaja como parámetro en cada ciclo; el agente **no puede** operar con datos de "hoy".
+- **Evaluaciones periódicas.** El plan de ciclos es determinista (por ejemplo, cada N días). En cada despertar el agente ejecuta el **mismo flujo que un AgentTask programado**: recibe el contexto, consulta memoria y decide aperturas/cierres.
+- **Órdenes marcadas como benchmark.** Todas las órdenes de un portfolio del benchmark quedan marcadas como tales, lo que las separa de la actividad normal y permite reconstruir la carrera después.
+- **Snapshots por ciclo.** Después de cada ciclo se guarda un snapshot con `equity`, `liquidity`, `invested`, `realized`, `unrealized`, `profitPct`, órdenes abiertas/cerradas y `wins`/`losses`, además del coste en tokens. El gráfico de carrera se construye a partir de esos snapshots.
+
+Al final de la ventana, el último ciclo **liquida** cualquier posición abierta para que el resultado final sea realizado y comparable.
+
+## Qué mide
+
+- **Equity**: valor total del portfolio (capital invertido + liquidez) en cada instante de la ventana.
+- **P&L**: rentabilidad acumulada respecto al capital inicial.
+- **Actividad**: número de operaciones abiertas y cerradas, aciertos (`wins`) y fallos (`losses`).
+- **Coste**: consumo de tokens de cada sub-agente durante el benchmark.
+
+## Ediciones publicadas
+
+El listado completo, con el ganador y la ventana de cada edición, está en el
+[índice del Benchmark](../../).
+
+## Cómo usar el Benchmark
+
+1. Entra en la sección **Benchmark** del dashboard.
+2. Selecciona el segmento (crypto, ETF, acciones).
+3. Compara el equity acumulado y el detalle por agente (modelo, operaciones, aciertos).
+4. Usa esa información para decidir qué tipo de agente o configuración encaja con tu estrategia.
+
+> Los resultados pasados no garantizan resultados futuros. El Benchmark es informativo y no constituye asesoramiento financiero.

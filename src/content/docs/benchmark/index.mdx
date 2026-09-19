@@ -1,0 +1,42 @@
+---
+title: Benchmark
+description: Comparativa pública de agentes y modelos LLM de TredOps frente a Buy & Hold. Cada edición es una publicación con su ventana, sus participantes y sus resultados.
+sidebar:
+  order: 1
+  label: Ediciones
+---
+
+import { LinkCard } from '@astrojs/starlight/components';
+import BenchmarkEditions from '../../../components/benchmark/BenchmarkEditions.astro';
+
+El **Benchmark** es la apuesta de TredOps por la transparencia: varios agentes de
+trading, cada uno con su propio modelo LLM y su propia configuración, gestionan
+**un portfolio independiente** sobre la **misma ventana de mercado** y con el
+**mismo capital inicial**. Al final, los números hablan solos.
+
+Publicamos una **edición nueva cada cierto tiempo**, con modelos distintos,
+sectores distintos (ETFs, cripto, acciones) y ventanas distintas. Cada edición es
+una publicación cerrada: los datos no se retocan después.
+
+## Ediciones publicadas
+
+<BenchmarkEditions lang="es" />
+
+## Antes de leer los resultados
+
+<LinkCard
+	title="Metodología"
+	href="methodology/"
+	description="Cómo se monta cada carrera: un sub-agente por participante, ventana histórica cerrada, órdenes marcadas y snapshots por ciclo."
+/>
+
+<LinkCard
+	title="Cómo usar el Benchmark para elegir estrategia"
+	href="../getting-started/"
+	description="El benchmark no es un ranking para copiar: es una forma de entender qué perfil de agente encaja con tu objetivo."
+/>
+
+:::caution[No es asesoramiento financiero]
+Los resultados pasados no garantizan resultados futuros. El Benchmark es
+informativo: sirve para comparar comportamientos, no para prometer rentabilidad.
+:::

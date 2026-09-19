@@ -1,0 +1,164 @@
+---
+// Listado de ediciones publicadas del Benchmark, en formato blog.
+//
+// Lee la colección `docs` y se queda con las páginas que llevan el bloque
+// `benchmark:` en su frontmatter, ordenadas de más reciente a más antigua.
+// Añadir una edición es crear su `.mdx`: este índice no hay que tocarlo.
+import { getCollection } from "astro:content";
+
+interface Props {
+	lang?: "es" | "en";
+	/** Enlace a excluir del listado (normalmente, la edición que se está leyendo). */
+	exclude?: string;
+}
+
+const { lang = "es", exclude } = Astro.props;
+
+const t = {
+	es: { empty: "Todavía no hay ediciones publicadas.", winner: "Ganador", window: "Ventana", agents: "agentes", read: "Leer la edición" },
+	en: { empty: "No editions published yet.", winner: "Winner", window: "Window", agents: "agents", read: "Read the edition" },
+}[lang];
+
+const prefix = lang === "en" ? "en/benchmark/editions/" : "benchmark/editions/";
+const base = import.meta.env.BASE_URL;
+
+const editions = (await getCollection("docs"))
+	.filter((e) => e.id.startsWith(prefix) && e.data.benchmark && !e.data.benchmark.draft && e.id !== exclude)
+	.sort((a, b) => b.data.benchmark!.pubDate.valueOf() - a.data.benchmark!.pubDate.valueOf());
+
+const heroes = import.meta.glob<{ default: ImageMetadata }>("../../assets/benchmark/*.{jpg,jpeg,png,webp,avif}", { eager: true });
+const heroOf = (name?: string) => {
+	if (!name) return null;
+	const hit = Object.entries(heroes).find(([path]) => path.endsWith(`/${name}`));
+	return hit ? hit[1].default : null;
+};
+
+const dateFmt = new Intl.DateTimeFormat(lang === "en" ? "en-US" : "es-ES", {
+	year: "numeric",
+	month: "long",
+	day: "numeric",
+});
+---
+
+{editions.length === 0 ? (
+	<p class="bmk-empty">{t.empty}</p>
+) : (
+	<div class="bmk-editions">
+		{editions.map((e) => {
+			const b = e.data.benchmark!;
+			const hero = heroOf(b.hero);
+			return (
+				<a class="bmk-card" href={`${base}${e.id}/`}>
+					{hero && <img class="bmk-card-img" src={hero.src} width={hero.width} height={hero.height} alt="" loading="lazy" />}
+					<div class="bmk-card-body">
+						<div class="bmk-card-meta">
+							<time datetime={b.pubDate.toISOString()}>{dateFmt.format(b.pubDate)}</time>
+							<span>·</span>
+							<span>{b.agents} {t.agents}</span>
+							{b.tags.map((tag) => <span class="bmk-tag">{tag}</span>)}
+						</div>
+						<h3 class="bmk-card-title">{e.data.title}</h3>
+						<p class="bmk-card-desc">{e.data.description}</p>
+						<dl class="bmk-card-facts">
+							<div><dt>{t.winner}</dt><dd class="bmk-winner">{b.winner}</dd></div>
+							<div><dt>{t.window}</dt><dd>{b.window}</dd></div>
+						</dl>
+						<span class="bmk-card-cta">{t.read} →</span>
+					</div>
+				</a>
+			);
+		})}
+	</div>
+)}
+
+<style is:global>
+	.bmk-editions {
+		display: grid;
+		gap: 1.25rem;
+		margin: 1.5rem 0;
+	}
+	@media (min-width: 60rem) {
+		.bmk-editions { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+	}
+	.bmk-card {
+		display: flex;
+		flex-direction: column;
+		overflow: hidden;
+		border-radius: 0.9rem;
+		border: 1px solid var(--sl-color-gray-5);
+		background: var(--sl-color-gray-6);
+		text-decoration: none;
+		color: inherit;
+		transition: border-color 0.15s ease, transform 0.15s ease;
+	}
+	.bmk-card:hover {
+		border-color: var(--sl-color-accent);
+		transform: translateY(-2px);
+	}
+	.bmk-card-img {
+		width: 100%;
+		height: 9rem;
+		object-fit: cover;
+		margin: 0;
+	}
+	.bmk-card-body {
+		display: flex;
+		flex-direction: column;
+		gap: 0.5rem;
+		padding: 1rem 1.15rem 1.15rem;
+	}
+	.bmk-card-meta {
+		display: flex;
+		flex-wrap: wrap;
+		align-items: center;
+		gap: 0.4rem;
+		font-size: 0.75rem;
+		color: var(--sl-color-gray-3);
+	}
+	.bmk-tag {
+		border-radius: 999px;
+		border: 1px solid var(--sl-color-gray-5);
+		padding: 0.05rem 0.5rem;
+		font-size: 0.7rem;
+	}
+	.bmk-card-title {
+		margin: 0;
+		font-size: 1.05rem;
+		line-height: 1.3;
+		font-weight: 600;
+		color: var(--sl-color-white);
+	}
+	.bmk-card-desc {
+		margin: 0;
+		font-size: 0.9rem;
+		color: var(--sl-color-gray-3);
+	}
+	.bmk-card-facts {
+		display: flex;
+		flex-wrap: wrap;
+		gap: 0.25rem 1.5rem;
+		margin: 0.25rem 0 0;
+	}
+	.bmk-card-facts div { display: flex; flex-direction: column; gap: 0.1rem; }
+	.bmk-card-facts dt {
+		margin: 0;
+		font-size: 0.7rem;
+		text-transform: uppercase;
+		letter-spacing: 0.06em;
+		color: var(--sl-color-gray-4);
+	}
+	.bmk-card-facts dd {
+		margin: 0;
+		font-size: 0.85rem;
+		font-weight: 500;
+		color: var(--sl-color-white);
+	}
+	.bmk-card-facts dd.bmk-winner { color: var(--sl-color-text-accent); }
+	.bmk-card-cta {
+		margin-top: 0.35rem;
+		font-size: 0.85rem;
+		font-weight: 500;
+		color: var(--sl-color-text-accent);
+	}
+	.bmk-empty { color: var(--sl-color-gray-3); }
+</style>

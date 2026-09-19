@@ -1,0 +1,69 @@
+---
+import StarlightPage from '@astrojs/starlight/components/StarlightPage.astro';
+import { getCollection } from 'astro:content';
+
+const posts = (await getCollection('blog')).sort(
+	(a, b) => b.data.pubDate.valueOf() - a.data.pubDate.valueOf()
+);
+const base = import.meta.env.BASE_URL;
+---
+
+<StarlightPage
+	frontmatter={{ title: 'Blog', description: 'Noticias, guías y novedades de TredOps' }}
+>
+	<p>Novedades de TredOps, guías avanzadas y anuncios de la plataforma.</p>
+	<div class="post-list">
+		{
+			posts.map((post) => (
+				<a class="post-card" href={`${base}blog/${post.id}/`}>
+					<span class="post-card-date">
+						{
+							post.data.pubDate.toLocaleDateString('es-ES', {
+								year: 'numeric',
+								month: 'short',
+								day: 'numeric',
+							})
+						}
+					</span>
+					<span class="post-card-title">{post.data.title}</span>
+					<span class="post-card-desc">{post.data.description}</span>
+				</a>
+			))
+		}
+	</div>
+</StarlightPage>
+
+<style>
+	.post-list {
+		display: grid;
+		gap: 1rem;
+		margin-top: 1.5rem;
+	}
+	.post-card {
+		display: flex;
+		flex-direction: column;
+		gap: 0.25rem;
+		padding: 1rem 1.25rem;
+		border-radius: 0.75rem;
+		border: 1px solid var(--sl-color-gray-5);
+		background: var(--sl-color-gray-6);
+		text-decoration: none;
+		transition: border-color 0.15s ease;
+	}
+	.post-card:hover {
+		border-color: var(--sl-color-accent);
+	}
+	.post-card-date {
+		font-size: 0.75rem;
+		letter-spacing: 0.08em;
+		color: var(--sl-color-accent);
+	}
+	.post-card-title {
+		font-weight: 600;
+		color: var(--sl-color-white);
+	}
+	.post-card-desc {
+		font-size: 0.9rem;
+		color: var(--sl-color-gray-3);
+	}
+</style>

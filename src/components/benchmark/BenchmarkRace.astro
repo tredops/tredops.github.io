@@ -1,0 +1,1135 @@
+---
+// Bar-chart race del dashboard de TredOps, re-producción estática en vanilla JS.
+//
+// Es un port fiel de `benchmark-race.tsx` de la landing: misma geometría (ROW_H,
+// anchos de columnas, eje cero calculado con la misma aritmética) y mismo
+// modelo de animación — una fila por competidor colocada con `translateY`, el
+// orden del DOM nunca cambia y el ranking solo mueve la transformada.
+//
+// La escena se descarga de `public/benchmark/<edición>.json` cuando el gráfico
+// entra en pantalla, así la página no carga el JSON (>1 MB) si el lector nunca
+// baja hasta aquí.
+import { DEFAULT_EDITION, loadScene, sceneUrl } from "./scene";
+import { initialsOf } from "./format";
+
+interface Props {
+	edition?: string;
+	lang?: "es" | "en";
+}
+
+const { edition = DEFAULT_EDITION, lang = "es" } = Astro.props;
+const scene = loadScene(edition);
+const { chart, portfolios } = scene;
+const src = sceneUrl(edition, import.meta.env.BASE_URL);
+
+const t = {
+	es: { play: "Reproducir", pause: "Pausar", toggle: "Reproducir / pausar", timeline: "Línea de tiempo del benchmark", replay: "Repetir", loading: "Cargando la carrera…" },
+	en: { play: "Play", pause: "Pause", toggle: "Play / pause", timeline: "Benchmark timeline", replay: "Replay", loading: "Loading the race…" },
+}[lang];
+
+// Geometría de filas: idéntica a la de la landing. El eje cero se posiciona con
+// la misma aritmética con la que el flex reparte la fila, así que cualquier
+// cambio aquí tiene que replicarse en las variables CSS de abajo.
+const ROW_H = 60;
+// Altura fija desde el servidor: el hueco del gráfico ya está reservado antes
+// de que llegue el JSON, de modo que la página no da un salto al cargarlo.
+const cardHeight = portfolios.length * ROW_H + 24;
+---
+
+<div
+	class="b-race"
+	data-src={src}
+	data-row-h={ROW_H}
+	data-labels={JSON.stringify({ play: t.play, pause: t.pause, replay: t.replay })}
+	aria-label={chart.description || chart.title}
+>
+	<div class="b-race-header">
+		<div class="b-race-title">
+			<h3 class="b-race-h3">{chart.title}</h3>
+			{chart.description && <p class="b-race-desc">{chart.description}</p>}
+		</div>
+		{chart.showDate && (
+			<div class="b-race-date" data-date hidden>
+				<p class="b-race-date-d" data-day></p>
+				<p class="b-race-date-t" data-time hidden></p>
+			</div>
+		)}
+	</div>
+
+	<div class="b-race-card" data-card style={`height:${cardHeight}px`}>
+		{chart.zeroAxis && (
+			<div class="b-zero" data-zero aria-hidden="true" hidden>
+				<span data-zero-label class="b-zero-label"></span>
+			</div>
+		)}
+		<div class="b-rows" data-rows></div>
+		<p class="b-loading" data-loading>{t.loading}</p>
+		<div class="b-replay" data-replay hidden>
+			<button type="button" class="b-replay-btn">
+				<svg class="b-replay-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+					<path d="M3 12a9 9 0 1 0 9-9 9.75 9.75 0 0 0-6.74 2.74L3 8" />
+					<path d="M3 3v5h5" />
+				</svg>
+				{t.replay}
+			</button>
+		</div>
+	</div>
+
+	<div class="b-controls" data-controls>
+		<button type="button" class="b-play" data-play aria-label={t.toggle}>
+			<svg class="b-ico" data-icon-play viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M8 5.14v13.72a1 1 0 0 0 1.5.86l11-6.86a1 1 0 0 0 0-1.72l-11-6.86A1 1 0 0 0 8 5.14Z" /></svg>
+			<svg class="b-ico" data-icon-pause viewBox="0 0 24 24" fill="currentColor" aria-hidden="true" hidden><path d="M7 5h4v14H7zM13 5h4v14h-4z" /></svg>
+		</button>
+		<input type="range" class="b-scrub" data-scrub min="0" max="0" step="1" value="0" aria-label={t.timeline} />
+		<span class="b-count" data-count>— / —</span>
+	</div>
+
+	{/* Leyenda de competidores: se pinta en servidor con el orden de salida y
+	    el script la reordena con el ranking de cada frame. */}
+	<div class="b-legend" data-legend>
+		{chart.labels === "logo" && portfolios.map((p) => (
+			<span class="b-legend-item" data-legend-id={p.portfolioId}>
+				<span class="b-avatar" style={`border-radius:${chart.avatarRadius}%;${p.avatarUrl ? "" : `background:${p.color}`}`}>
+					{p.avatarUrl
+						? <img src={p.avatarUrl} alt={p.label} loading="lazy" />
+						: <span class="b-avatar-fallback">{initialsOf(p.label)}</span>}
+				</span>
+				<span>
+					<span class="b-ln">{p.label}</span>
+					{(p.subtitle ?? p.model) && <span class="b-ls">{p.subtitle ?? p.model}</span>}
+				</span>
+			</span>
+		))}
+	</div>
+	<div class="b-assets" data-assets hidden></div>
+</div>
+
+<style is:global>
+	.b-race, .b-race *, .b-race *::before, .b-race *::after { box-sizing: border-box; }
+	.b-race {
+		--race-ms: 86ms;
+		--race-row-ms: 280ms;
+		/* Las mismas medidas que usa el script para colocar el eje cero. */
+		--b-race-pad: 0.75rem;
+		--b-race-gap: 0.75rem;
+		--b-race-name-w: 11rem;
+		--b-race-logo-name-w: 3.5rem;
+		--b-race-logo-gap: 0.25rem;
+		--b-race-value-w: 7rem;
+		margin: 1.25rem 0;
+		display: grid;
+		gap: 0.75rem;
+	}
+	.b-race-header {
+		display: flex;
+		align-items: flex-start;
+		justify-content: space-between;
+		gap: 1rem;
+		padding: 0 0.25rem;
+	}
+	.b-race-title { min-width: 0; }
+	.b-race-h3 {
+		margin: 0;
+		font-family: var(--sl-font);
+		font-size: 1.15rem;
+		line-height: 1.25;
+		font-weight: 700;
+		letter-spacing: -0.02em;
+		color: var(--sl-color-white);
+	}
+	.b-race-desc {
+		margin: 0;
+		padding-top: 0.25rem;
+		color: var(--sl-color-gray-3);
+		font-size: 0.9rem;
+	}
+	.b-race-date { flex-shrink: 0; text-align: right; }
+	.b-race-date-d {
+		margin: 0;
+		color: var(--sl-color-white);
+		font-weight: 700;
+		font-size: 1.15rem;
+		letter-spacing: -0.02em;
+		font-variant-numeric: tabular-nums;
+	}
+	.b-race-date-t {
+		margin: 0;
+		padding-top: 0.1rem;
+		color: var(--sl-color-gray-3);
+		font-size: 0.9rem;
+		font-variant-numeric: tabular-nums;
+	}
+
+	/* La tarjeta no lleva padding: las filas son absolutas y se separan de los
+	   bordes con `inset-inline`, igual que el `inset-x-3` de la landing. Con
+	   padding, el alto reservado (filas * ROW_H + 24) se quedaba corto y la
+	   última fila quedaba recortada por el `overflow: hidden`. */
+	.b-race-card {
+		position: relative;
+		overflow: hidden;
+		border-radius: 0.8rem;
+		padding: 0;
+		background: var(--sl-color-gray-6);
+		border: 1px solid var(--sl-color-gray-5);
+	}
+	.b-race[data-dark] .b-race-card {
+		background: linear-gradient(180deg, hsl(222 47% 9% / 0.6), hsl(222 47% 9% / 0.9));
+	}
+	.b-rows { position: absolute; inset: 0; }
+	/* Primer pintado: las filas aparecen ya en su sitio. Sin esto, las seis
+	   salían apiladas arriba y se deslizaban hasta su posición, que es el
+	   estado que se veía si la página cargaba con el gráfico ya en pantalla. */
+	.b-rows[data-first] .b-row { transition-duration: 0ms; }
+	.b-loading {
+		position: absolute;
+		inset: 0;
+		margin: 0;
+		display: flex;
+		align-items: center;
+		justify-content: center;
+		font-size: 0.875rem;
+		color: var(--sl-color-gray-3);
+	}
+	.b-loading[hidden] { display: none; }
+
+	.b-row {
+		position: absolute;
+		inset-inline: var(--b-race-pad);
+		top: 0;
+		display: flex;
+		align-items: center;
+		will-change: transform;
+		transition-property: transform;
+		transition-duration: var(--race-row-ms, 700ms);
+		transition-timing-function: cubic-bezier(0.25, 0.8, 0.25, 1);
+	}
+	.b-names {
+		display: flex;
+		align-items: center;
+		gap: 0.5rem;
+		flex-shrink: 0;
+	}
+	.b-names[data-labels="condensed"] { margin-inline-end: var(--b-race-logo-gap); width: var(--b-race-logo-name-w); }
+	.b-names[data-labels="full"] { margin-inline-end: var(--b-race-gap); width: var(--b-race-name-w); }
+	.b-rank {
+		width: 1rem;
+		flex-shrink: 0;
+		text-align: right;
+		font-size: 0.75rem;
+		font-weight: 600;
+		font-variant-numeric: tabular-nums;
+		color: var(--sl-color-gray-3);
+	}
+	.b-avatar {
+		display: flex;
+		align-items: center;
+		justify-content: center;
+		width: 2rem;
+		height: 2rem;
+		flex-shrink: 0;
+		overflow: hidden;
+		border: 1px solid color-mix(in srgb, var(--sl-color-gray-5) 35%, transparent);
+	}
+	.b-avatar img {
+		width: 100%;
+		height: 100%;
+		object-fit: contain;
+	}
+	.b-avatar-fallback {
+		font-size: 10px;
+		font-weight: 600;
+		line-height: 1;
+		color: #fff;
+		text-align: center;
+	}
+	.b-avatar-name { min-width: 0; }
+	.b-avatar-name p {
+		margin: 0;
+		overflow: hidden;
+		text-overflow: ellipsis;
+		white-space: nowrap;
+	}
+	.b-avatar-name .b-n { font-size: 0.75rem; font-weight: 500; }
+	.b-avatar-name .b-s {
+		font-size: 10px;
+		color: var(--sl-color-gray-3);
+	}
+
+	.b-track {
+		position: relative;
+		height: 100%;
+		min-width: 0;
+		flex: 1;
+	}
+	.b-track-inner {
+		position: absolute;
+		top: 4px;
+		bottom: 4px;
+		left: 0;
+		display: flex;
+		align-items: stretch;
+		overflow: hidden;
+		border-radius: 0.375rem;
+		transition-property: width, left;
+		transition-duration: var(--race-ms, 700ms);
+		transition-timing-function: linear;
+	}
+	.b-track-inner[data-side="neg"] { flex-direction: row-reverse; border-radius: 0.375rem 0 0 0.375rem; }
+	.b-track-inner[data-side="pos"] { border-radius: 0 0.375rem 0.375rem 0; }
+	/* El separador entre posiciones es una sombra interior, no un borde: un
+	   borde de 1 px se come parte del ancho del segmento y hacía que la suma de
+	   los trozos no cuadrase con la barra mientras las anchuras interpolaban. */
+	.b-seg {
+		display: flex;
+		flex-direction: column;
+		align-items: center;
+		align-self: stretch;
+		justify-content: center;
+		gap: 2px;
+		min-width: 0;
+		height: 100%;
+		overflow: hidden;
+		padding: 0 4px;
+		box-shadow: inset -1px 0 0 color-mix(in srgb, var(--sl-color-bg) 40%, transparent);
+		background-position: center;
+		transition-property: width;
+		transition-duration: var(--race-ms, 700ms);
+		transition-timing-function: linear;
+	}
+	.b-seg:last-child { box-shadow: none; }
+	.b-seg-avatar {
+		width: 22px;
+		height: 22px;
+		border-radius: 50%;
+		object-fit: contain;
+		padding: 2px;
+		background: var(--sl-color-gray-6);
+		border: 1px solid var(--sl-color-gray-5);
+	}
+	.b-seg-fallback {
+		display: flex;
+		align-items: center;
+		justify-content: center;
+		width: 22px;
+		height: 22px;
+		border-radius: 50%;
+		background: var(--sl-color-gray-6);
+		border: 1px solid var(--sl-color-gray-5);
+		font-size: 9px;
+		font-weight: 600;
+		color: var(--sl-color-white);
+	}
+	.b-seg-pct {
+		max-width: 100%;
+		overflow: hidden;
+		text-overflow: ellipsis;
+		white-space: nowrap;
+		font-size: 11px;
+		font-weight: 600;
+		line-height: 1;
+		font-variant-numeric: tabular-nums;
+		text-shadow: 0 1px 2px rgb(0 0 0 / 0.35);
+	}
+	.b-cash {
+		display: flex;
+		align-items: center;
+		justify-content: center;
+		align-self: stretch;
+		min-width: 0;
+		height: 100%;
+		overflow: hidden;
+		padding: 0 6px;
+		opacity: 0.28;
+		transition-property: width;
+		transition-duration: var(--race-ms, 700ms);
+		transition-timing-function: linear;
+	}
+	.b-cash span {
+		overflow: hidden;
+		text-overflow: ellipsis;
+		white-space: nowrap;
+		font-size: 11px;
+		font-weight: 500;
+	}
+
+	.b-value {
+		margin-inline-start: var(--b-race-gap);
+		width: var(--b-race-value-w);
+		flex-shrink: 0;
+		text-align: right;
+	}
+	.b-value p {
+		margin: 0;
+		font-size: 0.875rem;
+		font-weight: 600;
+		font-variant-numeric: tabular-nums;
+		overflow: hidden;
+		text-overflow: ellipsis;
+		white-space: nowrap;
+	}
+	.b-value p.b-tone-win { color: #059669; }
+	.b-value p.b-tone-loss { color: #dc2626; }
+	.b-value p.b-tone-zero { color: var(--sl-color-gray-2); }
+	.b-race[data-dark] .b-value p.b-tone-win { color: #34d399; }
+	.b-race[data-dark] .b-value p.b-tone-loss { color: #f87171; }
+	.b-race[data-dark] .b-value p.b-tone-zero { color: var(--sl-color-gray-3); }
+
+	.b-zero {
+		position: absolute;
+		top: 6px;
+		bottom: 6px;
+		width: 1px;
+		z-index: 10;
+		pointer-events: none;
+		background: var(--sl-color-gray-3);
+		opacity: 0.4;
+	}
+	.b-zero[hidden] { display: none; }
+	.b-zero-label {
+		position: absolute;
+		top: -1px;
+		left: 4px;
+		white-space: nowrap;
+		font-size: 9px;
+		font-weight: 500;
+		line-height: 1;
+		color: var(--sl-color-gray-3);
+	}
+
+	.b-replay {
+		position: absolute;
+		inset: 0;
+		z-index: 20;
+		display: flex;
+		align-items: center;
+		justify-content: center;
+		border-radius: 0.8rem;
+		background: color-mix(in srgb, var(--sl-color-gray-6) 70%, transparent);
+		opacity: 0;
+		backdrop-filter: blur(1px);
+		transition: opacity 0.2s;
+	}
+	.b-race[data-dark] .b-replay { background: hsl(222 47% 9% / 0.5); }
+	.b-replay[hidden] { display: none; }
+	.b-replay:hover, .b-replay:focus-within { opacity: 1; }
+	.b-replay-btn {
+		display: inline-flex;
+		align-items: center;
+		gap: 0.5rem;
+		cursor: pointer;
+		border-radius: 999px;
+		border: 1px solid color-mix(in srgb, var(--sl-color-gray-5) 50%, transparent);
+		background: color-mix(in srgb, var(--sl-color-gray-5) 20%, transparent);
+		color: var(--sl-color-white);
+		padding: 0.5rem 1rem;
+		font: inherit;
+		font-size: 0.875rem;
+		font-weight: 500;
+	}
+	.b-replay-icon { width: 16px; height: 16px; }
+
+	.b-controls {
+		display: flex;
+		align-items: center;
+		gap: 0.625rem;
+		padding: 0 0.25rem;
+	}
+	.b-play {
+		display: inline-flex;
+		align-items: center;
+		justify-content: center;
+		width: 2rem;
+		height: 2rem;
+		flex-shrink: 0;
+		cursor: pointer;
+		border-radius: 999px;
+		border: 1px solid var(--sl-color-gray-5);
+		background: var(--sl-color-gray-6);
+		color: var(--sl-color-white);
+	}
+	.b-play:hover { border-color: var(--sl-color-gray-4); background: var(--sl-color-gray-5); }
+	.b-ico { width: 15px; height: 15px; }
+	.b-scrub {
+		-webkit-appearance: none;
+		appearance: none;
+		flex: 1;
+		min-width: 0;
+		height: 1.25rem;
+		cursor: pointer;
+		background: transparent;
+	}
+	.b-scrub::-webkit-slider-runnable-track {
+		height: 4px;
+		border-radius: 999px;
+		background: var(--sl-color-gray-5);
+	}
+	.b-scrub::-moz-range-track {
+		height: 4px;
+		border-radius: 999px;
+		background: var(--sl-color-gray-5);
+	}
+	.b-scrub::-webkit-slider-thumb {
+		-webkit-appearance: none;
+		appearance: none;
+		margin-top: -5px;
+		width: 14px;
+		height: 14px;
+		border-radius: 50%;
+		background: var(--sl-color-text-accent);
+		border: 2px solid var(--sl-color-black);
+	}
+	.b-scrub::-moz-range-thumb {
+		width: 14px;
+		height: 14px;
+		border: 2px solid var(--sl-color-black);
+		border-radius: 50%;
+		background: var(--sl-color-text-accent);
+	}
+	.b-count {
+		flex-shrink: 0;
+		min-width: 4.5rem;
+		text-align: right;
+		font-size: 0.75rem;
+		font-variant-numeric: tabular-nums;
+		color: var(--sl-color-gray-3);
+	}
+
+	.b-legend {
+		display: flex;
+		flex-wrap: wrap;
+		align-items: center;
+		gap: 0.5rem 1.25rem;
+		padding: 0 0.25rem;
+	}
+	.b-legend:empty { display: none; }
+	.b-legend-item {
+		display: inline-flex;
+		align-items: center;
+		gap: 0.5rem;
+	}
+	.b-legend .b-avatar { width: 1.75rem; height: 1.75rem; }
+	.b-legend .b-ln { display: block; font-size: 0.75rem; font-weight: 500; line-height: 1.25; }
+	.b-legend .b-ls { display: block; font-size: 10px; line-height: 1.25; color: var(--sl-color-gray-3); }
+
+	.b-assets {
+		display: flex;
+		flex-wrap: wrap;
+		align-items: center;
+		gap: 0.5rem 1rem;
+		padding: 0 0.25rem;
+		font-size: 0.75rem;
+		color: var(--sl-color-gray-3);
+	}
+	.b-asset-item { display: inline-flex; align-items: center; gap: 0.375rem; }
+	.b-asset-item img {
+		width: 20px;
+		height: 20px;
+		border-radius: 50%;
+		object-fit: contain;
+		background: var(--sl-color-gray-6);
+		border: 1px solid color-mix(in srgb, var(--sl-color-gray-5) 40%, transparent);
+		padding: 1px;
+	}
+	.b-asset-item .b-af {
+		display: flex;
+		align-items: center;
+		justify-content: center;
+		width: 20px;
+		height: 20px;
+		border-radius: 50%;
+		background: var(--sl-color-gray-6);
+		border: 1px solid color-mix(in srgb, var(--sl-color-gray-5) 40%, transparent);
+		font-size: 8px;
+		font-weight: 600;
+		color: var(--sl-color-white);
+	}
+	.b-asset-item b { font-weight: 500; color: var(--sl-color-white); }
+	.b-assets-note { display: inline-flex; align-items: center; gap: 0.375rem; }
+	.b-assets-sw {
+		width: 12px;
+		height: 12px;
+		border-radius: 2px;
+		background: var(--sl-color-gray-3);
+		opacity: 0.5;
+		display: inline-block;
+	}
+
+	@media (max-width: 640px) {
+		.b-race { --b-race-name-w: 10rem; --b-race-value-w: 5.25rem; }
+	}
+
+	@media (prefers-reduced-motion: reduce) {
+		.b-row, .b-track-inner, .b-seg, .b-cash { transition-duration: 0ms !important; }
+	}
+</style>
+
+<script>
+	import { money, percent, capitalPercent, initialsOf, formatDay, formatTime, toneColor } from "./format";
+
+	// Geometría: los mismos valores que el bloque <style> y que la referencia de
+	// la landing. El eje cero se calcula con esta aritmética, así que no pueden
+	// divergir.
+	const PAD = "0.75rem";
+	const GAP = "0.75rem";
+	const NAME_W = "11rem";
+	const LOGO_NAME_W = "3.5rem";
+	const LOGO_GAP = "0.25rem";
+	const VALUE_W = "7rem";
+	/** Segmento de P&L mínimo (% del track) para que una ganancia ínfima siga viéndose. */
+	const MIN_PNL_SEGMENT = 1.2;
+
+	function pnlSides(positions) {
+		let neg = 0, pos = 0;
+		for (const p of positions) if (p.pnl < 0) neg -= p.pnl; else pos += p.pnl;
+		return { neg, pos };
+	}
+
+	// Una sola escala para toda la carrera: las barras no saltan entre frames.
+	function buildScale(frames, metric, layout) {
+		if (layout === "pnl") {
+			let maxNeg = 0, maxPos = 0;
+			for (const f of frames) for (const r of f.rows) {
+				const { neg, pos } = pnlSides(r.positions);
+				if (neg > maxNeg) maxNeg = neg;
+				if (pos > maxPos) maxPos = pos;
+			}
+			const span = maxNeg + maxPos || 1;
+			return { min: -maxNeg, max: maxPos, zero: (maxNeg / span) * 100, pnlSpan: span };
+		}
+		let lo = Infinity, hi = -Infinity;
+		for (const f of frames) for (const r of f.rows) {
+			const v = r[metric];
+			if (v < lo) lo = v;
+			if (v > hi) hi = v;
+		}
+		if (!Number.isFinite(lo)) return { min: 0, max: 1, zero: 0, pnlSpan: 1 };
+		if (metric === "equity") return { min: 0, max: hi || 1, zero: 0, pnlSpan: 1 };
+		const pad = Math.max((hi - lo) * 0.1, 0.5);
+		const min = Math.min(lo, 0) - pad;
+		const max = Math.max(hi, 0) + pad;
+		return { min, max, zero: Math.max(0, Math.min(100, ((0 - min) / (max - min || 1)) * 100)), pnlSpan: 1 };
+	}
+
+	function mount(host, scene) {
+		const { chart, view, portfolios, frames } = scene;
+		const labels = JSON.parse(host.dataset.labels || "{}");
+		const ROW_H = Number(host.dataset.rowH) || 60;
+		const last = Math.max(frames.length - 1, 0);
+		const metric = view.metric;
+		const layout = chart.layout;
+		const scale = buildScale(frames, metric, layout);
+		const entryOf = new Map(portfolios.map((p) => [p.portfolioId, p]));
+		const avatarOf = new Map();
+		for (const f of frames) for (const r of f.rows) for (const p of r.positions)
+			if (p.avatar && !avatarOf.has(p.s)) avatarOf.set(p.s, p.avatar);
+
+		// El eje cero usa la misma aritmética de layout que las filas flex.
+		const nameW = chart.labels === "logo" ? LOGO_NAME_W : NAME_W;
+		const leftGap = chart.labels === "logo" ? LOGO_GAP : GAP;
+		const trackLeft = `${PAD} + ${nameW} + ${leftGap}`;
+		const trackWidth = `100% - ${PAD} * 2 - ${nameW} - ${leftGap} - ${GAP} - ${VALUE_W}`;
+		const zeroEl = host.querySelector("[data-zero]");
+		if (zeroEl) {
+			zeroEl.style.left = `calc(${trackLeft} + (${trackWidth}) * ${scale.zero / 100})`;
+			zeroEl.querySelector("[data-zero-label]").textContent = layout === "pnl" ? "P&L 0" : "0";
+			zeroEl.hidden = false;
+		}
+
+		const card = host.querySelector("[data-card]");
+		const rowsEl = host.querySelector("[data-rows]");
+		const loadingEl = host.querySelector("[data-loading]");
+		const rowCount = frames[0]?.rows.length || portfolios.length;
+		card.style.height = `${rowCount * ROW_H + 24}px`;
+
+		const scrub = host.querySelector("[data-scrub]");
+		const playBtn = host.querySelector("[data-play]");
+		const iconPlay = host.querySelector("[data-icon-play]");
+		const iconPause = host.querySelector("[data-icon-pause]");
+		const countEl = host.querySelector("[data-count]");
+		const replayEl = host.querySelector("[data-replay]");
+		let scrubbing = false;
+
+		let started = false;
+		let playing = false;
+		let index = 0;
+		let raf = 0;
+		let lastTick = 0;
+		let acc = 0;
+		/** Las transiciones duran lo que dura un frame, nunca más. */
+		const raceMs = Math.min(700, Math.max(40, view.frameMs));
+		/**
+		 * Las filas se deslizan durante más de un frame a propósito: el ancho de
+		 * la barra sigue al dato, pero la posición vertical solo expresa el
+		 * ranking y a 86 ms un adelantamiento se leería como un parpadeo.
+		 */
+		const raceRowMs = Math.min(700, Math.max(280, raceMs * 3));
+		host.style.setProperty("--race-ms", `${raceMs}ms`);
+		host.style.setProperty("--race-row-ms", `${raceRowMs}ms`);
+
+		// Tema: para que el fondo de la tarjeta siga el tema de la página.
+		const applyDark = () => {
+			const theme = document.documentElement.dataset.theme;
+			const isDark = theme ? theme === "dark" : window.matchMedia("(prefers-color-scheme: dark)").matches;
+			host.toggleAttribute("data-dark", isDark);
+		};
+		applyDark();
+		new MutationObserver(applyDark).observe(document.documentElement, { attributes: true, attributeFilter: ["data-theme"] });
+		window.matchMedia("(prefers-color-scheme: dark)").addEventListener("change", applyDark);
+
+		// Una fila por competidor, creada una sola vez. El orden del DOM nunca
+		// cambia: el ranking solo mueve el `translateY`. Reordenar los nodos
+		// interrumpía las transiciones en curso y producía los saltos verticales.
+		const rowEls = new Map();
+		for (const p of portfolios) {
+			const row = document.createElement("div");
+			row.className = "b-row";
+			row.style.height = `${ROW_H - 8}px`;
+			row.innerHTML = `
+				<div class="b-names" data-labels="${chart.labels === "logo" ? "condensed" : "full"}">
+					<span class="b-rank"></span>
+					<span class="b-avatar" style="border-radius:${chart.avatarRadius}%;background:${p.color}"><span class="b-avatar-fallback">${initialsOf(p.label)}</span></span>
+					<div class="b-avatar-name">${chart.labels === "logo" ? "" : `<p class="b-n"></p><p class="b-s"></p>`}</div>
+				</div>
+				<div class="b-track">
+					${layout === "pnl"
+						? `<div class="b-track-inner" data-side="neg"></div><div class="b-track-inner" data-side="pos"></div>`
+						: `<div class="b-track-inner"></div>`}
+				</div>
+				<div class="b-value"><p></p></div>`;
+			rowsEl.appendChild(row);
+			rowEls.set(p.portfolioId, row);
+		}
+		if (loadingEl) loadingEl.hidden = true;
+
+		let trackPx = 0;
+
+		// Crea/actualiza un segmento reutilizando el nodo: así los anchos
+		// interpolan de forma continua (sin reconstruir el DOM en cada frame).
+		function syncSeg(node, d) {
+			const sig = `${d.symbol}|${d.avatar || ""}|${d.showAvatar ? 1 : 0}|${d.showPct ? 1 : 0}|${d.pctText}|${d.pctColor}|${d.side}`;
+			if (node.dataset.sig !== sig) {
+				const fallback = `<span class="b-seg-fallback">${d.symbol.slice(0, 3)}</span>`;
+				const avatar = d.avatar
+					? `<img class="b-seg-avatar" src="${d.avatar}" alt="${d.symbol}" title="${d.symbol}">`
+					: fallback;
+				const profit = d.showPct
+					? `<span class="b-seg-pct" style="color:${d.pctColor}">${d.side === "short" ? "↓" : ""}${d.pctText}</span>`
+					: "";
+				node.innerHTML = (d.showAvatar ? avatar : "") + profit;
+				const img = node.querySelector("img");
+				if (img) img.onerror = () => { img.outerHTML = fallback; };
+				node.dataset.sig = sig;
+			}
+			node.style.width = `${d.widthPct}%`;
+			node.style.background = d.color;
+			node.style.opacity = String(d.opacity);
+			node.title = d.symbol;
+		}
+
+		/**
+		 * Sincroniza los hijos de una barra por clave (`orderId`), reutilizando
+		 * nodos y manteniendo el orden.
+		 *
+		 * Las altas y bajas entran y salen desde 0 % en lugar de aparecer y
+		 * desaparecer de golpe: si un segmento nuevo se pintaba ya a su ancho
+		 * final mientras sus hermanos aún interpolaban, la suma pasaba de 100 %
+		 * durante la transición y el `overflow: hidden` recortaba el trozo de
+		 * cash — el corte de continuidad que se veía al abrir una posición.
+		 */
+		/**
+		 * Arranca la transición de un segmento recién insertado desde 0 %.
+		 * El `offsetWidth` fuerza a que el navegador registre el 0 % como valor
+		 * de partida; sin esa lectura, asignar el ancho final en la misma tarea
+		 * no produce transición alguna y el segmento aparecería de golpe.
+		 */
+		function enterFromZero(node, widthPct) {
+			node.style.width = "0%";
+			void node.offsetWidth;
+			node.style.width = `${widthPct}%`;
+		}
+
+		function syncInner(inner, items) {
+			const existing = new Map();
+			for (const child of Array.from(inner.children)) existing.set(child.dataset.key, child);
+			const seen = new Set();
+			let prev = null;
+			for (const it of items) {
+				let node = existing.get(it.key);
+				const isNew = !node;
+				if (isNew) {
+					node = document.createElement("div");
+					node.dataset.key = it.key;
+					node.style.width = "0%";
+				}
+				// Si el nodo estaba saliendo y la posición vuelve a aparecer,
+				// se cancela su retirada en lugar de dejar que el temporizador
+				// borre un segmento vivo.
+				if (node.dataset.exitTimer) {
+					clearTimeout(Number(node.dataset.exitTimer));
+					delete node.dataset.exitTimer;
+				}
+				const anchor = prev ? prev.nextSibling : inner.firstChild;
+				if (node !== anchor) inner.insertBefore(node, anchor);
+				if (it.kind === "cash") {
+					node.className = "b-cash";
+					const sig = `${it.showLabel ? 1 : 0}|${it.cashPct.toFixed(0)}`;
+					if (node.dataset.sig !== sig) {
+						node.innerHTML = it.showLabel ? `<span style="color:${it.textColor}">cash ${it.cashPct.toFixed(0)}%</span>` : "";
+						node.dataset.sig = sig;
+					}
+					node.style.background = it.color;
+					if (isNew) enterFromZero(node, it.widthPct);
+					else node.style.width = `${it.widthPct}%`;
+				} else {
+					node.className = "b-seg";
+					const target = it.widthPct;
+					syncSeg(node, isNew ? { ...it, widthPct: 0 } : it);
+					if (isNew) enterFromZero(node, target);
+				}
+				seen.add(it.key);
+				prev = node;
+			}
+			// Una posición cerrada encoge hasta 0 y se retira al terminar, en vez
+			// de desaparecer y dejar un hueco instantáneo en la barra.
+			for (const [key, node] of existing) {
+				if (seen.has(key) || node.dataset.exitTimer) continue;
+				node.style.width = "0%";
+				node.dataset.exitTimer = String(setTimeout(() => node.remove(), raceMs + 40));
+			}
+		}
+
+		function capitalItems(r, color, entry) {
+			const value = r[metric];
+			const width = Math.max(2, Math.min(100, ((value - scale.min) / (scale.max - scale.min || 1)) * 100));
+			const left = metric === "equity" ? 0 : Math.min(scale.zero, width);
+			const barPct = metric === "equity" ? width : Math.abs(width - scale.zero);
+			const barPx = trackPx ? (trackPx * barPct) / 100 : 0;
+			const invested = r.positions.reduce((s, p) => s + p.c, 0);
+			const total = invested + Math.max(r.liquidity, 0) || 1;
+			const cashPct = (Math.max(r.liquidity, 0) / total) * 100;
+			const items = r.positions.map((p, i) => {
+				const pct = (p.c / total) * 100;
+				return segItem(p, i, pct, (barPx * pct) / 100, color, entry);
+			});
+			if (cashPct > 0) {
+				items.push({
+					kind: "cash",
+					key: "__cash",
+					widthPct: cashPct,
+					color,
+					cashPct,
+					showLabel: (barPx * cashPct) / 100 >= 64,
+					textColor: entry?.textColor || "rgba(255,255,255,0.8)",
+				});
+			}
+			return [{ left, width: barPct, items }];
+		}
+
+		/**
+		 * "pnl": cada fila diverge alrededor del eje cero — las posiciones
+		 * ganadoras se apilan a la derecha del 0 y las perdedoras a la izquierda,
+		 * dimensionadas por su P&L en $ contra el rango de toda la carrera.
+		 */
+		function pnlBars(r, color, entry) {
+			const share = (p) => Math.max((Math.abs(p.pnl) / scale.pnlSpan) * 100, MIN_PNL_SEGMENT);
+			const losers = r.positions.filter((p) => p.pnl < 0).sort((a, b) => a.pnl - b.pnl);
+			const winners = r.positions.filter((p) => p.pnl >= 0).sort((a, b) => b.pnl - a.pnl);
+			const negPct = Math.min(losers.reduce((s, p) => s + share(p), 0), scale.zero);
+			const posPct = Math.min(winners.reduce((s, p) => s + share(p), 0), 100 - scale.zero);
+			const side = (positions, sidePct) => {
+				const total = positions.reduce((s, p) => s + share(p), 0) || 1;
+				return positions.map((p, i) => {
+					const pct = (share(p) / total) * 100;
+					return segItem(p, i, pct, (trackPx * sidePct * pct) / 10_000, color, entry);
+				});
+			};
+			return [
+				{ left: scale.zero - negPct, width: negPct, items: side(losers, negPct) },
+				{ left: scale.zero, width: posPct, items: side(winners, posPct) },
+			];
+		}
+
+		function segItem(p, i, widthPct, px, color, entry) {
+			return {
+				kind: "seg",
+				key: p.orderId || `${p.s}#${i}`,
+				symbol: p.s,
+				avatar: p.avatar,
+				widthPct,
+				color,
+				opacity: 1 - Math.min(i, 4) * 0.12,
+				showAvatar: px >= 26,
+				showPct: px >= 44,
+				pctText: percent(p.p, 1),
+				pctColor: toneColor(entry, p.p),
+				side: p.side,
+			};
+		}
+
+		function render() {
+			const frame = frames[index];
+			if (!frame) return;
+			const rows = [...frame.rows].sort((a, b) => a.rank - b.rank);
+			rows.forEach((r, i) => {
+				const entry = entryOf.get(r.portfolioId);
+				const color = entry?.color || r.color || "#6b7280";
+				const el = rowEls.get(r.portfolioId);
+				if (!el) return;
+				// Por índice visible, no por rank: una escena con huecos en el
+				// ranking colocaría la última fila fuera de la tarjeta.
+				el.style.transform = `translateY(${i * ROW_H + 12}px)`;
+
+				el.querySelector(".b-rank").textContent = r.rank;
+				const avatar = el.querySelector(".b-avatar");
+				const avatarUrl = entry?.avatarUrl ?? r.avatarUrl ?? null;
+				if (avatarUrl) {
+					if (!avatar.querySelector("img")) {
+						avatar.innerHTML = "";
+						const img = document.createElement("img");
+						img.src = avatarUrl;
+						img.alt = entry?.label || r.label || "";
+						img.onerror = () => (avatar.innerHTML = `<span class="b-avatar-fallback">${initialsOf(entry?.label || r.label || "")}</span>`);
+						avatar.appendChild(img);
+						avatar.style.background = "transparent";
+					}
+				} else if (!avatar.dataset.fallback) {
+					avatar.innerHTML = `<span class="b-avatar-fallback">${initialsOf(entry?.label || r.label || "")}</span>`;
+					avatar.style.background = color;
+					avatar.dataset.fallback = "1";
+				}
+				const nEl = el.querySelector(".b-n");
+				const sEl = el.querySelector(".b-s");
+				if (nEl && !nEl.textContent) nEl.textContent = entry?.label || r.label || "";
+				if (sEl && !sEl.textContent) sEl.textContent = entry?.subtitle ?? entry?.model ?? r.model ?? "";
+
+				const bars = layout === "pnl" ? pnlBars(r, color, entry) : capitalItems(r, color, entry);
+				const inners = el.querySelectorAll(".b-track-inner");
+				bars.forEach((bar, bi) => {
+					const inner = inners[bi];
+					if (!inner) return;
+					inner.style.left = `${bar.left}%`;
+					inner.style.width = `${bar.width}%`;
+					syncInner(inner, bar.items);
+				});
+
+				const valueP = el.querySelector(".b-value p");
+				valueP.classList.remove("b-tone-win", "b-tone-loss", "b-tone-zero");
+				valueP.classList.add(r.profitPct > 0 ? "b-tone-win" : r.profitPct < 0 ? "b-tone-loss" : "b-tone-zero");
+				valueP.textContent = capitalPercent(r.profitPct);
+				valueP.title = money(r.equity);
+			});
+
+			const dayEl = host.querySelector("[data-day]");
+			if (dayEl) {
+				dayEl.textContent = formatDay(frame.tradeDate);
+				const timeEl = host.querySelector("[data-time]");
+				const showClock = scene.range.intervalHours < 24;
+				timeEl.hidden = !showClock;
+				if (showClock) timeEl.textContent = formatTime(frame.tradeDate);
+				host.querySelector("[data-date]").hidden = false;
+			}
+
+			reorderLegend(rows);
+			renderAssets(frame);
+
+			if (scrub && !scrubbing) scrub.value = String(index);
+			if (countEl) countEl.textContent = `${index + 1} / ${last + 1}`;
+
+			const finished = started && !chart.loop && last > 0 && index >= last;
+			if (replayEl) {
+				replayEl.hidden = !finished || playing;
+				if (finished && !playing) replayEl.style.opacity = "1";
+				else replayEl.style.removeProperty("opacity");
+			}
+		}
+
+		// La leyenda ya viene pintada del servidor; aquí solo se reordena con el
+		// ranking actual, sin volver a construir el HTML.
+		const legend = host.querySelector("[data-legend]");
+		let legendSig = "";
+		function reorderLegend(rows) {
+			if (!legend || chart.labels !== "logo") return;
+			const sig = rows.map((r) => r.portfolioId).join(",");
+			if (sig === legendSig) return;
+			legendSig = sig;
+			for (const r of rows) {
+				const item = legend.querySelector(`[data-legend-id="${r.portfolioId}"]`);
+				if (item) legend.appendChild(item);
+			}
+		}
+
+		let assetsSig = "";
+		function renderAssets(frame) {
+			const symbols = Array.from(new Set(frame.rows.flatMap((r) => r.positions.map((p) => p.s)))).sort();
+			if (symbols.length === 0) return;
+			const sig = symbols.join(",");
+			if (sig === assetsSig) return;
+			assetsSig = sig;
+			const assets = host.querySelector("[data-assets]");
+			assets.hidden = false;
+			assets.innerHTML = symbols.map((s) => {
+				const avatar = avatarOf.get(s);
+				const v = avatar ? `<img src="${avatar}" alt="${s}" title="${s}" onerror="this.outerHTML='<span class=&quot;b-af&quot;>${s.slice(0, 3)}</span>'">` : `<span class="b-af">${s.slice(0, 3)}</span>`;
+				return `<span class="b-asset-item">${v}<b>${s}</b></span>`;
+			}).join("")
+			+ (layout === "pnl"
+				? `<span class="b-assets-note">← losing · 0 · winning →</span>`
+				: `<span class="b-assets-note"><span class="b-assets-sw"></span>cash</span>`)
+			+ `<span class="b-assets-note">↓ short</span>`;
+		}
+
+		/**
+		 * Reloj de la carrera sobre requestAnimationFrame.
+		 *
+		 * Avanza **como mucho un frame por tick**: la versión anterior se ponía al
+		 * día saltando hasta 8 frames de golpe cuando el hilo principal iba justo
+		 * o la pestaña volvía de segundo plano, y eso era exactamente lo que se
+		 * veía como saltos — barras teletransportándose por encima de una
+		 * transición de 86 ms que no podía seguirlas. Si el navegador no da
+		 * abasto, la carrera va más despacio; nunca se salta datos.
+		 */
+		function tick(now) {
+			raf = 0;
+			if (!playing) return;
+			const dt = lastTick ? now - lastTick : 0;
+			lastTick = now;
+			// La deuda acumulada se recorta a un frame extra: si el navegador
+			// estrangula el rAF (pestaña de fondo, hilo ocupado) la carrera
+			// avanza un frame por tick y va más despacio, en lugar de saltarse
+			// datos para ponerse al día — o de quedarse congelada descartando
+			// cada intervalo por considerarlo demasiado largo.
+			acc = Math.min(acc + dt, view.frameMs * 2);
+			if (acc >= view.frameMs) {
+				acc -= view.frameMs;
+				if (index >= last) {
+					if (chart.loop) index = 0;
+					else { setPlaying(false); render(); return; }
+				} else {
+					index += 1;
+				}
+				render();
+			}
+			raf = requestAnimationFrame(tick);
+		}
+
+		function setPlaying(next) {
+			playing = next;
+			if (iconPlay) iconPlay.hidden = playing;
+			if (iconPause) iconPause.hidden = !playing;
+			if (playBtn) playBtn.setAttribute("aria-label", playing ? labels.pause : labels.play);
+			if (playing) {
+				lastTick = 0;
+				acc = 0;
+				if (!raf) raf = requestAnimationFrame(tick);
+			} else if (raf) {
+				cancelAnimationFrame(raf);
+				raf = 0;
+			}
+		}
+
+		if (playBtn) {
+			playBtn.addEventListener("click", () => {
+				if (!playing && !chart.loop && index >= last) index = 0;
+				setPlaying(!playing);
+				render();
+			});
+		}
+
+		if (scrub) {
+			scrub.max = String(last);
+			scrub.addEventListener("input", () => {
+				scrubbing = true;
+				setPlaying(false);
+				index = Math.max(0, Math.min(last, Number(scrub.value) || 0));
+				render();
+			});
+			const endScrub = () => { scrubbing = false; };
+			scrub.addEventListener("change", endScrub);
+			scrub.addEventListener("pointerup", endScrub);
+		}
+
+		if (replayEl) {
+			replayEl.querySelector("button").addEventListener("click", () => {
+				index = 0;
+				render();
+				setPlaying(true);
+			});
+		}
+
+		// Medida del track: el ancho en píxeles decide si en un segmento cabe el
+		// logo del activo y su porcentaje.
+		const firstTrack = rowEls.values().next().value?.querySelector(".b-track");
+		if (firstTrack) {
+			trackPx = firstTrack.getBoundingClientRect().width;
+			if (typeof ResizeObserver !== "undefined") {
+				const ro = new ResizeObserver((es) => {
+					for (const e of es) trackPx = e.contentRect.width;
+					render();
+				});
+				ro.observe(firstTrack);
+			}
+		}
+
+		rowsEl.dataset.first = "1";
+		render();
+		// Las filas ya están colocadas: se devuelve la transición a partir de aquí.
+		void rowsEl.offsetWidth;
+		delete rowsEl.dataset.first;
+
+		// La carrera es el objeto de la sección: no puede haber terminado antes
+		// de que el lector llegue hasta ella.
+		const start = () => {
+			started = true;
+			render();
+			setPlaying(true);
+		};
+		if (typeof IntersectionObserver === "undefined") start();
+		else {
+			const io = new IntersectionObserver(
+				(entries) => {
+					if (entries.some((e) => e.isIntersecting)) { io.disconnect(); start(); }
+				},
+				{ rootMargin: "-15% 0px -15% 0px" },
+			);
+			io.observe(card);
+		}
+
+		// Una pestaña en segundo plano no anima: se pausa y se retoma donde iba.
+		document.addEventListener("visibilitychange", () => {
+			if (document.hidden && playing) { setPlaying(false); host.dataset.autoPaused = "1"; }
+			else if (!document.hidden && host.dataset.autoPaused) { delete host.dataset.autoPaused; setPlaying(true); }
+		});
+	}
+
+	function init() {
+		for (const host of document.querySelectorAll(".b-race")) {
+			if (host.dataset.mounted) continue;
+			host.dataset.mounted = "1";
+			const src = host.dataset.src;
+			if (!src) continue;
+			// La escena se descarga solo cuando el gráfico se acerca al viewport.
+			const load = () => {
+				fetch(src)
+					.then((res) => { if (!res.ok) throw new Error(`HTTP ${res.status}`); return res.json(); })
+					.then((scene) => mount(host, scene))
+					.catch((err) => {
+						console.error("[benchmark] no se pudo cargar la escena", src, err);
+						const loading = host.querySelector("[data-loading]");
+						if (loading) loading.textContent = "No se pudo cargar el gráfico.";
+					});
+			};
+			if (typeof IntersectionObserver === "undefined") load();
+			else {
+				const io = new IntersectionObserver(
+					(entries) => { if (entries.some((e) => e.isIntersecting)) { io.disconnect(); load(); } },
+					{ rootMargin: "600px 0px" },
+				);
+				io.observe(host);
+			}
+		}
+	}
+
+	if (document.readyState === "loading") document.addEventListener("DOMContentLoaded", init);
+	else init();
+	document.addEventListener("astro:page-load", init);
+</script>

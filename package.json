@@ -1,0 +1,26 @@
+{
+  "name": "tredops-doc",
+  "type": "module",
+  "version": "0.0.1",
+  "scripts": {
+    "dev": "astro dev",
+    "start": "astro dev",
+    "build": "astro build",
+    "benchmark:build": "node scripts/build-benchmark.mjs",
+    "preview": "astro preview",
+    "astro": "astro",
+    "check:links": "node scripts/check-links.mjs",
+    "check:public": "node scripts/check-public-safe.mjs",
+    "check": "npm run build && npm run check:links && npm run check:public"
+  },
+  "dependencies": {
+    "@astrojs/mdx": "^8.0.1",
+    "@astrojs/starlight": "^0.42.2",
+    "astro": "^7.2.10",
+    "chart.js": "^4.5.1",
+    "sharp": "^0.35.3"
+  },
+  "allowScripts": {
+    "esbuild": true
+  }
+}

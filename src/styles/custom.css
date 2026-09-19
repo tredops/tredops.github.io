@@ -1,0 +1,205 @@
+/* ─────────────────────────────────────────────────────────────
+   TredOps — tema derivado del app principal (tredops)
+   Paleta "dark fintech": navy + indigo (Dark Shadcn / landing).
+   Fuentes: Geist (texto), Geist Mono (código), Space Grotesk (títulos).
+   ───────────────────────────────────────────────────────────── */
+
+:root {
+	/* Fuentes: Geist para UI, Geist Mono para código */
+	--sl-font: 'Geist', var(--sl-font-system);
+	--sl-font-mono: 'Geist Mono', var(--sl-font-system-mono);
+}
+
+/* ── Modo oscuro (por defecto) — navy + indigo ──────────────── */
+:root,
+:root[data-theme='dark'],
+[data-theme='dark'] ::backdrop {
+	--sl-color-white: hsl(210, 40%, 98%);
+	--sl-color-gray-1: hsl(210, 40%, 98%);
+	--sl-color-gray-2: hsl(215, 25%, 78%);
+	--sl-color-gray-3: hsl(215, 20%, 65%);
+	--sl-color-gray-4: hsl(221, 25%, 45%);
+	--sl-color-gray-5: hsl(221, 30%, 25%);
+	--sl-color-gray-6: hsl(222, 40%, 14%);
+	--sl-color-black: hsl(223, 49%, 8%);
+
+	--sl-color-accent-low: hsl(236, 55%, 22%);
+	--sl-color-accent: hsl(239, 84%, 67%);
+	--sl-color-accent-high: hsl(231, 90%, 77%);
+
+	--sl-color-text: var(--sl-color-gray-2);
+	--sl-color-text-accent: var(--sl-color-accent-high);
+	--sl-color-text-invert: var(--sl-color-accent-low);
+	--sl-color-bg: var(--sl-color-black);
+	--sl-color-bg-nav: hsl(222, 47%, 9%);
+	--sl-color-bg-sidebar: hsl(222, 47%, 9%);
+	--sl-color-bg-inline-code: hsl(222, 40%, 15%);
+	--sl-color-bg-accent: var(--sl-color-accent-high);
+	--sl-color-hairline-light: hsl(221, 30%, 26%);
+	--sl-color-hairline: hsl(221, 30%, 18%);
+	--sl-color-hairline-shade: var(--sl-color-black);
+	--sl-color-backdrop-overlay: hsla(223, 49%, 5%, 0.72);
+}
+
+/* ── Modo claro — neutro con acento indigo ───────────────────── */
+:root[data-theme='light'],
+[data-theme='light'] ::backdrop {
+	--sl-color-white: hsl(224, 10%, 10%);
+	--sl-color-gray-1: hsl(224, 14%, 16%);
+	--sl-color-gray-2: hsl(224, 10%, 23%);
+	--sl-color-gray-3: hsl(224, 7%, 36%);
+	--sl-color-gray-4: hsl(224, 6%, 56%);
+	--sl-color-gray-5: hsl(224, 6%, 77%);
+	--sl-color-gray-6: hsl(224, 20%, 94%);
+	--sl-color-gray-7: hsl(224, 19%, 97%);
+	--sl-color-black: hsl(0, 0%, 100%);
+
+	--sl-color-accent-low: hsl(238, 90%, 92%);
+	--sl-color-accent: hsl(239, 84%, 60%);
+	--sl-color-accent-high: hsl(241, 60%, 46%);
+
+	--sl-color-text: var(--sl-color-gray-2);
+	--sl-color-text-accent: var(--sl-color-accent);
+	--sl-color-text-invert: var(--sl-color-black);
+	--sl-color-bg: var(--sl-color-black);
+	--sl-color-bg-nav: var(--sl-color-gray-7);
+	--sl-color-bg-sidebar: var(--sl-color-bg);
+	--sl-color-bg-inline-code: var(--sl-color-gray-6);
+	--sl-color-bg-accent: var(--sl-color-accent);
+	--sl-color-hairline-light: var(--sl-color-gray-6);
+	--sl-color-hairline: hsl(220, 13%, 88%);
+	--sl-color-hairline-shade: var(--sl-color-gray-6);
+	--sl-color-backdrop-overlay: hsla(225, 9%, 36%, 0.66);
+}
+
+/* Respetar la preferencia de sistema cuando no hay toggle forzado */
+@media (prefers-color-scheme: light) {
+	:root:not([data-theme='dark']) {
+		--sl-color-white: hsl(224, 10%, 10%);
+		--sl-color-gray-1: hsl(224, 14%, 16%);
+		--sl-color-gray-2: hsl(224, 10%, 23%);
+		--sl-color-gray-3: hsl(224, 7%, 36%);
+		--sl-color-gray-4: hsl(224, 6%, 56%);
+		--sl-color-gray-5: hsl(224, 6%, 77%);
+		--sl-color-gray-6: hsl(224, 20%, 94%);
+		--sl-color-gray-7: hsl(224, 19%, 97%);
+		--sl-color-black: hsl(0, 0%, 100%);
+
+		--sl-color-accent-low: hsl(238, 90%, 92%);
+		--sl-color-accent: hsl(239, 84%, 60%);
+		--sl-color-accent-high: hsl(241, 60%, 46%);
+
+		--sl-color-text: var(--sl-color-gray-2);
+		--sl-color-text-accent: var(--sl-color-accent);
+		--sl-color-text-invert: var(--sl-color-black);
+		--sl-color-bg: var(--sl-color-black);
+		--sl-color-bg-nav: var(--sl-color-gray-7);
+		--sl-color-bg-sidebar: var(--sl-color-bg);
+		--sl-color-bg-inline-code: var(--sl-color-gray-6);
+		--sl-color-bg-accent: var(--sl-color-accent);
+		--sl-color-hairline-light: var(--sl-color-gray-6);
+		--sl-color-hairline: hsl(220, 13%, 88%);
+		--sl-color-hairline-shade: var(--sl-color-gray-6);
+		--sl-color-backdrop-overlay: hsla(225, 9%, 36%, 0.66);
+	}
+}
+
+@media (prefers-color-scheme: dark) {
+	:root:not([data-theme='light']) {
+		--sl-color-white: hsl(210, 40%, 98%);
+		--sl-color-gray-1: hsl(210, 40%, 98%);
+		--sl-color-gray-2: hsl(215, 25%, 78%);
+		--sl-color-gray-3: hsl(215, 20%, 65%);
+		--sl-color-gray-4: hsl(221, 25%, 45%);
+		--sl-color-gray-5: hsl(221, 30%, 25%);
+		--sl-color-gray-6: hsl(222, 40%, 14%);
+		--sl-color-black: hsl(223, 49%, 8%);
+
+		--sl-color-accent-low: hsl(236, 55%, 22%);
+		--sl-color-accent: hsl(239, 84%, 67%);
+		--sl-color-accent-high: hsl(231, 90%, 77%);
+
+		--sl-color-text: var(--sl-color-gray-2);
+		--sl-color-text-accent: var(--sl-color-accent-high);
+		--sl-color-text-invert: var(--sl-color-accent-low);
+		--sl-color-bg: var(--sl-color-black);
+		--sl-color-bg-nav: hsl(222, 47%, 9%);
+		--sl-color-bg-sidebar: hsl(222, 47%, 9%);
+		--sl-color-bg-inline-code: hsl(222, 40%, 15%);
+		--sl-color-bg-accent: var(--sl-color-accent-high);
+		--sl-color-hairline-light: hsl(221, 30%, 26%);
+		--sl-color-hairline: hsl(221, 30%, 18%);
+		--sl-color-hairline-shade: var(--sl-color-black);
+		--sl-color-backdrop-overlay: hsla(223, 49%, 5%, 0.72);
+	}
+}
+
+/* ── Firma del landing: glow indigo diluido desde arriba (solo dark) ── */
+:root[data-theme='dark'] body,
+:root:not([data-theme='light']) body {
+	background-image: radial-gradient(
+		ellipse 80% 50% at 50% -20%,
+		hsl(239 84% 67% / 0.13),
+		transparent
+	);
+	background-attachment: fixed;
+}
+
+@media (prefers-color-scheme: dark) {
+	:root:not([data-theme='light']) body {
+		background-image: radial-gradient(
+			ellipse 80% 50% at 50% -20%,
+			hsl(239 84% 67% / 0.13),
+			transparent
+		);
+		background-attachment: fixed;
+	}
+}
+
+:root[data-theme='light'] body {
+	background-image: none;
+}
+
+@media (prefers-color-scheme: light) {
+	:root:not([data-theme='dark']) body {
+		background-image: none;
+	}
+}
+
+/* ── Tipografía: Space Grotesk en títulos, metodología del app ─────── */
+.site-title,
+.sl-markdown-content :where(h1, h2, h3, h4, h5) {
+	font-family: 'Space Grotesk', var(--sl-font);
+	letter-spacing: -0.025em;
+	text-wrap: balance;
+}
+
+/* ── Selección y scrollbars a juego con el app ─────────────────────── */
+::selection {
+	background-color: hsl(239 84% 67% / 0.3);
+}
+
+* {
+	scrollbar-width: thin;
+	scrollbar-color: var(--sl-color-hairline) transparent;
+}
+
+.sl-markdown-content {
+	font-size: 1.02rem;
+}
+/* ── Benchmark: hero de las publicaciones ─────────────────────────── */
+.sl-markdown-content .bmk-hero {
+	width: 100%;
+	height: auto;
+	border-radius: 0.75rem;
+	margin: 0 0 1.5rem;
+}
+
+/* ── Benchmark: anula el margen entre hermanos que Starlight inyecta en el
+   contenido markdown. Sin esto, el gráfico desplazaba y recortaba las filas
+   (los `div + div` recibían margin-top: 1rem). */
+.sl-markdown-content .b-race :where(* + *),
+.sl-markdown-content .b-summary :where(* + *),
+.sl-markdown-content .b-det :where(* + *) {
+	margin-top: 0;
+}
