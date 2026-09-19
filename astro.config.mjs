@@ -3,16 +3,18 @@ import { defineConfig } from 'astro/config';
 import starlight from '@astrojs/starlight';
 import mdx from '@astrojs/mdx';
 
-// Sitio de organización de GitHub Pages: el repo se llama `tredops.github.io`,
-// así que se sirve en la raíz del dominio y no bajo un subpath.
+// El sitio se publica en el dominio propio `docs.tredops.com` (declarado en
+// `public/CNAME`). El repo se llama `tredops.github.io` — sitio de organización
+// de GitHub Pages —, así que `tredops.github.io` redirige aquí.
+//
+// `site` tiene que ser el dominio final, no el de GitHub: de él salen las URL
+// canónicas y el sitemap, y apuntarlas al dominio que redirige le cuenta a
+// Google que cada página vive en una URL que no es la suya.
 //
 // `base` no se deriva de `site`: hay que declararlo. Estas dos constantes son la
 // única fuente de verdad del prefijo — `scripts/check-links.mjs` las lee de
 // aquí, para que no puedan divergir.
-//
-// FASE DNS (pendiente): cambiar `site` a 'https://docs.tredops.com' y subir
-// `public/CNAME` con ese dominio. `base` ya no hay que tocarlo.
-const site = 'https://tredops.github.io';
+const site = 'https://docs.tredops.com';
 const base = '/';
 
 export default defineConfig({
@@ -66,6 +68,7 @@ export default defineConfig({
 					items: [
 						{ label: 'Qué es TredOps', translations: { en: 'What is TredOps' }, slug: 'introduction' },
 						{ label: 'Conceptos clave', translations: { en: 'Key concepts' }, slug: 'concepts' },
+						{ label: 'El ciclo de TredOps', translations: { en: 'The TredOps loop' }, slug: 'lifecycle' },
 					],
 				},
 				{
@@ -76,6 +79,8 @@ export default defineConfig({
 						{ label: 'Tu primer bot', translations: { en: 'Your first bot' }, slug: 'guides/first-bot' },
 						{ label: 'Trabajar con agentes', translations: { en: 'Working with agents' }, slug: 'guides/first-agent' },
 						{ label: 'Programar tareas (AgentTask)', translations: { en: 'Scheduling tasks (AgentTask)' }, slug: 'guides/agent-tasks' },
+						{ label: 'Playground', translations: { en: 'Playground' }, slug: 'guides/playground' },
+						{ label: 'Copy Trader Agent', translations: { en: 'Copy Trader Agent' }, slug: 'guides/copy-trader' },
 						{ label: 'Gestionar el riesgo', translations: { en: 'Managing risk' }, slug: 'guides/risk' },
 					],
 				},

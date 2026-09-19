@@ -33,12 +33,16 @@ const STATIONS = {
 	en: ["Optimization", "Backtesting", "Quality", "Trading", "Calibration", "AI supervision"],
 }[lang];
 
+// `labelX`/`anchor` solo en las dos paradas de los extremos: sus nombres son más
+// largos que en la landing («Backtesting», «Calibración» frente a «Testing» y
+// «Calibration») y, centrados bajo el punto, se montaban sobre la curva. Se
+// anclan hacia afuera, que es hacia donde hay sitio.
 const geometry = [
 	{ x: 155, y: 74, labelY: 52, at: 0.125 },
-	{ x: 80, y: 130, labelY: 162, at: 0.25 },
+	{ x: 80, y: 130, labelX: 66, labelY: 166, anchor: "end", at: 0.25 },
 	{ x: 155, y: 186, labelY: 214, at: 0.375 },
 	{ x: 405, y: 74, labelY: 52, at: 0.625 },
-	{ x: 480, y: 130, labelY: 162, at: 0.75 },
+	{ x: 480, y: 130, labelX: 494, labelY: 166, anchor: "start", at: 0.75 },
 	{ x: 405, y: 186, labelY: 214, at: 0.875 },
 ];
 
@@ -95,7 +99,7 @@ const uid = `loop-${Math.random().toString(36).slice(2, 9)}`;
 		/>
 
 		{/* Paradas */}
-		{stations.map(({ x, y, label, labelY, at }) => (
+		{stations.map(({ x, y, label, labelX, labelY, anchor, at }) => (
 			<g>
 				<circle
 					cx={x}
@@ -105,7 +109,7 @@ const uid = `loop-${Math.random().toString(36).slice(2, 9)}`;
 					stroke-width="2"
 					style={`--tl-lap:${LAP}s; animation-delay:${(at * LAP).toFixed(2)}s; transform-origin:${x}px ${y}px`}
 				/>
-				<text x={x} y={labelY} text-anchor="middle" class="tl-label">{label}</text>
+				<text x={labelX ?? x} y={labelY} text-anchor={anchor ?? "middle"} class="tl-label">{label}</text>
 			</g>
 		))}
 
