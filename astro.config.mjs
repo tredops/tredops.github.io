@@ -3,16 +3,17 @@ import { defineConfig } from 'astro/config';
 import starlight from '@astrojs/starlight';
 import mdx from '@astrojs/mdx';
 
-// GitHub Pages (sin dominio aún): site + base apuntan al subpath /tredops-doc/
-// de tredops.github.io. `base` NO se deriva de `site`, hay que fijarlo para
-// que todos los enlaces usen el prefijo /tredops-doc/.
+// Sitio de organización de GitHub Pages: el repo se llama `tredops.github.io`,
+// así que se sirve en la raíz del dominio y no bajo un subpath.
 //
-// FASE DNS (pendiente): cambiar a
-//   site: 'https://docs.tredops.com'
-//   base: '/'
-//   y subir public/CNAME con docs.tredops.com
-const site = 'https://tredops.github.io/tredops-doc/';
-const base = '/tredops-doc/';
+// `base` no se deriva de `site`: hay que declararlo. Estas dos constantes son la
+// única fuente de verdad del prefijo — `scripts/check-links.mjs` las lee de
+// aquí, para que no puedan divergir.
+//
+// FASE DNS (pendiente): cambiar `site` a 'https://docs.tredops.com' y subir
+// `public/CNAME` con ese dominio. `base` ya no hay que tocarlo.
+const site = 'https://tredops.github.io';
+const base = '/';
 
 export default defineConfig({
 	site,
@@ -32,7 +33,7 @@ export default defineConfig({
 				SiteTitle: './src/components/SiteTitle.astro',
 			},
 			social: [
-				{ icon: 'github', label: 'GitHub', href: 'https://github.com/tredops/tredops-doc' },
+				{ icon: 'github', label: 'GitHub', href: 'https://github.com/tredops/tredops.github.io' },
 				{ icon: 'x.com', label: 'X / Twitter', href: 'https://x.com/tredops' },
 			],
 			editLink: { enabled: false },

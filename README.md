@@ -1,8 +1,12 @@
-# tredops-doc
+# tredops.github.io
 
-Documentación pública de TredOps. Sitio estático con [Astro](https://astro.build)
-y [Starlight](https://starlight.astro.build), en español e inglés, desplegado en
-GitHub Pages.
+Documentación pública de TredOps: **https://tredops.github.io/**
+
+Sitio estático con [Astro](https://astro.build) y
+[Starlight](https://starlight.astro.build), en español e inglés. El repositorio
+se llama `tredops.github.io` porque es el **sitio de organización** de GitHub
+Pages: ese nombre exacto es lo que hace que se sirva en la raíz del dominio y no
+bajo un subpath.
 
 > **Repositorio público.** Todo lo que entre en `dist/` es visible para
 > cualquiera. No hay secretos, ni credenciales, ni detalles de infraestructura
@@ -18,7 +22,7 @@ GitHub Pages.
 
 ```bash
 npm ci
-npm run dev        # http://localhost:4321/tredops-doc/
+npm run dev        # http://localhost:4321/
 npm run build      # genera dist/
 npm run preview    # sirve dist/
 npm run check      # build + enlaces internos + revisión de datos internos
@@ -149,12 +153,12 @@ No usa ningún secreto del repositorio.
 
 ### Cambiar a docs.tredops.com
 
-Cuando el DNS esté listo, en `astro.config.mjs`:
+Cuando el DNS esté listo, en `astro.config.mjs` basta con:
 
 ```js
 const site = 'https://docs.tredops.com';
-const base = '/';
 ```
 
-y añade `public/CNAME` con `docs.tredops.com`. Recuerda ajustar también el
-`BASE` de `scripts/check-links.mjs`.
+y añadir `public/CNAME` con `docs.tredops.com`. `base` ya es `/` y no hay que
+tocarlo; `scripts/check-links.mjs` lee esas constantes del propio
+`astro.config.mjs`, así que tampoco hay una segunda copia que actualizar.

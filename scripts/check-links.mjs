@@ -6,11 +6,24 @@
 //
 // Uso: node scripts/check-links.mjs
 import { readFileSync, readdirSync, statSync } from "node:fs";
-import { join, relative, dirname, posix } from "node:path";
+import { join, relative, posix } from "node:path";
 
 const DIST = "dist";
-/** Prefijo de despliegue (`base` de astro.config.mjs) que llevan las URLs absolutas. */
-const BASE = "/tredops-doc";
+
+/**
+ * Prefijo de despliegue que llevan las URLs absolutas del HTML. Se lee del
+ * propio `astro.config.mjs` en vez de repetirlo aquí: cuando el sitio pasó del
+ * subpath `/tredops-doc/` a la raíz, una copia desactualizada habría dado por
+ * buenos todos los enlaces rotos.
+ */
+function readBase() {
+  const config = readFileSync("astro.config.mjs", "utf8");
+  const match = config.match(/^const base = ['"]([^'"]*)['"]/m);
+  if (!match) throw new Error("No se encontró `const base = ...` en astro.config.mjs");
+  return match[1].replace(/\/+$/, ""); // "/" -> "", "/tredops-doc/" -> "/tredops-doc"
+}
+
+const BASE = readBase();
 
 function walk(dir, out = []) {
   for (const name of readdirSync(dir)) {
@@ -48,7 +61,7 @@ for (const f of files.filter((f) => f.endsWith(".html"))) {
     const path = href.split(/[?#]/)[0];
     if (!path) continue;
     let target = posix.normalize(path.startsWith("/") ? path : posix.join(dir, path));
-    if (target.startsWith(BASE)) target = target.slice(BASE.length) || "/";
+    if (BASE && target.startsWith(BASE)) target = target.slice(BASE.length) || "/";
     const bare = target.endsWith("/") ? target.slice(0, -1) : target;
     if (pages.has(target) || pages.has(`${bare}/`) || pages.has(`${bare}/index.html`)) continue;
     const key = `${src} -> ${href}`;
