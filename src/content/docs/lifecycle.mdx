@@ -1,0 +1,137 @@
+---
+title: El ciclo de TredOps
+description: Los seis controles por los que pasa una estrategia antes y después de operar con tu dinero — optimización, backtesting, calidad, trading, calibración y supervisión por IA.
+---
+
+import LifecycleLoop from '../../components/LifecycleLoop.astro';
+
+TredOps toma su nombre de **DevOps**, y no por gusto: la idea es la misma. En
+DevOps, el software no se escribe una vez y se abandona — entra en un bucle de
+integración, pruebas, despliegue y observación que no se detiene. Aquí lo que
+recorre ese bucle es una **estrategia de trading**.
+
+<LifecycleLoop lang="es" />
+
+El lazo izquierdo es **Trading**: lo que ocurre antes de que una estrategia
+toque dinero real. El derecho es **Ops**: lo que ocurre mientras opera. Ninguno
+de los dos termina. Una estrategia que hoy pasa todos los controles vuelve a
+pasarlos dentro de dos semanas, porque el mercado de dentro de dos semanas no
+es el de hoy.
+
+## Por qué existe cada control
+
+Cada parada del recorrido está ahí para descartar un modo de fallo concreto.
+Esta es la lista, en el orden en que se atraviesan.
+
+### 1. Optimización
+
+**Descarta:** parámetros elegidos a ojo.
+
+Los parámetros de una estrategia (cuánto mira atrás, cuánta desviación tolera,
+dónde pone el objetivo) no se eligen a mano. Se buscan con **algoritmos
+genéticos** sobre el histórico real del activo: se puntúan combinaciones, se
+cruzan las mejores y se mutan, durante generaciones.
+
+Esto no garantiza nada por sí solo —de hecho es el paso que *más* fácilmente
+engaña—, y por eso nunca es el último.
+
+### 2. Backtesting
+
+**Descarta:** el sobreajuste.
+
+Una estrategia optimizada siempre se ve bien sobre los datos con los que se
+optimizó. La pregunta que importa es otra: **¿qué hace con datos que no vio?**
+
+El backtesting la ejecuta sobre periodos que quedaron fuera de la optimización,
+y la enfrenta a lo que no estaba previsto: huecos de apertura, picos de
+volatilidad, cambios de régimen de mercado. Se compara siempre contra
+**Buy & Hold** del mismo activo, porque una estrategia que no bate a comprar y
+esperar no compensa su complejidad.
+
+:::note[Lo que hace creíble un backtest]
+Toda evaluación usa **solo datos anteriores al momento evaluado**. Es lo que se
+llama evitar el *look-ahead bias*: decidir con información que, en su momento,
+no existía. Un backtest que se salta esto produce resultados espectaculares y
+absolutamente inútiles.
+:::
+
+### 3. Calidad
+
+**Descarta:** lo que no llega al listón.
+
+Aquí hay un umbral automático, y es binario:
+
+- **Lo supera** → el bot pasa a **producción** y sus señales entran en el
+  Signal Pool.
+- **No lo supera** → se queda en **staging**: sigue ejecutándose en segundo
+  plano y acumulando resultados, pero sus señales no llegan a tu cartera.
+
+Un bot en staging no está descartado; está sin demostrar. Nada llega a tu
+dinero por el camino de "bueno, ya veremos".
+
+### 4. Trading
+
+**Descarta:** las operaciones sin red.
+
+Es el punto en el que la estrategia opera de verdad, y donde entran dos reglas
+que no se pueden desactivar:
+
+- **Toda orden se abre con Take Profit y Stop Loss.** No hay casilla para
+  quitarlo: ni para los agentes, ni para las tareas programadas, ni en modo
+  autónomo.
+- **Las reglas de tu portfolio mandan sobre cualquier agente.** Si una decisión
+  supera tu máximo por posición o se come tu reserva de liquidez, la operación
+  no se abre. Es un bloqueo, no una advertencia.
+
+Además, una señal de un bot **nunca** se ejecuta sola: pasa por el Signal Pool,
+por los filtros de tu portfolio y por la decisión de un agente. Tres capas entre
+"el bot ha visto algo" y "tienes una posición abierta".
+
+### 5. Calibración
+
+**Descarta:** los parámetros caducados.
+
+Un parámetro que funcionaba en un régimen de baja volatilidad deja de funcionar
+en uno alto. Por eso cada bot tiene su **calendario de calibración** propio y
+reajusta sus parámetros de forma periódica a las condiciones recientes, sin que
+tengas que hacer nada.
+
+Es el control que convierte esto en un ciclo en lugar de una línea recta: la
+calibración devuelve la estrategia al principio del bucle.
+
+### 6. Supervisión por IA
+
+**Descarta:** las posiciones olvidadas.
+
+Mientras una posición está abierta, un proceso periódico la revisa: obtiene el
+precio actual, **vuelve a evaluarla con la misma estrategia que la abrió** y la
+cierra si se alcanza el Take Profit, si se toca el Stop Loss o si la propia
+estrategia indica salir antes que ninguno de los dos.
+
+Esa última condición es la importante: no esperas a que el precio toque un nivel
+si la razón para estar dentro ya desapareció.
+
+Por encima, tus [agentes](guides/first-agent/) y
+[tareas programadas](guides/agent-tasks/) añaden la capa de criterio: revisar la
+concentración por sector, reducir exposición, cerrar lo que lleva demasiado
+tiempo sin ir a ningún sitio.
+
+## Lo que este ciclo no hace
+
+Conviene decirlo con la misma claridad:
+
+- **No predice el mercado.** Descarta fallos evitables; no acierta más.
+- **No elimina el riesgo.** Un Stop Loss acota una pérdida, no la evita.
+- **No sustituye tu criterio.** Tú fijas los límites de cada capa, y los
+  límites que pongas son los que se aplican.
+
+El objetivo es más modesto y más útil: que ninguna pérdida venga de no haber
+decidido de antemano cuándo salir.
+
+## Seguir leyendo
+
+- [Bots (Integración Continua)](pillars/bots-ci/) — el detalle de los tres
+  primeros controles.
+- [Monitoring](pillars/monitoring/) — el detalle de los tres últimos.
+- [Gestionar el riesgo](guides/risk/) — los límites que puedes fijar tú.
+- [Benchmark](benchmark/) — el ciclo completo, corriendo en público.

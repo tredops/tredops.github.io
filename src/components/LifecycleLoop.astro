@@ -1,0 +1,202 @@
+---
+// El bucle infinito de TredOps: el ciclo de vida de una estrategia recorrido
+// por un cometa, con una parada por cada control que atraviesa.
+//
+// Port del componente de la landing
+// (`tredops-landing-page/components/layout/sections/infinity-loop.tsx`), que
+// manda sobre la geometría: misma curva, mismas estaciones y el mismo orden de
+// recorrido. Dos diferencias deliberadas:
+//
+//   1. Sin framer-motion. La animación es CSS sobre `stroke-dashoffset` con
+//      `pathLength="1"`, así que el componente no arrastra JavaScript: esta
+//      página se lee, no se usa.
+//   2. Los colores salen de los tokens de Starlight, no de valores fijos en
+//      oscuro, para que el dibujo también se lea en el tema claro.
+
+interface Props {
+	lang?: "es" | "en";
+	/** Pie del diagrama. Pasa `null` para quitarlo. */
+	caption?: string | null;
+}
+
+const { lang = "es", caption } = Astro.props;
+
+const INFINITY_PATH =
+	"M280,130 C230,55 80,55 80,130 C80,205 230,205 280,130 C330,55 480,55 480,130 C480,205 330,205 280,130";
+
+/** Duración de una vuelta completa, en segundos. */
+const LAP = 9;
+
+// En el orden en que las recorre el cometa: tres paradas por lazo, simétricas.
+const STATIONS = {
+	es: ["Optimización", "Backtesting", "Calidad", "Trading", "Calibración", "Supervisión IA"],
+	en: ["Optimization", "Backtesting", "Quality", "Trading", "Calibration", "AI supervision"],
+}[lang];
+
+const geometry = [
+	{ x: 155, y: 74, labelY: 52, at: 0.125 },
+	{ x: 80, y: 130, labelY: 162, at: 0.25 },
+	{ x: 155, y: 186, labelY: 214, at: 0.375 },
+	{ x: 405, y: 74, labelY: 52, at: 0.625 },
+	{ x: 480, y: 130, labelY: 162, at: 0.75 },
+	{ x: 405, y: 186, labelY: 214, at: 0.875 },
+];
+
+const stations = geometry.map((g, i) => ({ ...g, label: STATIONS[i] }));
+
+const t = {
+	es: {
+		alt: "Ciclo continuo de TredOps: optimización, backtesting, calidad, trading, calibración y supervisión por IA, en bucle",
+		caption: "Integración y entrega continuas — para estrategias de trading",
+	},
+	en: {
+		alt: "TredOps continuous loop: optimization, backtesting, quality, trading, calibration and AI supervision, forever",
+		caption: "Continuous integration & delivery — for trading strategies",
+	},
+}[lang];
+
+const footnote = caption === undefined ? t.caption : caption;
+const uid = `loop-${Math.random().toString(36).slice(2, 9)}`;
+---
+
+<figure class="tl-figure">
+	<svg viewBox="0 0 560 260" class="tl-svg" role="img" aria-label={t.alt}>
+		<defs>
+			<linearGradient id={uid} x1="0" y1="0" x2="1" y2="0">
+				<stop offset="0%" stop-color="var(--tl-a)" />
+				<stop offset="55%" stop-color="var(--tl-b)" />
+				<stop offset="100%" stop-color="var(--tl-c)" />
+			</linearGradient>
+		</defs>
+
+		{/* Pista base */}
+		<path d={INFINITY_PATH} fill="none" class="tl-track" stroke-width="3" stroke-linecap="round" />
+
+		{/* Insinuación del recorrido completo */}
+		<path
+			d={INFINITY_PATH}
+			fill="none"
+			stroke={`url(#${uid})`}
+			stroke-width="3"
+			stroke-linecap="round"
+			opacity="0.22"
+		/>
+
+		{/* Cometa */}
+		<path
+			d={INFINITY_PATH}
+			fill="none"
+			stroke={`url(#${uid})`}
+			stroke-width="3.5"
+			stroke-linecap="round"
+			pathLength="1"
+			class="tl-comet"
+			style={`--tl-lap:${LAP}s`}
+		/>
+
+		{/* Paradas */}
+		{stations.map(({ x, y, label, labelY, at }) => (
+			<g>
+				<circle
+					cx={x}
+					cy={y}
+					r="5"
+					class="tl-dot"
+					stroke-width="2"
+					style={`--tl-lap:${LAP}s; animation-delay:${(at * LAP).toFixed(2)}s; transform-origin:${x}px ${y}px`}
+				/>
+				<text x={x} y={labelY} text-anchor="middle" class="tl-label">{label}</text>
+			</g>
+		))}
+
+		{/* Identidad de cada lazo */}
+		<text x="155" y="136" text-anchor="middle" class="tl-loop-name">TRADING</text>
+		<text x="405" y="136" text-anchor="middle" class="tl-loop-name">OPS</text>
+	</svg>
+
+	{footnote && <figcaption class="tl-caption">{footnote}</figcaption>}
+</figure>
+
+<style>
+	.tl-figure {
+		/* Paleta: acento de Starlight → violeta → verde, como en la landing. */
+		--tl-a: var(--sl-color-accent);
+		--tl-b: hsl(262 83% 62%);
+		--tl-c: hsl(142 71% 40%);
+		margin: 1.75rem 0;
+	}
+	:global(:root[data-theme="dark"]) .tl-figure,
+	:global(:root:not([data-theme="light"])) .tl-figure {
+		--tl-b: hsl(262 83% 68%);
+		--tl-c: hsl(142 71% 45%);
+	}
+
+	.tl-svg {
+		display: block;
+		margin-inline: auto;
+		width: 100%;
+		max-width: 42rem;
+		overflow: visible;
+	}
+
+	.tl-track {
+		stroke: var(--sl-color-gray-5);
+		opacity: 0.55;
+	}
+
+	.tl-comet {
+		stroke-dasharray: 0.12 0.88;
+		filter: drop-shadow(0 0 6px color-mix(in srgb, var(--sl-color-accent) 60%, transparent));
+		animation: tl-travel var(--tl-lap, 9s) linear infinite;
+	}
+
+	@keyframes tl-travel {
+		from { stroke-dashoffset: 0; }
+		to { stroke-dashoffset: -1; }
+	}
+
+	.tl-dot {
+		fill: var(--sl-color-bg);
+		stroke: var(--sl-color-accent);
+		/* El destello coincide con el paso del cometa: cada parada se enciende
+		   cuando le toca, no todas a la vez. */
+		animation: tl-pulse var(--tl-lap, 9s) ease-out infinite;
+	}
+
+	@keyframes tl-pulse {
+		0%   { transform: scale(1); }
+		4%   { transform: scale(1.45); }
+		8%   { transform: scale(1); }
+		100% { transform: scale(1); }
+	}
+
+	.tl-label {
+		fill: var(--sl-color-gray-2);
+		font-family: var(--sl-font);
+		font-size: 13px;
+		font-weight: 500;
+	}
+
+	.tl-loop-name {
+		fill: var(--sl-color-gray-4);
+		font-family: var(--sl-font);
+		font-size: 11px;
+		font-weight: 600;
+		letter-spacing: 0.2em;
+	}
+
+	.tl-caption {
+		margin-top: 0.5rem;
+		text-align: center;
+		font-size: 0.7rem;
+		text-transform: uppercase;
+		letter-spacing: 0.2em;
+		color: var(--sl-color-gray-3);
+	}
+
+	/* Sin movimiento: el cometa se queda quieto en un punto del recorrido y las
+	   paradas dejan de latir. El diagrama sigue contando lo mismo. */
+	@media (prefers-reduced-motion: reduce) {
+		.tl-comet, .tl-dot { animation: none; }
+	}
+</style>
