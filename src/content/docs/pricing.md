@@ -1,113 +1,107 @@
 ---
-title: Planes y precios
-description: Free Trial, prueba Premium y plan Premium de TredOps, con lo que incluye cada uno y cómo funcionan los créditos de LLM.
+title: Plans & pricing
+description: TredOps' Free Trial, Premium trial and Premium plan, what each includes, and how LLM credits work.
 ---
 
-TredOps tiene un plan gratuito para probar, una prueba de pago corta y un plan
-Premium. Todo se gestiona desde **Ajustes → Facturación**.
+TredOps has a free plan to try it, a short paid trial and a Premium plan.
+Everything is managed from **Settings → Billing**.
 
 :::note
-Los precios de esta página son la referencia pública. La página de
-[tredops.com](https://tredops.com) manda en caso de discrepancia, y las ofertas
-de lanzamiento pueden cambiar.
+The prices here are the public reference. [tredops.com](https://tredops.com)
+takes precedence in case of any discrepancy, and launch offers may change.
 :::
 
-## Comparativa
+## At a glance
 
-| | **Free Trial** | **Prueba Premium** | **Premium** |
+| | **Free Trial** | **Premium trial** | **Premium** |
 |---|---|---|---|
-| Precio | Gratis, 14 días | $4,99 / 7 días | $24,99 / mes |
-| Bots y agentes mantenidos por TredOps | ✅ | ✅ | ✅ |
-| Monitoring (Take Profit / Stop Loss) | Básico | Básico | Avanzado |
-| Bots activos | 2 | 2 + 1 propio | 10 |
-| Activos por bot | — | — | 30 |
-| Portfolios | 1 | 1 | Ilimitados |
-| Playground / ExpertMode | ❌ | Temporal | ✅ |
-| Bots propios (optimización y calibración) | ❌ | 1 | ✅ |
-| Multi-agentes, sub-agentes y AgentTask | ❌ | ❌ | ✅ |
-| Signal Pool | Parcial | Parcial | Completo |
-| Benchmark | Visualización | Visualización | Completo + histórico |
-| Créditos de LLM | Limitados | Ampliados | Extendidos |
-| Integraciones de broker | ✅ | ✅ | ✅ |
-| Soporte | Estándar | Estándar | Prioritario |
+| Price | Free, 14 days | $4.99 / 7 days | $24.99 / month |
+| TredOps-maintained bots and agents | ✅ | ✅ | ✅ |
+| Monitoring (Take Profit / Stop Loss) | Basic | Basic | Advanced |
+| Active bots | 2 | 2 + 1 of your own | 10 |
+| Assets per bot | — | — | 30 |
+| Portfolios | 1 | 1 | Unlimited |
+| Playground / ExpertMode | ❌ | Temporary | ✅ |
+| Your own bots (optimisation and calibration) | ❌ | 1 | ✅ |
+| Multi-agents, sub-agents and AgentTask | ❌ | ❌ | ✅ |
+| Signal Pool | Partial | Partial | Full |
+| Benchmark | View only | View only | Full + history |
+| LLM credits | Limited | Extended | Generous |
+| Broker integrations | ✅ | ✅ | ✅ |
+| Support | Standard | Standard | Priority |
 
-## Free Trial (14 días)
+## Free Trial (14 days)
 
-Acceso completo a los bots y agentes **mantenidos por el equipo de TredOps**, con
-créditos de LLM limitados pero suficientes para usarlos de verdad, no para mirar.
+Full access to the bots and agents **maintained by the TredOps team**, with
+limited LLM credits — enough to actually use them, not just look at them.
 
-No hace falta tarjeta. Al terminar los 14 días —o al agotar los créditos— puedes
-pasar a Premium o quedarte en modo limitado, con los bots y agentes mantenidos
-por TredOps y algunas restricciones.
+No card required. After 14 days — or once the credits run out — you can move to
+Premium or stay on a limited mode with the TredOps-maintained bots and agents and
+some restrictions.
 
-## Prueba Premium ($4,99 · 7 días)
+## Premium trial ($4.99 · 7 days)
 
-Todo lo del Free Trial más créditos ampliados, acceso temporal al **Playground**
-y la posibilidad de crear **un bot propio**.
+Everything in the Free Trial plus extended credits, temporary access to the
+**Playground** and the ability to build **one bot of your own**.
 
-Al contratarla se guarda la tarjeta y se programa el paso automático a Premium al
-cabo de los 7 días. Puedes cancelar antes desde Facturación y no se cobra nada
-más.
+Taking it saves your card and schedules the automatic move to Premium after 7
+days. You can cancel before that from Billing and nothing further is charged.
 
 ## Premium
 
-**$24,99 / mes**, o **$19,99 / mes** pagando anualmente (ahorras un 20 %).
+**$24.99 / month**, or **$19.99 / month** billed annually (20% off).
 
-Incluye todo lo de la tabla: Playground completo, creación y optimización de bots
-propios con calibración automática, multi-agentes y sub-agentes, AgentTask,
-Signal Pool completo, Monitoring avanzado, portfolios ilimitados, hasta 10 bots
-activos con hasta 30 activos cada uno, y el histórico completo del Benchmark.
+Includes everything in the table: the full Playground, building and optimising
+your own bots with automatic calibration, multi-agents and sub-agents,
+AgentTask, the full Signal Pool, advanced Monitoring, unlimited portfolios, up to
+10 active bots with up to 30 assets each, and the complete Benchmark history.
 
-**Oferta de lanzamiento:** $14,99 / mes durante los tres primeros meses. Después
-pasa a $24,99 / mes, o a $19,99 si elegiste el plan anual.
+**Launch offer:** $14.99 / month for the first three months. It then moves to
+$24.99 / month, or $19.99 if you chose the annual plan.
 
-## Créditos de LLM
+## LLM credits
 
-Cada mensaje del chat, cada ejecución de una AgentTask y cada decisión de un
-agente autónomo consumen **créditos**, porque detrás hay un modelo de lenguaje
-trabajando.
+Every chat message, every AgentTask run and every autonomous decision consumes
+**credits**, because there is a language model doing the work.
 
-Tu plan incluye una bolsa de créditos. Cuando se agota tienes dos opciones:
+Your plan includes an allowance. When it runs out you have two options:
 
-1. **Comprar un pack de créditos adicional** dentro de TredOps.
-2. **Conectar tu propio proveedor** (OpenRouter, DeepSeek…) en
-   [Integraciones](../pillars/integrations/) y consumir de tu cuenta.
+1. **Buy an additional credit pack** inside TredOps.
+2. **Connect your own provider** (OpenRouter, DeepSeek…) under
+   [Integrations](../pillars/integrations/) and spend from your own account.
 
-La segunda opción es la más razonable si usas agentes de forma intensiva: pagas
-el coste real del modelo, sin intermediación.
+The second is the sensible choice if you use agents heavily: you pay the model's
+real cost, with nothing in between.
 
-### Cómo gastar menos
+### Spending less
 
-- Baja la frecuencia de las AgentTask. Una revisión cada hora suele bastar; una
-  cada cinco minutos multiplica el gasto sin mejorar las decisiones.
-- Usa modelos económicos para tareas rutinarias y reserva los caros para el
-  análisis.
-- Escribe instrucciones concretas: un prompt ambiguo hace que el agente dé más
-  vueltas, y cada vuelta cuesta.
+- Lower AgentTask frequency. Hourly is usually plenty; every five minutes
+  multiplies the cost without improving the decisions.
+- Use cheap models for routine tasks and save the expensive ones for analysis.
+- Write specific instructions: a vague prompt makes the agent take more turns,
+  and every turn costs.
 
-La barra de consumo del dashboard mide el gasto **desde tu última recarga**, para
-que sepas cuánto te queda del ciclo en curso.
+The dashboard's usage bar measures spend **since your last top-up**, so you know
+what is left in the current cycle.
 
-## Facturación
+## Billing
 
-- Pagos con tarjeta a través de Stripe. TredOps no almacena los datos de tu
-  tarjeta.
-- Puedes cambiar de plan, pasar a anual o cancelar desde **Ajustes →
-  Facturación**.
-- Al cancelar mantienes el acceso hasta el final del periodo ya pagado.
-- Las facturas se descargan desde el portal de facturación.
+- Card payments through Stripe. TredOps does not store your card details.
+- Change plan, switch to annual or cancel from **Settings → Billing**.
+- On cancellation you keep access until the end of the period already paid for.
+- Invoices download from the billing portal.
 
-## Preguntas frecuentes
+## FAQ
 
-**¿Qué pasa con mis bots si bajo de plan?**
-Siguen existiendo, pero los que excedan el límite del plan nuevo quedan
-desactivados. No se borra nada; los reactivas si vuelves a subir.
+**What happens to my bots if I downgrade?**
+They stay, but any beyond the new plan's limit are deactivated. Nothing is
+deleted; reactivate them if you upgrade again.
 
-**¿Los créditos no usados se acumulan?**
-No. Los créditos incluidos en el plan corresponden al ciclo y no se arrastran al
-siguiente. Los packs adicionales que compres sí permanecen hasta que los gastes.
+**Do unused credits roll over?**
+No. Credits included in a plan belong to that cycle and do not carry over.
+Additional packs you buy do stay until you spend them.
 
-**¿Necesito Premium para usar el Benchmark?**
-No. Cualquier plan —y cualquier visitante de esta documentación— puede ver las
-[ediciones publicadas](../benchmark/). Premium añade el histórico completo dentro del
+**Do I need Premium to use the Benchmark?**
+No. Any plan — and any visitor to these docs — can read the
+[published editions](../benchmark/). Premium adds the full history inside the
 dashboard.

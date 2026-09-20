@@ -1,55 +1,55 @@
 ---
-title: Agentes IA
-description: Chat RAG, Playground, AgentTask y agentes autónomos para gestionar tu cartera.
+title: AI Agents
+description: RAG chat, Playground, AgentTask, and autonomous agents to manage your portfolio.
 ---
 
-El pilar de **AI Agents y SubAgents** es la capa de inteligencia artificial para la gestión autónoma de carteras y estrategias.
+The **AI Agents & SubAgents** pillar is the artificial intelligence layer for autonomous portfolio and strategy management.
 
-TredOps incorpora un **chat RAG** que te permite interactuar en lenguaje natural con tu agente principal y tus subagentes.
+TredOps includes a **RAG chat** that lets you interact in natural language with your main agent and your subagents.
 
-## Capacidades
+## Capabilities
 
-- **Chat RAG** — Interacción en lenguaje natural con tus agentes.
-- **Playground** — Crea tus propios agentes y subagentes con system prompts personalizados.
-- **AgentTask** — Programa tareas agénticas: supervisión, análisis periódico, rebalanceo, alertas…
-- **Tools** — Herramientas que los agentes pueden invocar para consultar carteras, datos de mercado, señales y ejecutar órdenes.
+- **RAG chat** — Natural-language interaction with your agents.
+- **Playground** — Create your own agents and subagents with custom system prompts.
+- **AgentTask** — Schedule agentic tasks: supervision, periodic analysis, rebalancing, alerts…
+- **Tools** — Tools agents can call to query portfolios, market data, signals, and execute orders.
 
-## Ejemplos de uso
+## Usage examples
 
-- *"¿Cómo está mi portfolio hoy?"*
-- *"Analiza el pool de señales y propón las tres mejores oportunidades."*
-- *"Supervisa TEST y cierra si baja un 3 %."*
-- *"Rebalancea mi cartera a los sectores defensivos."*
-- *"Cada lunes, resume cómo ha cerrado la semana mi ránking de bots."*
+- *"How is my portfolio today?"*
+- *"Analyze the signal pool and propose the best three opportunities."*
+- *"Monitor TEST and close if it drops 3%."*
+- *"Rebalance my portfolio to defensive sectors."*
+- *"Every Monday, summarize how my bot ranking closed the week."*
 
-## modos de operación
+## Operation modes
 
-| Modo | Qué hace |
-|------|----------|
-| `plan` | Solo lectura y análisis, sin ejecutar nada. |
-| `trading` | El agente puede decidir y ejecutar operaciones dentro del chat. |
-| `autonomous-execution` | Ejecución no supervisada (agentes programados con AgentTask). |
+| Mode | What it does |
+|------|--------------|
+| `plan` | Read-only analysis, executes nothing. |
+| `trading` | The agent can decide and execute trades within the chat. |
+| `autonomous-execution` | Unsupervised execution (scheduled agents via AgentTask). |
 
 ## Decision Engine
 
-Cuando un agente valora una señal antes de operar, aplica un **scoring de señales**:
+When an agent evaluates a signal before trading, it applies a **signal scoring**:
 
-- Profit: 30 % · Momentum: 25 % · Fiabilidad: 25 % · Frescura: 20 %.
+- Profit: 30% · Momentum: 25% · Reliability: 25% · Freshness: 20%.
 
-Según la puntuación, el agente decide **abrir orden**, **ignorar** o pedir confirmación, aplicando bonificaciones basadas en tendencia y RSI.
+Based on the score, the agent decides to **open an order**, **skip**, or ask for confirmation, applying trend and RSI bonuses.
 
 ## Risk Manager
 
-Los agentes autónomos operan bajo reglas de riesgo estrictas (máximo 25 % por posición, reserva de caja del 10 %, stops automáticos), de modo que la autonomía nunca significa riesgo descontrolado.
+Autonomous agents operate under strict risk rules (max 25% per position, 10% cash reserve, automatic stops) so autonomy never means uncontrolled risk.
 
-## Tareas programadas (AgentTask)
+## Scheduled tasks (AgentTask)
 
-Puedes programar tareas recurrentes: se ejecutan automáticamente en el horario que definas (`executionDays`, `executionHour`, `executionRepetition`). Ejemplos: supervisiones periódicas, alertas de mercado, rebalanceos o resúmenes semanales.
+You can schedule recurring tasks: they run automatically at the times you define (`executionDays`, `executionHour`, `executionRepetition`). Examples: periodic supervision, market alerts, rebalancing, or weekly summaries.
 
-## Memoria
+## Memory
 
-El agente recuerda el contexto de tu cartera y de conversaciones anteriores (máximo 10 entradas guardadas por portfolio), para darte respuestas coherentes a lo largo del tiempo.
+The agent remembers your portfolio context and previous conversations (up to 10 saved entries per portfolio) to give coherent answers over time.
 
 ## Playground (Premium)
 
-En el Playground defines tus propios **system prompts**, eliges el modelo LLM (multi-proveedor: OpenRouter, DeepSeek, etc.) y creas subagentes especializados para tareas concretas. Tú controlas qué herramientas pueden usar y bajo qué reglas de riesgo.
+In the Playground you define your own **system prompts**, choose the LLM model (multi-provider: OpenRouter, DeepSeek, etc.), and create specialized subagents for specific tasks. You control which tools they can use and under which risk rules.

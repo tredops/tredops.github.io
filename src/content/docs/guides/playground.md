@@ -1,101 +1,100 @@
 ---
 title: Playground
-description: Crea agentes y sub-agentes propios con tu system prompt, tu modelo y tus herramientas, y ponlos a gestionar un portfolio.
+description: Build your own agents and sub-agents with your system prompt, your model and your tools, and put them to work on a portfolio.
 ---
 
-El **Playground** (también llamado *ExpertMode*) es donde dejas de usar los
-agentes que mantiene TredOps y construyes los tuyos. Un agente creado aquí no es
-una demo: se asigna a un portfolio y gestiona posiciones reales con las mismas
-reglas de riesgo que cualquier otro.
+The **Playground** (also called *ExpertMode*) is where you stop using the agents
+TredOps maintains and build your own. An agent created here is not a demo: it is
+assigned to a portfolio and manages real positions under the same risk rules as
+any other.
 
-Está disponible en el plan **Premium** y, de forma temporal, en la
-[prueba Premium](../../pricing/).
+It is available on **Premium** and, temporarily, on the
+[Premium trial](../../pricing/).
 
-## Qué defines en un agente
+## What you define in an agent
 
-| Pieza | Qué decide |
-|-------|-----------|
-| **System prompt** | Cómo piensa: qué prioriza, qué evita, cuándo actúa y cuándo se queda quieto |
-| **Modelo** | Qué LLM lo mueve, de los disponibles o de tu proveedor conectado |
-| **Herramientas** | Qué puede invocar: leer cartera, leer señales, pedir datos de mercado, abrir o cerrar órdenes |
-| **Portfolio** | Sobre qué cartera trabaja |
-| **Tipo** | Agente principal, o **sub-agente** al que otro delega |
+| Piece | What it decides |
+|-------|-----------------|
+| **System prompt** | How it thinks: what it prioritises, what it avoids, when it acts and when it sits still |
+| **Model** | Which LLM drives it, from the available ones or from your connected provider |
+| **Tools** | What it may call: read the book, read signals, request market data, open or close orders |
+| **Portfolio** | Which book it works on |
+| **Type** | Main agent, or a **sub-agent** another one delegates to |
 
-## El system prompt es el 80 % del resultado
+## The system prompt is 80% of the result
 
-Dos agentes con el mismo modelo y las mismas herramientas se comportan de forma
-completamente distinta según cómo estén escritos. Un prompt vago produce un
-agente que da vueltas, gasta créditos y no decide.
+Two agents with the same model and the same tools behave completely differently
+depending on how they are written. A vague prompt produces an agent that goes in
+circles, burns credits and decides nothing.
 
-> ❌ "Eres un agente de trading. Busca oportunidades y gana dinero."
+> ❌ "You are a trading agent. Find opportunities and make money."
 
-> ✅ "Gestionas una cartera de ETFs sectoriales con horizonte de 2 a 6 semanas.
-> Priorizas la preservación de capital sobre la rentabilidad: no abres más de
-> tres posiciones simultáneas ni destinas más del 20 % del capital a una sola, y
-> nunca tienes dos posiciones del mismo sector. Descartas señales con menos de
-> 48 horas de histórico. Antes de abrir, compruebas la liquidez disponible.
-> Explicas siempre el motivo de cada apertura y de cada cierre."
+> ✅ "You manage a book of sector ETFs with a 2–6 week horizon. You prioritise
+> capital preservation over returns: never more than three simultaneous
+> positions, never more than 20% of capital in one, and never two positions in
+> the same sector. You discard signals with less than 48 hours of history.
+> Before opening, you check available cash. You always explain the reason for
+> every open and every close."
 
-Lo que separa uno del otro:
+What separates them:
 
-- **Un horizonte temporal.** Sin él, el agente no sabe si una posición de tres
-  días va bien o va mal.
-- **Límites numéricos.** "Prudente" no significa nada; "máximo 20 % por
-  posición" sí.
-- **Criterios de descarte.** Qué **no** debe tocar, que es lo que más se olvida.
-- **La obligación de explicarse.** Un agente que justifica sus decisiones es un
-  agente que puedes auditar y corregir.
+- **A time horizon.** Without one, the agent cannot tell whether a three-day-old
+  position is doing well or badly.
+- **Numeric limits.** "Prudent" means nothing; "at most 20% per position" does.
+- **Exclusion criteria.** What it must **not** touch — the part most often
+  forgotten.
+- **An obligation to explain itself.** An agent that justifies its decisions is
+  an agent you can audit and correct.
 
-## Sub-agentes: repartir el criterio
+## Sub-agents: splitting the judgement
 
-Un agente principal puede apoyarse en **sub-agentes** especializados en lugar de
-meterlo todo en un prompt gigante que nadie puede mantener:
+A main agent can lean on specialised **sub-agents** instead of cramming
+everything into one giant prompt nobody can maintain:
 
-- Uno que analice un sector concreto.
-- Uno que revise el riesgo de la cartera y proponga recortes.
-- Uno que prepare un rebalanceo.
-- Uno que filtre el Signal Pool y devuelva solo lo que encaja.
+- One that analyses a specific sector.
+- One that reviews portfolio risk and proposes cuts.
+- One that prepares a rebalance.
+- One that filters the Signal Pool and returns only what fits.
 
-El principal reparte el trabajo y consolida las respuestas. Es la forma de tener
-criterios distintos —incluso contradictorios a propósito, como un agente
-optimista y otro escéptico— conviviendo sin pisarse.
+The main one splits the work and consolidates the answers. It is how you keep
+different criteria — deliberately contradictory ones, even, like an optimistic
+agent and a sceptical one — coexisting without stepping on each other.
 
-Las ediciones del [Benchmark](../../benchmark/) enfrentan exactamente a
-sub-agentes: mismo capital, misma ventana histórica, distinto modelo y distinto
-prompt. Es el mismo mecanismo que tienes en el Playground.
+[Benchmark](../../benchmark/) editions pit exactly these sub-agents against each
+other: same capital, same historical window, different model and different
+prompt. It is the same mechanism you have in the Playground.
 
-## Cómo llevarlo a producción sin sustos
+## Getting one into production without surprises
 
-1. **Escribe el prompt** y asigna el agente a un portfolio, mejor uno nuevo y
-   pequeño.
-2. **Pruébalo en modo Plan.** Solo lee y propone. Pregúntale qué haría y por
-   qué, durante varios días.
-3. **Léete sus justificaciones.** Aquí es donde se ven los agujeros del prompt:
-   el agente hace algo razonable por un motivo que tú no querías.
-4. **Pásalo a Trading.** Ejecuta, pero contigo delante.
-5. **Conviértelo en una** [AgentTask](../agent-tasks/) cuando ya reconozcas su
-   criterio.
+1. **Write the prompt** and assign the agent to a portfolio — preferably a new,
+   small one.
+2. **Test it in Plan mode.** It only reads and proposes. Ask it what it would do
+   and why, over several days.
+3. **Read its justifications.** This is where the prompt's holes show up: the
+   agent does something reasonable for a reason you did not intend.
+4. **Move it to Trading.** It executes, but with you watching.
+5. **Turn it into an** [AgentTask](../agent-tasks/) once you recognise its
+   judgement.
 
-No te saltes el paso 3. Es el barato.
+Do not skip step 3. It is the cheap one.
 
-## Los límites siguen ahí
+## The limits are still there
 
-Un agente que has escrito tú **no tiene más permisos** que uno de TredOps:
+An agent you wrote yourself has **no more permissions** than a TredOps one:
 
-- No opera fuera de las reglas de riesgo del portfolio. Los límites de capital
-  por posición y la reserva de liquidez mandan sobre cualquier instrucción del
-  prompt.
-- No abre órdenes sin Take Profit y Stop Loss.
-- No ve tus credenciales del broker: usa tokens con permisos acotados.
-- Consume créditos. Un agente que razona mucho cuesta más que uno que decide
-  rápido — ver [Planes y precios](../../pricing/).
+- It does not trade outside the portfolio's risk rules. Per-position capital
+  limits and the cash reserve override any instruction in the prompt.
+- It does not open orders without Take Profit and Stop Loss.
+- It never sees your broker credentials: it uses scoped tokens.
+- It consumes credits. An agent that reasons a lot costs more than one that
+  decides quickly — see [Plans & pricing](../../pricing/).
 
-Esto es deliberado: el Playground te deja cambiar **el criterio**, no las
-protecciones.
+This is deliberate: the Playground lets you change **the judgement**, not the
+protections.
 
-## Siguiente paso
+## Next
 
-- [Trabajar con agentes](../first-agent/) — los modos de operación en detalle.
-- [Programar tareas (AgentTask)](../agent-tasks/) — automatizar lo que ya funciona.
-- [Copy Trader Agent](../copy-trader/) — usar el agente de otro en vez de escribir
-  el tuyo.
+- [Working with agents](../first-agent/) — the operating modes in detail.
+- [Scheduling tasks (AgentTask)](../agent-tasks/) — automating what already works.
+- [Copy Trader Agent](../copy-trader/) — using someone else's agent instead of
+  writing your own.

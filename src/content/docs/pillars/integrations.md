@@ -1,48 +1,48 @@
 ---
-title: Integraciones
-description: Conecta brokers y proveedores de LLM manteniendo siempre el control de tus credenciales.
+title: Integrations
+description: Connect brokers and LLM providers while keeping control of your credentials.
 ---
 
-El pilar de **Integraciones** es la capa de conexión con servicios externos que extienden las capacidades de la plataforma más allá de su entorno nativo, manteniendo siempre el control de las credenciales y de las cuentas.
+The **Integrations** pillar is the layer that connects external services to extend the platform beyond its native environment, while you keep control of your credentials and accounts.
 
-## Tipos de integración
+## Types of integration
 
-| Integración | Para qué | Dónde se gestiona |
-|-------------|----------|-------------------|
-| **Brokers** | Ejecución de órdenes y datos de mercado (Alpaca, más próximamente) | Dashboard → Integraciones |
-| **LLMs** | Modelos para tus agentes: OpenRouter, DeepSeek, OpenAI, Minimax | Dashboard → Integraciones |
-| **Market Data** | Datos de mercado en tiempo real e históricos | Automático (via broker) |
-| **OAuth** | Autenticación con proveedores externos (Google, etc.) | Registro/Login |
-| **Webhooks** | Notificaciones y eventos hacia sistemas externos | (próximamente) |
+| Integration | What it's for | Where it's managed |
+|-------------|---------------|--------------------|
+| **Brokers** | Order execution and market data (Alpaca, more coming) | Dashboard → Integrations |
+| **LLMs** | Models for your agents: OpenRouter, DeepSeek, OpenAI, Minimax | Dashboard → Integrations |
+| **Market data** | Real-time and historical market data | Automatic (via broker) |
+| **OAuth** | Authentication with external providers (Google, etc.) | Sign up/Sign in |
+| **Webhooks** | Notifications and events to external systems | (coming soon) |
 
-## Conectar tu broker
+## Connect your broker
 
-1. Ve a **Integraciones** → **Brokers**.
-2. Selecciona **Alpaca** (u otro soportado) y autoriza con tus credenciales.
-3. TredOps solo tendrá permiso para **ejecutar y monitorizar** bajo las reglas que configures.
+1. Go to **Integrations** → **Brokers**.
+2. Select **Alpaca** (or another supported broker) and authorize with your credentials.
+3. TredOps will only be able to **execute and monitor** under the rules you configure.
 
-Sobre datos de mercado:
+About market data:
 
-- Datos de cotizaciones SIP pueden tener hasta **15 min de retraso** (según el tipo de cuenta del broker).
-- Datos de **crypto** no tienen retraso.
+- SIP quotes can be delayed up to **15 min** (depending on your broker account type).
+- **Crypto** data has no delay.
 
-## Conectar proveedores LLM
+## Connect LLM providers
 
-TredOps es **multi-proveedor de LLMs**. Puedes:
+TredOps is **multi-LLM**. You can:
 
-- Usar los tokens incluidos en tu plan.
-- Conectar tus **propias API keys** (OpenRouter, DeepSeek, OpenAI) y usar tus créditos.
+- Use the tokens included in your plan.
+- Connect your **own API keys** (OpenRouter, DeepSeek, OpenAI) and use your credits.
 
-La plataforma gestiona **fallback automático** entre proveedores para mantener a tus agentes operativos. Nadie más que tú ve tus claves: se almacenan cifradas.
+The platform handles **automatic failover** between providers to keep your agents running. No one else sees your keys: they are stored encrypted.
 
-## No custodial
+## Non-custodial
 
-**Principio fundamental:** el capital permanece siempre en tu cuenta del broker externo. TredOps no custodia fondos y no gestiona cuentas de inversión. La conexión solo te da a ti la capacidad de ejecutar órdenes desde la plataforma.
+**Core principle:** your capital always stays in your external broker account. TredOps does not custody funds and does not manage investment accounts. The connection only gives you the ability to execute orders from the platform.
 
-## Seguridad de las integraciones
+## Integration security
 
-- **Credenciales cifradas** con AES-256.
-- **Tokens JWT** firmados para cada sesión.
-- **Sistema de permisos granular**: cada operación requiere el permiso adecuado.
-- **Rate limiting** y cabeceras de seguridad en los servicios.
-- Puedes **revocar** cualquier conexión o clave en cualquier momento.
+- **Encrypted credentials** with AES-256.
+- **Signed JWT tokens** for every session.
+- **Granular permission system**: every operation requires the proper permission.
+- **Rate limiting** and security headers across services.
+- You can **revoke** any connection or key at any time.

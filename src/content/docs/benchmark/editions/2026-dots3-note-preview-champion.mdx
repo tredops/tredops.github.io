@@ -1,11 +1,11 @@
 ---
 title: "Benchmark Trading Agents"
-description: "Seis sub-agentes LLM gestionan cada uno su propio portfolio durante dos semanas. Dots 3 (dots-3-note-preview) gana la primera edición con +17,10 %."
+description: "Six LLM sub-agents each manage their own portfolio for two weeks. Dots 3 (dots-3-note-preview) wins the first edition with +17.10%."
 benchmark:
   edition: 2026-dots3-note-preview-champion
   pubDate: 2026-09-19
-  window: 18 ago 2026 → 31 ago 2026
-  winner: Dots 3 · +17,10 %
+  window: Aug 18 2026 → Aug 31 2026
+  winner: Dots 3 · +17.10%
   agents: 6
   hero: 2026-dots3-note-preview-champion.jpg
   tags: [ETFs, LLM]
@@ -22,14 +22,14 @@ import BenchmarkEditions from '../../../../components/benchmark/BenchmarkEdition
 	src={hero.src}
 	width={hero.width}
 	height={hero.height}
-	alt="Sub-agentes de trading compitiendo en el benchmark de agentes de TredOps"
+	alt="Trading sub-agents competing in the TredOps agents benchmark"
 />
 
-La **primera edición** del Benchmark público enfrenta a **seis sub-agentes** con modelos LLM distintos. Todos reciben **el mismo capital** (USD 10.000), la **misma ventana histórica** y la **misma cadencia de evaluación**; lo único que cambia es el modelo y su contexto. Durante dos semanas cada uno gestiona su portfolio de forma autónoma, con las mismas reglas de riesgo del broker.
+The **first edition** of the public Benchmark pits **six sub-agents** with different LLM models against each other. They all receive **the same capital** (USD 10,000), the **same historical window** and the **same evaluation cadence**; only the model and its context change. For two weeks each one manages its portfolio autonomously, under the same broker risk rules.
 
-Consulta la [metodología completa](../../methodology/) para entender cómo se monta cada carrera.
+Read the [full methodology](../../methodology/) to understand how each race is set up.
 
-## Configuraciones comparadas
+## Compared configurations
 
 - **Dots 3** — `dots-studio/dots-3-note-preview:free`
 - **Muse Glimmer** — `meta/muse-glimmer-30b`
@@ -38,34 +38,34 @@ Consulta la [metodología completa](../../methodology/) para entender cómo se m
 - **Nemotron 3** — `nvidia/nemotron-3-super-120b-a12b`
 - **DeepSeek** — `deepseek-v4-pro`
 
-## Resultados
+## Results
 
-<BenchmarkRace edition="2026-dots3-note-preview-champion" lang="es" />
+<BenchmarkRace edition="2026-dots3-note-preview-champion" lang="en" />
 
-<BenchmarkSummary edition="2026-dots3-note-preview-champion" lang="es" />
+<BenchmarkSummary edition="2026-dots3-note-preview-champion" lang="en" />
 
-### Cómo leer el gráfico
+### How to read the chart
 
-- **Barra de cada fila.** En el layout de capital, la barra es el *equity* del agente y se parte en **capital invertido** (una porción por posición abierta, con el logo del activo y su P&L) y **cash** (la liquidez restante).
-- **Columna de la derecha.** Muestra el **P&L respecto al capital inicial**: verde si gana, rojo si pierde.
-- **Ranking.** Las filas se reordenan en cada frame; el primer puesto es el de mayor equity en ese instante.
-- **Fecha.** El reloj superior avanza con la ventana histórica y convierte el gráfico en una repetición, no en una foto fija.
-- **↓ short.** Una flecha junto a un activo indica una posición corta.
+- **Each row's bar.** In the capital layout the bar is the agent's *equity*, split into **invested capital** (one slice per open position, with the asset logo and its P&L) and **cash** (the remaining liquidity).
+- **Right-hand column.** Shows the **P&L relative to the initial capital**: green when up, red when down.
+- **Ranking.** Rows reorder on every frame; first place is the highest equity at that instant.
+- **Date.** The clock in the header advances with the historical window, turning the chart into a replay rather than a still image.
+- **↓ short.** An arrow next to an asset marks a short position.
 
-Las cifras de la tabla son las del **último snapshot** de la ventana, con las posiciones ya liquidadas.
+The figures in the table are those of the **last snapshot** of the window, with positions already liquidated.
 
-## Detalle por agente
+## Per-agent detail
 
-Cada pestaña muestra el desglose del portfolio de un agente al cierre de la ventana: sus **posiciones abiertas** (capital invertido y P&L no realizado) y el histórico de **operaciones cerradas** con el P&L realizado y el motivo del cierre (take profit, stop loss…).
+Each tab breaks down one agent's portfolio at the close of the window: its **open positions** (invested capital and unrealized P&L) and the history of **closed trades** with the realized P&L and the closing reason (take profit, stop loss…).
 
-<BenchmarkAgentDetails edition="2026-dots3-note-preview-champion" lang="es" />
+<BenchmarkAgentDetails edition="2026-dots3-note-preview-champion" lang="en" />
 
-## Conclusión
+## Conclusion
 
-**Dots 3** (`dots-3-note-preview:free`) se lleva la primera edición con **+17,10 %** y **USD 11.710** de equity final, por delante de **Muse Glimmer** (+9,10 %) y **Deepseek** (+4,65 %). La referencia **Buy & Hold** y **DeepSeek** (`deepseek-v4-pro`, −0,66 %) se quedan atrás.
+**Dots 3** (`dots-3-note-preview:free`) takes the first edition with **+17.10%** and **USD 11,710** final equity, ahead of **Muse Glimmer** (+9.10%) and **Deepseek** (+4.65%). The **Buy & Hold** reference and **DeepSeek** (`deepseek-v4-pro`, −0.66%) trail behind.
 
-> Los resultados pasados no garantizan resultados futuros. El Benchmark es informativo y no constituye asesoramiento financiero.
+> Past results do not guarantee future results. The Benchmark is informational and does not constitute financial advice.
 
-## Otras ediciones
+## Other editions
 
-<BenchmarkEditions lang="es" exclude="benchmark/editions/2026-dots3-note-preview-champion" />
+<BenchmarkEditions lang="en" exclude="benchmark/editions/2026-dots3-note-preview-champion" />

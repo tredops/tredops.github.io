@@ -1,119 +1,118 @@
 ---
-title: Guía rápida
-description: De cero a tu primera operación en TredOps. Regístrate, conecta tu broker, elige una estrategia y deja que el monitoring haga su trabajo.
+title: Quick start
+description: From zero to your first trade in TredOps. Sign up, connect your broker, pick a strategy and let monitoring do its job.
 ---
 
-El objetivo de TredOps es que puedas entender y operar la plataforma en **menos
-de 2 minutos**. Esta guía es el camino recomendado; cada paso enlaza a la guía
-detallada si quieres profundizar.
+TredOps aims to be understandable and usable in **under 2 minutes**. This is the
+recommended path; each step links to the detailed guide if you want to go deeper.
 
-:::tip[¿Primera vez?]
-Si no tienes claro qué es un portfolio, un bot o una señal, empieza por
-[Conceptos clave](../concepts/). Son cinco minutos y te ahorran confusión después.
+:::tip[First time?]
+If portfolio, bot and signal are not yet clear terms, start with
+[Key concepts](../concepts/). Five minutes there saves confusion later.
 :::
 
-## 1. Crea tu cuenta
+## 1. Create your account
 
-Entra en [tredops.com](https://tredops.com) y regístrate. Empiezas con un **Free
-Trial de 14 días**, sin tarjeta:
+Go to [tredops.com](https://tredops.com) and sign up. You start on a **14-day
+Free Trial**, no card required:
 
-- Acceso a los bots y agentes mantenidos por el equipo de TredOps.
-- Créditos de LLM limitados, suficientes para probar de verdad.
-- Monitoring con Take Profit y Stop Loss.
-- Hasta 2 bots activos.
+- Access to the bots and agents maintained by the TredOps team.
+- Limited LLM credits, enough for a real test drive.
+- Monitoring with Take Profit and Stop Loss.
+- Up to 2 active bots.
 
-Ver [Planes y precios](../pricing/) para el detalle de cada plan.
+See [Plans & pricing](../pricing/) for the detail on each plan.
 
-## 2. Conecta tu broker
+## 2. Connect your broker
 
-TredOps es **no custodial**: tus fondos permanecen en tu cuenta del broker y la
-plataforma nunca los toca.
+TredOps is **non-custodial**: your funds stay in your broker account and the
+platform never touches them.
 
-1. Ve a **Integraciones** en el dashboard.
-2. Conecta **Alpaca** (o el broker soportado) autorizando la conexión.
-3. Añade los activos que quieras operar: ETFs, acciones o cripto.
+1. Go to **Integrations** in the dashboard.
+2. Connect **Alpaca** (or the supported broker) by authorising the connection.
+3. Add the assets you want to trade: ETFs, stocks or crypto.
 
-Tus credenciales se guardan cifradas y solo se usan para ejecutar y monitorizar
-las operaciones que decidan tus bots y agentes, bajo las reglas de riesgo que
-configures. Puedes revocar la integración en cualquier momento.
+Your credentials are stored encrypted and are only used to execute and monitor
+the trades your bots and agents decide, under the risk rules you configure. You
+can revoke the integration at any time.
 
-:::caution[Empieza en paper trading]
-Si tu broker ofrece cuenta de prueba (*paper*), conéctala primero. Verás
-exactamente el mismo comportamiento sin dinero real de por medio.
+:::caution[Start on paper trading]
+If your broker offers a paper account, connect that first. You will see exactly
+the same behaviour with no real money involved.
 :::
 
-## 3. Fija tus reglas de riesgo
+## 3. Set your risk rules
 
-Antes de que nada opere, entra en **Portfolios → Ajustes** y decide tres cosas:
+Before anything trades, go to **Portfolios → Settings** and decide three things:
 
-- Cuánto capital puede ir como máximo a **una sola posición** (empieza por 15 %).
-- Qué porcentaje quieres mantener siempre en **liquidez** (empieza por 20 %).
-- Cuántas **posiciones simultáneas** admites (3 o 4 al principio).
+- How much capital may go into **a single position** (start at 15%).
+- How much you want to keep permanently in **cash** (start at 20%).
+- How many **simultaneous positions** you accept (3 or 4 at first).
 
-Estas reglas mandan sobre cualquier agente y cualquier tarea. Ver
-[Gestionar el riesgo](../guides/risk/).
+These rules override any agent and any task. See [Managing risk](../guides/risk/).
 
-## 4. Elige estrategia con el Benchmark
+## 4. Pick a strategy with the Benchmark
 
-Antes de crear nada propio, mira qué funciona: el
-[Benchmark público](../benchmark/) compara agentes y modelos LLM sobre la misma
-ventana de mercado y el mismo capital, frente a **Buy & Hold**.
+Before building anything of your own, look at what works: the
+[public Benchmark](../benchmark/) compares agents and LLM models over the same
+market window and the same capital, against **Buy & Hold**.
 
-No lo uses como un ranking para copiar al primero, sino para ver **cómo se
-comporta** cada perfil: cuántas operaciones abre, cuánto aguanta una posición en
-pérdidas, cómo de concentrado opera.
+Do not use it as a leaderboard to copy the winner from — use it to see **how**
+each profile behaves: how many trades it opens, how long it sits in a losing
+position, how concentrated it gets.
 
-## 5. Pon a funcionar un bot
+## 5. Put a bot to work
 
-Con los bots mantenidos por TredOps ya tienes señales desde el primer día. Si
-quieres el tuyo:
+The TredOps-maintained bots already give you signals from day one. If you want
+your own:
 
-1. **Bots → Crear bot** y elige el activo o el sector.
-2. Acepta la configuración por defecto: TredOps optimiza los parámetros con
-   algoritmos genéticos sobre el histórico del activo.
-3. El bot pasa por **Performance Testing**. Solo si supera el umbral de calidad
-   entra en producción; si no, se queda en staging ejecutándose en segundo plano.
+1. **Bots → Create bot** and pick the asset or sector.
+2. Accept the default configuration: TredOps optimises the parameters with
+   genetic algorithms over the asset's history.
+3. The bot goes through **Performance Testing**. Only if it clears the quality
+   threshold does it reach production; otherwise it stays in staging, running in
+   the background.
 
-Guía completa: [Tu primer bot](../guides/first-bot/).
+Full guide: [Your first bot](../guides/first-bot/).
 
-## 6. Habla con tu agente
+## 6. Talk to your agent
 
-Abre el chat y empieza **en modo Plan**, que solo lee y propone:
+Open the chat and start **in Plan mode**, which only reads and proposes:
 
-- *"¿Cómo está mi portfolio hoy?"*
-- *"¿Qué hay en el pool de señales que encaje con mis reglas?"*
-- *"Si abriera la señal de TEST, ¿cuánto capital comprometería?"*
+- *"How is my portfolio doing today?"*
+- *"What is in the signal pool that fits my rules?"*
+- *"If I opened the TEST signal, how much capital would that commit?"*
 
-Cuando reconozcas el tipo de decisiones que toma, pásalo a **Trading** para que
-ejecute contigo delante. Guía completa:
-[Trabajar con agentes](../guides/first-agent/).
+Once you recognise the kind of decisions it makes, switch to **Trading** so it
+executes with you watching. Full guide:
+[Working with agents](../guides/first-agent/).
 
-## 7. Deja que el Monitoring trabaje
+## 7. Let Monitoring work
 
-Toda orden se abre con **Take Profit** y **Stop Loss**. A partir de ahí, el
-sistema revisa tus posiciones de forma continua y las cierra cuando se alcanza un
-nivel o cuando la propia estrategia indica salir.
+Every order opens with **Take Profit** and **Stop Loss**. From there the system
+reviews your positions continuously and closes them when a level is reached or
+when the strategy itself says to get out.
 
-Esta es la parte que no hay que tocar: está para evitar exactamente las
-decisiones que se toman en caliente.
+This is the part not to fiddle with: it exists precisely to prevent decisions
+made in the heat of the moment.
 
-## 8. Automatiza lo que ya funcione
+## 8. Automate what already works
 
-Cuando una rutina del chat te dé buenos resultados, conviértela en una
-[AgentTask](../guides/agent-tasks/) y deja que se ejecute sola.
+When a chat routine gives you good results, turn it into an
+[AgentTask](../guides/agent-tasks/) and let it run on its own.
 
-## Checklist de la primera semana
+## First-week checklist
 
-- [ ] Broker conectado (mejor en paper trading).
-- [ ] Reglas de riesgo del portfolio fijadas.
-- [ ] Una edición del Benchmark leída de principio a fin.
-- [ ] Un bot en producción o en staging.
-- [ ] Tres conversaciones con el agente en modo Plan.
-- [ ] Ninguna AgentTask en modo autónomo todavía.
+- [ ] Broker connected (paper trading preferably).
+- [ ] Portfolio risk rules set.
+- [ ] One Benchmark edition read end to end.
+- [ ] One bot in production or staging.
+- [ ] Three conversations with the agent in Plan mode.
+- [ ] No AgentTask in autonomous mode yet.
 
-## Siguientes pasos
+## Next steps
 
-- [Conceptos clave](../concepts/) — el vocabulario de la plataforma.
-- [Los cuatro pilares](../pillars/bots-ci/) — cómo funciona cada capa por dentro.
-- [Seguridad](../security/) — qué protege TredOps y qué controlas tú.
-- [FAQ](../faq/) — las dudas que más se repiten.
+- [Key concepts](../concepts/) — the platform's vocabulary.
+- [The four pillars](../pillars/bots-ci/) — how each layer works inside.
+- [Security](../security/) — what TredOps protects and what you control.
+- [FAQ](../faq/) — the questions that come up most.

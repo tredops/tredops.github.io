@@ -1,99 +1,97 @@
 ---
-title: Glosario
-description: Los términos que aparecen en TredOps y en esta documentación, explicados en una línea.
+title: Glossary
+description: Every term that shows up in TredOps and in these docs, explained in one line.
 ---
 
-## Plataforma
+## Platform
 
-**Agente** — Modelo de lenguaje con contexto de tu cartera, herramientas y
-permisos. Es quien decide qué operaciones se abren y se cierran.
+**Agent** — A language model with your portfolio context, tools and permissions.
+It is the one deciding which trades open and close.
 
-**AgentTask** — Instrucción que un agente ejecuta de forma periódica sin
-intervención. Ver [Programar tareas](../guides/agent-tasks/).
+**AgentTask** — An instruction an agent runs periodically without intervention.
+See [Scheduling tasks](../guides/agent-tasks/).
 
-**Benchmark** — Comparativa pública de agentes y modelos LLM sobre la misma
-ventana de mercado y el mismo capital. Ver [ediciones](../benchmark/).
+**Benchmark** — Public comparison of agents and LLM models over the same market
+window and the same capital. See [editions](../benchmark/).
 
-**Bot** — Estrategia algorítmica sobre uno o varios activos, con parámetros
-optimizados sobre datos históricos. Genera señales; no ejecuta.
+**Bot** — Algorithmic strategy over one or more assets, with parameters optimised
+on historical data. It produces signals; it does not execute.
 
-**Calibración** — Proceso que busca los parámetros óptimos de una estrategia para
-un activo, sobre datos históricos. Se repite de forma periódica.
+**Calibration** — The process that finds a strategy's optimal parameters for an
+asset, over historical data. It repeats periodically.
 
-**ExpertMode / Playground** — Entorno donde creas tus propios bots y agentes, con
-system prompts y parámetros a medida.
+**ExpertMode / Playground** — Where you build your own bots and agents, with
+custom system prompts and parameters.
 
-**Monitoring** — Vigilancia continua de las posiciones abiertas, con cierre
-automático por Take Profit, Stop Loss o señal de la estrategia.
+**Monitoring** — Continuous supervision of open positions, with automatic closing
+on Take Profit, Stop Loss or a strategy exit signal.
 
-**Portfolio** — Cartera dentro de TredOps, con su capital, sus posiciones y sus
-reglas de riesgo.
+**Portfolio** — A book inside TredOps, with its capital, positions and risk
+rules.
 
-**Signal Pool** — Depósito compartido de las señales que generan los bots, del
-que los agentes seleccionan las que merece la pena ejecutar.
+**Signal Pool** — Shared store of the signals bots produce, from which agents
+pick the ones worth executing.
 
-**Sub-agente** — Agente especializado al que el agente principal delega una parte
-del análisis o la gestión.
+**Staging** — State of a bot that has not cleared the quality threshold yet: it
+runs in the background, but its signals never reach your book.
 
-**Staging** — Estado de un bot que todavía no ha superado el umbral de calidad:
-se ejecuta en segundo plano, pero sus señales no llegan a tu cartera.
+**Sub-agent** — Specialised agent the main one delegates part of the analysis or
+management to.
 
-## Mercado y operativa
+## Market and trading
 
-**Buy & Hold** — Comprar y mantener. Es la referencia con la que se compara todo
-en el Benchmark: si una estrategia no la bate, no compensa su complejidad.
+**Buy & Hold** — Buy and keep. It is the reference everything in the Benchmark is
+measured against: if a strategy cannot beat it, its complexity is not worth it.
 
-**Corto (short)** — Posición que gana cuando el precio baja. En los gráficos se
-marca con `↓`.
+**Cash** — The part of the portfolio that is not invested.
 
-**Drawdown** — Caída máxima desde un máximo previo. Mide lo mal que se pasa con
-una estrategia, no lo bien que acaba.
+**Drawdown** — Maximum decline from a prior peak. It measures how bad a strategy
+feels, not how well it ends.
 
-**Equity** — Valor total del portfolio en un momento dado: capital invertido más
-liquidez.
+**Equity** — Total portfolio value at a point in time: invested capital plus
+cash.
 
-**Largo (long)** — Posición que gana cuando el precio sube.
+**Long** — A position that gains when the price rises.
 
-**Liquidez (cash)** — Parte del portfolio que no está invertida.
+**Look-ahead bias** — The error of judging a past decision with information that
+did not exist at the time. TredOps calibrations avoid it by design.
 
-**Look-ahead bias** — Error de evaluar una decisión pasada con información que en
-ese momento no existía. Las calibraciones de TredOps lo evitan por diseño.
+**OHLCV** — Market data per period: open, high, low, close, volume.
 
-**OHLCV** — Datos de mercado por periodo: apertura, máximo, mínimo, cierre y
-volumen (*open, high, low, close, volume*).
+**Order** — Buy or sell instruction sent to the broker.
 
-**Orden** — Instrucción de compra o venta enviada al broker.
+**Overfitting** — Tuning a strategy so tightly to its history that it stops
+working on new data. It is what Performance Testing catches.
 
-**P&L** — Pérdidas y ganancias (*profit and loss*). **Realizado** si la posición
-ya se cerró, **no realizado** si sigue abierta.
+**P&L** — Profit and loss. **Realised** once the position is closed, **unrealised**
+while it is open.
 
-**Posición** — Lo que tienes abierto en el mercado como resultado de una orden.
+**Position** — What you hold in the market as a result of an order.
 
-**Rebalanceo** — Ajuste de los pesos de la cartera para volver a la distribución
-objetivo.
+**Rebalancing** — Adjusting the portfolio's weights back to the target
+allocation.
 
-**Señal** — Propuesta de operación generada por un bot.
+**Short** — A position that gains when the price falls. Marked `↓` in the charts.
 
-**Sobreajuste (overfitting)** — Ajustar tanto una estrategia a su histórico que
-deja de funcionar con datos nuevos. Es lo que detecta el Performance Testing.
+**Signal** — A trade proposed by a bot.
 
-**Stop Loss** — Precio al que se cierra una posición en pérdidas.
+**Stop Loss** — The price at which a losing position is closed.
 
-**Take Profit** — Precio al que se cierra una posición en ganancias.
+**Take Profit** — The price at which a winning position is closed.
 
-**Volatilidad** — Cuánto se mueve el precio de un activo. Determina lo ancho que
-debe ser un stop.
+**Volatility** — How much an asset's price moves. It determines how wide a stop
+has to be.
 
-## Cuenta y facturación
+## Account and billing
 
-**Créditos** — Unidad de consumo de los modelos de lenguaje. Cada mensaje y cada
-ejecución de tarea gasta créditos. Ver [Planes y precios](../pricing/).
+**Credits** — Unit of language-model consumption. Every message and every task
+run spends credits. See [Plans & pricing](../pricing/).
 
-**Integración** — Conexión con un servicio externo: un broker (Alpaca) o un
-proveedor de LLM (OpenRouter, DeepSeek).
+**Integration** — Connection to an external service: a broker (Alpaca) or an LLM
+provider (OpenRouter, DeepSeek).
 
-**No custodial** — TredOps nunca guarda ni gestiona tu dinero: permanece en tu
-cuenta del broker. Ver [Seguridad](../security/).
+**Non-custodial** — TredOps never holds or manages your money: it stays in your
+broker account. See [Security](../security/).
 
-**Token de acceso** — Credencial con permisos acotados que usan los agentes para
-actuar en tu nombre. Nunca tus claves del broker.
+**Access token** — Scoped credential agents use to act on your behalf. Never your
+broker keys.

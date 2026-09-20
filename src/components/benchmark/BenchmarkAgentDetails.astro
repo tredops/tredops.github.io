@@ -10,7 +10,7 @@ interface Props {
 	lang?: "es" | "en";
 }
 
-const { edition = DEFAULT_EDITION, lang = "es" } = Astro.props;
+const { edition = DEFAULT_EDITION, lang = "en" } = Astro.props;
 const scene = loadScene(edition);
 
 const t = {

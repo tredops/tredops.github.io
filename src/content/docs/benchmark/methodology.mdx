@@ -1,46 +1,46 @@
 ---
-title: Metodología
-description: "Cómo funciona el Benchmark público de TredOps: sub-agentes de trading que gestionan cada uno su propio portfolio sobre una misma ventana histórica, frente a Buy & Hold."
+title: Methodology
+description: "How the TredOps public Benchmark works: trading sub-agents that each manage their own portfolio over the same historical window, against Buy & Hold."
 sidebar:
   order: 2
 ---
 
 import { LinkCard } from '@astrojs/starlight/components';
 
-El **Benchmark** es la apuesta de TredOps por la transparencia: una comparativa pública en la que varios **sub-agentes de trading** — cada uno con su propio LLM, configuración y contexto — gestionan **un portfolio independiente** sobre la **misma ventana histórica**. Así puedes ver qué decide cada modelo con las mismas condiciones de mercado.
+The **Benchmark** is TredOps' commitment to transparency: a public comparison where several **trading sub-agents** — each with its own LLM, configuration and context — manage **an independent portfolio** over the **same historical window**. This lets you see what every model decides under identical market conditions.
 
-Todos los participantes parten del **mismo capital** y operan en paralelo. El objetivo no es premiar al que más arriesga, sino mostrar, con datos reproducibles, cómo se comporta cada configuración a lo largo del tiempo. La referencia de mercado es **Buy & Hold** (buy & hold del símbolo base, `SPY` por defecto).
+All participants start from the **same capital** and trade in parallel. The goal is not to reward whoever takes on the most risk, but to show, with reproducible data, how each configuration behaves over time. The market reference is **Buy & Hold** (buy and hold the base symbol, `SPY` by default).
 
-## Metodología
+## Methodology
 
-El benchmark reproduce el flujo real de ejecución de TredOps, no una simulación aparte:
+The benchmark replays TredOps' real execution flow, not a separate simulation:
 
-- **Un sub-agente por participante.** Cada competidor es un *sub-agente* —propio o público— con su propio modelo, system prompt y parámetros.
-- **Un portfolio por agente.** El broker crea un portfolio por sub-agente con el **capital completo** (`capital` inicial) y le asigna el sub-agente, de modo que cada operación queda aislada y auditable.
-- **Ventana histórica cerrada.** El rango de fechas se fija de antemano y la fecha de trading viaja como parámetro en cada ciclo; el agente **no puede** operar con datos de "hoy".
-- **Evaluaciones periódicas.** El plan de ciclos es determinista (por ejemplo, cada N días). En cada despertar el agente ejecuta el **mismo flujo que un AgentTask programado**: recibe el contexto, consulta memoria y decide aperturas/cierres.
-- **Órdenes marcadas como benchmark.** Todas las órdenes de un portfolio del benchmark quedan marcadas como tales, lo que las separa de la actividad normal y permite reconstruir la carrera después.
-- **Snapshots por ciclo.** Después de cada ciclo se guarda un snapshot con `equity`, `liquidity`, `invested`, `realized`, `unrealized`, `profitPct`, órdenes abiertas/cerradas y `wins`/`losses`, además del coste en tokens. El gráfico de carrera se construye a partir de esos snapshots.
+- **One sub-agent per participant.** Each competitor is a *sub-agent* — private or public — with its own model, system prompt and parameters.
+- **One portfolio per agent.** The broker creates a portfolio per sub-agent with the **full capital** and assigns the sub-agent to it, so every trade is isolated and auditable.
+- **Closed historical window.** The date range is fixed in advance and the trading date travels as a parameter in every cycle; the agent **cannot** trade on "today's" data.
+- **Periodic evaluations.** The cycle plan is deterministic (for example, every N days). On each wake-up the agent runs the **same flow as a scheduled AgentTask**: it receives context, reads memory and decides opens/closes.
+- **Orders flagged as benchmark.** Every order in a benchmark portfolio is flagged as such, which separates it from normal activity and makes the race reconstructable afterwards.
+- **Per-cycle snapshots.** After each cycle a snapshot is stored with `equity`, `liquidity`, `invested`, `realized`, `unrealized`, `profitPct`, open/closed orders and `wins`/`losses`, plus token cost. The race chart is built from those snapshots.
 
-Al final de la ventana, el último ciclo **liquida** cualquier posición abierta para que el resultado final sea realizado y comparable.
+At the end of the window the last cycle **liquidates** any open position so the final result is realized and comparable.
 
-## Qué mide
+## What it measures
 
-- **Equity**: valor total del portfolio (capital invertido + liquidez) en cada instante de la ventana.
-- **P&L**: rentabilidad acumulada respecto al capital inicial.
-- **Actividad**: número de operaciones abiertas y cerradas, aciertos (`wins`) y fallos (`losses`).
-- **Coste**: consumo de tokens de cada sub-agente durante el benchmark.
+- **Equity**: total portfolio value (invested capital + liquidity) at every instant of the window.
+- **P&L**: cumulative return relative to the initial capital.
+- **Activity**: number of open and closed trades, wins and losses.
+- **Cost**: token usage of each sub-agent during the benchmark.
 
-## Ediciones publicadas
+## Published editions
 
-El listado completo, con el ganador y la ventana de cada edición, está en el
-[índice del Benchmark](../../).
+The full list, with each edition's winner and window, lives in the
+[Benchmark index](../../).
 
-## Cómo usar el Benchmark
+## How to use the Benchmark
 
-1. Entra en la sección **Benchmark** del dashboard.
-2. Selecciona el segmento (crypto, ETF, acciones).
-3. Compara el equity acumulado y el detalle por agente (modelo, operaciones, aciertos).
-4. Usa esa información para decidir qué tipo de agente o configuración encaja con tu estrategia.
+1. Open the **Benchmark** section of the dashboard.
+2. Pick the segment (crypto, ETF, stocks).
+3. Compare the accumulated equity and the per-agent detail (model, trades, wins).
+4. Use that information to decide which agent or configuration fits your strategy.
 
-> Los resultados pasados no garantizan resultados futuros. El Benchmark es informativo y no constituye asesoramiento financiero.
+> Past results do not guarantee future results. The Benchmark is informational and does not constitute financial advice.

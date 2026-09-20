@@ -1,61 +1,61 @@
 ---
-title: Preguntas frecuentes
-description: Respuestas a las dudas más habituales sobre TredOps.
+title: FAQ
+description: Answers to the most common questions about TredOps.
 ---
 
-## ¿Es TredOps una plataforma de trading?
+## Is TredOps a trading platform?
 
-No. TredOps es una plataforma de software que **crea, optimiza, monitoriza y orquesta** estrategias de trading con bots y agentes de IA. No gestiona capital de inversión.
+No. TredOps is a software platform that **creates, optimizes, monitors, and orchestrates** trading strategies with bots and AI agents. It does not manage investment capital.
 
-## ¿Quién controla mi dinero?
+## Who controls my money?
 
-Tú. Tu capital permanece siempre en tu cuenta del broker externo (por ejemplo, Alpaca). TredOps es **no custodial**.
+You do. Your capital always stays in your external broker account (e.g., Alpaca). TredOps is **non-custodial**.
 
-## ¿Qué tengo que instalar para usar TredOps?
+## Do I need to install anything?
 
-Nada. Todo funciona desde el navegador en [tredops.com](https://tredops.com).
+No. Everything works from the browser at [tredops.com](https://tredops.com).
 
-## ¿Necesito experiencia en programación?
+## Do I need programming experience?
 
-No. Puedes usar bots y **agentes mantenidos por el equipo de TredOps** sin escribir una línea de código. Si eres avanzado, puedes crear y personalizar tus propios bots y agentes en el Playground.
+No. You can use **TredOps-maintained bots and agents** without writing a single line of code. If you're advanced, you can create and customize your own bots and agents in the Playground.
 
-## ¿Cuánto tarda en entender la plataforma?
+## How long does it take to understand the platform?
 
-El objetivo del producto es que un usuario con conocimientos básicos pueda entender y operar en **menos de 2 minutos**. Empieza en [Primeros pasos](../getting-started/).
+The product goal is for a basic user to understand and operate it in **under 2 minutes**. Start with [Getting started](../getting-started/).
 
-## ¿Las operaciones tienen protección?
+## Do trades have protection?
 
-Sí. **Toda orden se abre con Take Profit y Stop Loss definidos** y se monitoriza de forma continua. Es una regla de la plataforma, no una opción.
+Yes. **Every order opens with a defined Take Profit and Stop Loss** and is continuously monitored. It's a platform rule, not an option.
 
-## ¿Puedo probar antes de pagar?
+## Can I try before paying?
 
-Sí. Empiezas con un **Free Trial de 14 días** sin tarjeta. Si quieres la experiencia completa por un par de días, existe el **Plan Gancho** de $4.99 por 7 días.
+Yes. You start with a **14-day free trial** without a card. For a short full experience, there's the **Hook Plan** at $4.99 for 7 days.
 
-## ¿Qué pasa si se agotan mis tokens de LLM?
+## What happens if my LLM tokens run out?
 
-- Opción A: comprar paquetes de créditos dentro de TredOps.
-- Opción B: conectar tus propios proveedores (OpenRouter, DeepSeek, …) y usar tus créditos.
+- Option A: buy additional credit packs inside TredOps.
+- Option B: connect your own providers (OpenRouter, DeepSeek, …) and use your credits.
 
-## ¿TredOps vende mis datos?
+## Does TredOps sell my data?
 
-No. La plataforma usa tus datos para operar y monitorizar tus estrategias. No se comparten con terceros para publicidad.
+No. The platform uses your data to operate and monitor your strategies. It is never shared with third parties for advertising.
 
-## ¿Puedo cancelar la suscripción?
+## Can I cancel my subscription?
 
-Sí. Desde tu panel de facturación puedes cancelar en cualquier momento, también antes de que el Plan Gancho se convierta automáticamente en Premium.
+Yes. From your billing panel you can cancel at any time, including before the Hook Plan auto-converts to Premium.
 
-## ¿Los resultados del Benchmark garantizan rentabilidad?
+## Do Benchmark results guarantee returns?
 
-No. Los resultados pasados no garantizan resultados futuros. El Benchmark es transparente e informativo y no constituye asesoramiento financiero.
+No. Past performance does not guarantee future results. The Benchmark is transparent and informational, and does not constitute financial advice.
 
-## ¿Con qué brokers trabaja TredOps?
+## Which brokers does TredOps work with?
 
-Actualmente **Alpaca**, con más brokers en camino.
+Currently **Alpaca**, with more brokers coming.
 
-## ¿Qué tipos de activos puedo operar?
+## What asset types can I trade?
 
-ETFs, acciones y cripto (según disponibilidad del broker conectado).
+ETFs, stocks, and crypto (depending on the connected broker's availability).
 
-## ¿Dónde puedo hacer más preguntas?
+## Where can I ask more questions?
 
-Escribenos a **support@tredops.com** o únete a nuestra comunidad.
+Email us at **support@tredops.com** or join our community.

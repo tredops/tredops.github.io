@@ -1,115 +1,115 @@
 ---
 title: TredOps
-description: Documentación oficial de TredOps, la plataforma de trading algorítmico con bots y agentes de IA.
+description: Official documentation for TredOps, the algorithmic trading platform with AI bots and agents.
 ---
 
 import { CardGrid, LinkCard, Steps } from '@astrojs/starlight/components';
 
-Bienvenido a la **documentación oficial de TredOps**: la plataforma que te
-permite crear, optimizar y monitorizar decisiones de trading con bots y agentes
-de inteligencia artificial, sin ceder el control de tus fondos.
+Welcome to the **official TredOps documentation**: the platform that lets you
+create, optimise and monitor trading decisions with bots and AI agents, without
+giving up control of your funds.
 
-Tu capital permanece siempre en tu cuenta del broker externo. TredOps se conecta
-mediante integraciones (Alpaca y otros) para que las señales de tus bots y
-agentes puedan operar con gestión de riesgo profesional.
+Your capital always stays in your external broker account. TredOps connects
+through integrations (Alpaca and others) so the signals your bots and agents
+produce can trade with professional risk management.
 
-## Empieza aquí
+## Start here
 
 <Steps>
 
-1. **Entiende el vocabulario** — [Conceptos clave](concepts/): portfolio, bot,
-   señal, agente, orden y calibración en cinco minutos. Y
-   [el ciclo de TredOps](lifecycle/): los seis controles por los que pasa una
-   estrategia antes de tocar tu dinero.
+1. **Learn the vocabulary** — [Key concepts](concepts/): portfolio, bot, signal,
+   agent, order and calibration in five minutes. And
+   [the TredOps loop](lifecycle/): the six checks a strategy clears before it
+   touches your money.
 
-2. **Monta tu cuenta** — [Guía rápida](getting-started/): registro, broker y
-   reglas de riesgo.
+2. **Set up your account** — [Quick start](getting-started/): sign-up, broker and
+   risk rules.
 
-3. **Elige estrategia con datos** — [Benchmark](benchmark/): qué agentes y qué
-   modelos han funcionado, sobre la misma ventana y el mismo capital.
+3. **Pick a strategy with data** — [Benchmark](benchmark/): which agents and
+   which models have worked, over the same window and the same capital.
 
-4. **Pon algo a funcionar** — [Tu primer bot](guides/first-bot/) y
-   [Trabajar con agentes](guides/first-agent/).
+4. **Put something to work** — [Your first bot](guides/first-bot/) and
+   [Working with agents](guides/first-agent/).
 
 </Steps>
 
-## Guías
+## Guides
 
 <CardGrid>
 	<LinkCard
-		title="Tu primer bot"
+		title="Your first bot"
 		href="guides/first-bot/"
-		description="Del activo elegido a un bot en producción: optimización genética, performance testing y calibración automática."
+		description="From chosen asset to a bot in production: genetic optimisation, performance testing and automatic calibration."
 	/>
 	<LinkCard
-		title="Trabajar con agentes"
+		title="Working with agents"
 		href="guides/first-agent/"
-		description="Modos plan, trading y autónomo; cómo escribir un system prompt que sirva y cuándo delegar en sub-agentes."
+		description="Plan, trading and autonomous modes; how to write a system prompt that works, and when to delegate to sub-agents."
 	/>
 	<LinkCard
 		title="Playground"
 		href="guides/playground/"
-		description="Crea tus propios agentes y sub-agentes: system prompt, modelo, herramientas y el portfolio que gestionan."
+		description="Build your own agents and sub-agents: system prompt, model, tools and the portfolio they manage."
 	/>
 	<LinkCard
 		title="Copy Trader Agent"
 		href="guides/copy-trader/"
-		description="Copia las operaciones de un agente público con uno de tus portfolios, en proporción a tu capital."
+		description="Mirror a public agent's trades with one of your portfolios, sized to your capital."
 	/>
 	<LinkCard
-		title="Programar tareas (AgentTask)"
+		title="Scheduling tasks (AgentTask)"
 		href="guides/agent-tasks/"
-		description="Convierte una rutina del chat en una tarea que se ejecuta sola, con ejemplos listos para copiar."
+		description="Turn a chat routine into a task that runs on its own, with examples ready to copy."
 	/>
 	<LinkCard
-		title="Gestionar el riesgo"
+		title="Managing risk"
 		href="guides/risk/"
-		description="Take Profit, Stop Loss, tamaño de posición y reserva de liquidez: las reglas que mandan sobre cualquier agente."
+		description="Take Profit, Stop Loss, position sizing and cash reserve: the rules that override any agent."
 	/>
 </CardGrid>
 
-## Referencia
+## Reference
 
 <CardGrid>
 	<LinkCard
-		title="Qué es TredOps"
+		title="What is TredOps"
 		href="introduction/"
-		description="Los cuatro pilares, el enfoque no custodial y para quién está pensada la plataforma."
+		description="The four pillars, the non-custodial approach, and who the platform is for."
 	/>
 	<LinkCard
-		title="Los cuatro pilares"
+		title="The four pillars"
 		href="pillars/bots-ci/"
-		description="Bots, Monitoring, Agentes IA e Integraciones, explicados en detalle."
+		description="Bots, Monitoring, AI Agents and Integrations, explained in detail."
 	/>
 	<LinkCard
-		title="Planes y precios"
+		title="Plans & pricing"
 		href="pricing/"
-		description="Free Trial, prueba Premium y Premium, y cómo funcionan los créditos de LLM."
+		description="Free Trial, Premium trial and Premium, and how LLM credits work."
 	/>
 	<LinkCard
-		title="Seguridad"
+		title="Security"
 		href="security/"
-		description="Cómo se protegen tus credenciales, tus cuentas y tus datos."
+		description="How your credentials, accounts and data are protected."
 	/>
 	<LinkCard
-		title="Glosario"
+		title="Glossary"
 		href="glossary/"
-		description="Todos los términos de la plataforma, en una línea cada uno."
+		description="Every platform term, one line each."
 	/>
 	<LinkCard
 		title="FAQ"
 		href="faq/"
-		description="Las preguntas que más se repiten, respondidas sin rodeos."
+		description="The questions that come up most, answered plainly."
 	/>
 	<LinkCard
 		title="Blog"
 		href="blog/"
-		description="Novedades de la plataforma, anuncios y guías avanzadas."
+		description="Platform updates, announcements and deep-dive guides."
 	/>
 </CardGrid>
 
-:::caution[No es asesoramiento financiero]
-TredOps es una herramienta de software. Nada en esta documentación —incluidos los
-resultados del Benchmark— constituye asesoramiento de inversión. Operar en
-mercados financieros implica riesgo de pérdida.
+:::caution[Not financial advice]
+TredOps is a software tool. Nothing in this documentation — including Benchmark
+results — constitutes investment advice. Trading financial markets carries risk
+of loss.
 :::

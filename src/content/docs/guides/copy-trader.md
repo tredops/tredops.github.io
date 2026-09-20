@@ -1,143 +1,142 @@
 ---
 title: Copy Trader Agent
-description: Copia automáticamente las operaciones de un agente público con uno de tus portfolios, en proporción a tu capital y sin gastar créditos de LLM.
+description: Automatically mirror a public agent's trades with one of your portfolios, sized to your capital and without spending LLM credits.
 ---
 
-**Copy Trader Agent** es copy trading aplicado a los agentes de TredOps: eliges
-un agente público, conectas uno de tus portfolios como seguidor y, a partir de
-ese momento, cada operación que abre o cierra ese agente se replica en tu
-cartera **en proporción a tu capital**.
+**Copy Trader Agent** is copy trading applied to TredOps agents: you pick a
+public agent, connect one of your portfolios as a follower, and from then on
+every trade that agent opens or closes is mirrored in your book **in proportion
+to your capital**.
 
-Lo encuentras en **Copy Trader Agents** dentro del dashboard.
+You will find it under **Copy Trader Agents** in the dashboard.
 
-## Por qué usarlo
+## Why use it
 
-Un agente propio decide con un LLM, y eso cuesta créditos en cada evaluación. Un
-portfolio seguidor **no usa LLM**: solo replica. Es la diferencia entre pagar
-por pensar y pagar por copiar.
+Your own agent decides with an LLM, and that costs credits on every evaluation.
+A follower portfolio **uses no LLM**: it only mirrors. It is the difference
+between paying to think and paying to copy.
 
-Tiene sentido si:
+It makes sense if:
 
-- Quieres resultados sin escribir un system prompt ni afinar un bot.
-- Quieres mantener un portfolio con una estrategia que ya funciona mientras
-  experimentas en otro.
-- El gasto en créditos de un agente propio no te compensa para el tamaño de esa
-  cartera.
+- You want results without writing a system prompt or tuning a bot.
+- You want to keep one portfolio on a strategy that already works while you
+  experiment in another.
+- The credit spend of your own agent does not pay off for that book's size.
 
-No tiene sentido si quieres control fino sobre cada decisión. Para eso está el
-[Playground](../playground/).
+It does not make sense if you want fine control over each decision. That is what
+the [Playground](../playground/) is for.
 
-## Elegir un agente
+## Choosing an agent
 
-Cada agente publicado muestra, de forma pública y sin retoques:
+Every published agent shows, publicly and unedited:
 
-- **La curva de capital** desde su inicio, con el porcentaje actual.
-- **El beneficio de sus últimas operaciones cerradas**, barra a barra.
-- **Win rate** y número de operaciones cerradas.
-- **Cuántos seguidores** tiene.
-- **Todo su historial de órdenes**: símbolo, fechas, precios, tamaño, P&L y el
-  motivo de cada cierre.
+- **Its capital curve** since inception, with the current percentage.
+- **The profit of its most recent closed trades**, bar by bar.
+- **Win rate** and number of closed trades.
+- **How many followers** it has.
+- **Its full order history**: symbol, dates, prices, size, P&L and the reason
+  for each close.
 
-Entra en el detalle de un agente antes de copiarlo y mira tres cosas que el
-porcentaje grande no te cuenta:
+Open an agent's detail before copying it and look at three things the big
+percentage does not tell you:
 
-| Qué mirar | Por qué |
-|-----------|---------|
-| **Cuántas operaciones lleva** | Un +30 % con 4 operaciones no dice nada |
-| **Su peor racha** | Es lo que vas a tener que aguantar sin cerrar en pánico |
-| **Cómo de concentrado opera** | Tres posiciones del mismo sector son una apuesta, no tres |
+| What to check | Why |
+|---------------|-----|
+| **How many trades it has** | +30% over 4 trades says nothing |
+| **Its worst stretch** | That is what you will have to sit through without panicking |
+| **How concentrated it trades** | Three positions in one sector are one bet, not three |
 
-:::note[Lo que no se publica]
-Verás **qué** hizo el agente, no **cómo** lo decide. Los parámetros afinados de
-su estrategia y su configuración interna no son públicos: el historial es el
-track record, no la receta.
+:::note[What is not published]
+You see **what** the agent did, not **how** it decides. Its tuned strategy
+parameters and internal configuration are not public: the history is the track
+record, not the recipe.
 :::
 
-## Empezar a copiar
+## Start copying
 
-1. Entra en **Copy Trader Agents** y abre el agente que te interese.
-2. Pulsa **Copy** y elige **cuál de tus portfolios** lo va a seguir.
-3. Listo. El portfolio seguidor muestra un indicador azul en la barra lateral.
+1. Go to **Copy Trader Agents** and open the agent you want.
+2. Hit **Copy** and choose **which of your portfolios** will follow it.
+3. That is it. The follower portfolio gets a blue indicator in the sidebar.
 
-Un portfolio copia **un solo agente a la vez**, pero puedes tener varios
-portfolios copiando a agentes distintos —o incluso al mismo—.
+A portfolio copies **one agent at a time**, but you can have several portfolios
+copying different agents — or even the same one.
 
-## Cómo se calcula tu tamaño de posición
+## How your position size is worked out
 
-La réplica es **proporcional**, no una copia literal:
+The replica is **proportional**, not a literal copy:
 
-> Si el agente destina el 5 % de su equity a una posición, tu portfolio destina
-> el 5 % del suyo.
+> If the agent puts 5% of its equity into a position, your portfolio puts 5% of
+> yours.
 
-Así que no necesitas tener el mismo capital que el agente que copias. Lo que sí
-importa: **si no tienes liquidez suficiente, esa operación se salta**. No se
-abre a medias ni se endeuda tu cartera. Queda registrada como omitida, con el
-motivo, y recibes una notificación.
+So you do not need the same capital as the agent you copy. What does matter:
+**if you do not have enough cash, that trade is skipped**. It is never opened
+partially and your book is never leveraged. It is recorded as skipped, with the
+reason, and you get a notification.
 
-## Qué pasa con tus reglas y tus tareas
+## What happens to your rules and your tasks
 
-Esto es lo que más sorprende, así que conviene tenerlo claro de antemano.
+This is the part that surprises people, so it is worth knowing up front.
 
-**Tus reglas de riesgo se siguen aplicando.** Una réplica pasa por los mismos
-controles que cualquier otra orden tuya: límite de capital por posición, reserva
-de liquidez, cooldown, filtros de señal. Si uno de ellos la bloquea, la
-operación se omite con ese motivo. **Copiar no es ceder el control.**
+**Your risk rules still apply.** A replica goes through the same checks as any
+order of your own: per-position capital limit, cash reserve, cooldown, signal
+filters. If one of them blocks it, the trade is skipped with that reason.
+**Copying is not handing over control.**
 
-**Tus AgentTasks del portfolio seguidor se pausan.** Mientras ese portfolio esté
-copiando, sus tareas programadas quedan en pausa —tendría poco sentido que un
-agente tuyo y el agente copiado se pisaran en la misma cartera—. Al dejar de
-copiar se restauran exactamente como estaban. Las tareas que ya tenías
-desactivadas no se tocan.
+**Your AgentTasks on the follower portfolio are paused.** While that portfolio
+is copying, its scheduled tasks are paused — it would make little sense for your
+agent and the copied agent to fight over the same book. When you stop copying
+they are restored exactly as they were. Tasks you had already disabled are left
+alone.
 
-**Toda réplica lleva Take Profit y Stop Loss**, como cualquier orden de TredOps.
+**Every replica carries Take Profit and Stop Loss**, like any TredOps order.
 
-## Dejar de copiar
+## Stop copying
 
-Desde la card del agente o desde los ajustes del portfolio, en un clic.
+From the agent's card or from the portfolio settings, in one click.
 
-:::caution[Las posiciones abiertas se quedan]
-Dejar de copiar **no cierra** lo que ya está abierto. Esas posiciones siguen
-siendo tuyas y las gestiona el Monitoring con su Take Profit y su Stop Loss,
-pero ya no llegarán los cierres del agente. Si quieres salir del todo, ciérralas
-tú después.
+:::caution[Open positions stay open]
+Stopping does **not** close what is already open. Those positions are still
+yours and Monitoring still manages them with their Take Profit and Stop Loss,
+but the agent's closes will no longer reach them. If you want out entirely,
+close them yourself afterwards.
 :::
 
-Al dejar de copiar se reactivan las AgentTasks que estaban pausadas.
+Stopping also reactivates the AgentTasks that were paused.
 
-## Qué cuesta
+## What it costs
 
-Un portfolio seguidor no consume créditos por decidir, porque no decide. Lo que
-sí paga es un **fee simbólico**: un porcentaje del consumo de créditos del
-agente fuente, y solo en las ejecuciones en las que ese agente realmente abrió o
-cerró alguna operación.
+A follower portfolio consumes no credits for deciding, because it does not
+decide. What it does pay is a **token fee**: a percentage of the source agent's
+credit consumption, and only on the runs where that agent actually opened or
+closed something.
 
-Por defecto es el **10 %** de lo que gastó el agente en esa ejecución, y puede
-estar configurado a cero. Lo ves desglosado en tu consumo de créditos.
+By default that is **10%** of what the agent spent on that run, and it can be
+configured to zero. You see it itemised in your credit usage.
 
-Sale a cuenta frente a un agente propio precisamente porque un agente reparte su
-coste entre todos sus seguidores.
+It works out cheaper than running your own agent precisely because one agent
+splits its cost across all of its followers.
 
-## Seguimiento
+## Following along
 
-En los ajustes de tu portfolio seguidor tienes la tabla de replicaciones: qué se
-copió, cuándo, con qué tamaño y —cuando algo no se copió— **por qué**. Los
-motivos habituales son de negocio, no fallos:
+Your follower portfolio's settings have the replication table: what was copied,
+when, at what size, and — when something was not copied — **why**. The common
+reasons are business outcomes, not failures:
 
-- **Sin liquidez suficiente** — no cabía en tu cartera en ese momento.
-- **Tamaño inviable** — la proporción daba una posición demasiado pequeña.
-- **Bloqueada por un control tuyo** — una de tus reglas de riesgo la paró.
+- **Not enough cash** — it did not fit in your book at that moment.
+- **Size too small** — the proportion produced an unworkable position.
+- **Blocked by one of your own checks** — one of your risk rules stopped it.
 
-Recibes una notificación cuando una copia no se ejecuta por un motivo sobre el
-que puedes actuar.
+You get a notification whenever a copy does not go through for a reason you can
+act on.
 
-:::note[No hay histórico al empezar]
-Al empezar a seguir, las posiciones que el agente ya tenía abiertas **no se
-copian**. La replicación arranca con sus operaciones nuevas. Por eso, durante
-los primeros días verás menos actividad de la que sugiere su historial.
+:::note[No backfill when you start]
+When you start following, positions the agent already had open are **not**
+copied. Replication starts with its new trades. So for the first few days you
+will see less activity than its history suggests.
 :::
 
-## Siguiente paso
+## Next
 
-- [Playground](../playground/) — escribir tu propio agente en lugar de copiar uno.
-- [Gestionar el riesgo](../risk/) — los límites que siguen mandando mientras copias.
-- [Planes y precios](../../pricing/) — cómo funcionan los créditos.
+- [Playground](../playground/) — writing your own agent instead of copying one.
+- [Managing risk](../risk/) — the limits that still apply while you copy.
+- [Plans & pricing](../../pricing/) — how credits work.

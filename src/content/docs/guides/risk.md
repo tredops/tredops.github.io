@@ -1,102 +1,100 @@
 ---
-title: Gestionar el riesgo
-description: Take Profit, Stop Loss, tamaño de posición y reserva de liquidez. Las reglas que hacen que una mala racha no se convierta en un problema.
+title: Managing risk
+description: Take Profit, Stop Loss, position sizing and cash reserve. The rules that keep a bad run from becoming a problem.
 ---
 
-La razón de ser de TredOps no es acertar más, es **perder menos por descuido**.
-Esta página reúne las reglas de riesgo de la plataforma y cómo configurarlas.
+TredOps does not exist to be right more often — it exists so you **lose less by
+neglect**. This page collects the platform's risk rules and how to set them.
 
-## La regla que no se puede desactivar
+## The rule you cannot switch off
 
-**Toda orden abierta a través de TredOps lleva Take Profit y Stop Loss.** No hay
-una casilla para quitarlo, ni para los agentes, ni para las tareas programadas,
-ni para el modo autónomo.
+**Every order opened through TredOps carries a Take Profit and a Stop Loss.**
+There is no checkbox to remove it — not for agents, not for scheduled tasks, not
+in autonomous mode.
 
-El motivo es el que aparece en el origen del producto: la mayoría de pérdidas
-evitables no vienen de elegir mal, sino de no tener decidido de antemano cuándo
-salir.
+The reason is the one behind the product itself: most avoidable losses do not
+come from picking wrong, but from not having decided in advance when to get out.
 
-## Los cuatro parámetros
+## The four parameters
 
 ### Take Profit
 
-El precio al que se cierra la posición en ganancias. Se fija al abrir, a partir
-de la calibración de la estrategia para ese activo.
+The price at which a winning position is closed. Set at open, derived from the
+strategy's calibration for that asset.
 
-Un Take Profit demasiado ajustado corta las operaciones buenas antes de tiempo;
-uno demasiado lejano deja que una ganancia se evapore.
+Too tight and it cuts good trades short; too far and a gain evaporates on the way
+there.
 
 ### Stop Loss
 
-El precio al que se cierra la posición en pérdidas. Es el parámetro más delicado:
-un stop demasiado estrecho lo barre el ruido normal del activo, y acabas saliendo
-con pérdida de una operación que iba a funcionar.
+The price at which a losing position is closed. It is the most delicate
+parameter: too narrow and the asset's normal noise sweeps you out of a trade that
+was going to work.
 
-Por eso TredOps lo calcula a partir de la **volatilidad reciente del activo**, no
-con un porcentaje fijo igual para todo. Un ETF defensivo y una cripto no pueden
-llevar el mismo stop.
+That is why TredOps derives it from the **asset's recent volatility**, not from a
+fixed percentage applied to everything. A defensive ETF and a crypto pair cannot
+carry the same stop.
 
-### Tamaño máximo por posición
+### Maximum position size
 
-Cuánto capital del portfolio puede ir a una sola posición. El valor por defecto
-es un **25 %**: aunque una posición se vaya a cero, el portfolio sobrevive.
+How much of the portfolio's capital may go into a single position. The default is
+**25%**: even if one position goes to zero, the portfolio survives.
 
-Bájalo si operas activos correlacionados —tres posiciones en el mismo sector no
-son tres apuestas distintas, son una apuesta triplicada—.
+Lower it if you trade correlated assets — three positions in the same sector are
+not three separate bets, they are one bet tripled.
 
-### Reserva de liquidez
+### Cash reserve
 
-El porcentaje del portfolio que nunca se invierte, por defecto un **10 %**. Sirve
-para poder reaccionar: promediar, cubrir o entrar en una oportunidad sin tener
-que cerrar antes otra posición a destiempo.
+The share of the portfolio that is never invested, **10%** by default. It exists
+so you can react: average in, hedge, or take an opportunity without having to
+close something else at the wrong moment.
 
-## Dónde se configuran
+## Where to set them
 
-| Nivel | Qué fija | Dónde |
-|-------|----------|-------|
-| **Portfolio** | Tamaño máximo por posición, reserva de liquidez, filtros de señal | Dashboard → Portfolios → Ajustes |
-| **Bot** | Niveles de Take Profit / Stop Loss por estrategia | Dashboard → Bots → Configuración |
-| **Orden** | Ajuste puntual antes de abrir | Al confirmar la orden |
+| Level | What it sets | Where |
+|-------|--------------|-------|
+| **Portfolio** | Max position size, cash reserve, signal filters | Dashboard → Portfolios → Settings |
+| **Bot** | Take Profit / Stop Loss levels per strategy | Dashboard → Bots → Configuration |
+| **Order** | One-off adjustment before opening | At order confirmation |
 
-Las reglas del portfolio **mandan sobre todo lo demás**. Si un agente propone una
-operación que se las salta, la operación no se abre — no es una advertencia, es
-un bloqueo.
+Portfolio rules **override everything else**. If an agent proposes a trade that
+breaks them, the trade does not open — it is a block, not a warning.
 
-## Monitoring: lo que pasa después de abrir
+## Monitoring: what happens after the open
 
-Una vez abierta la posición, un proceso periódico la vigila:
+Once a position is open, a periodic process watches it:
 
-1. Obtiene el precio actual del activo.
-2. Vuelve a evaluar la posición con la misma estrategia con la que se abrió.
-3. Cierra si se alcanza el Take Profit, si se toca el Stop Loss, o si la propia
-   estrategia indica salir antes que ninguno de los dos.
+1. It pulls the asset's current price.
+2. It re-evaluates the position with the same strategy that opened it.
+3. It closes on Take Profit, on Stop Loss, or when the strategy itself says to
+   get out before either.
 
-Es decir: no esperas a que el precio toque un nivel si la estrategia ya dice que
-la razón para estar dentro desapareció.
+In other words: you do not wait for a price level if the reason for being in the
+trade has already gone.
 
-## Cómo empezar
+## Where to start
 
-Si no sabes qué valores poner, empieza por aquí y ajusta con datos, no con
-intuición:
+If you do not know what numbers to use, start here and adjust with data, not
+intuition:
 
-- **Máximo por posición**: 15 %
-- **Reserva de liquidez**: 20 %
-- **Posiciones simultáneas**: 3 o 4
-- **Modo del agente**: Plan durante las dos primeras semanas
+- **Max per position**: 15%
+- **Cash reserve**: 20%
+- **Simultaneous positions**: 3 or 4
+- **Agent mode**: Plan for the first two weeks
 
-Cuando lleves un par de meses de historial propio, revisa cuál de estos límites
-te ha estorbado de verdad y cuál te ha salvado.
+After a couple of months of your own history, review which of these limits
+actually got in your way and which one saved you.
 
-## Errores habituales
+## Common mistakes
 
-- **Ensanchar el stop porque la posición va en pérdidas.** Es la forma más rápida
-  de convertir una pérdida asumible en una que duele.
-- **Concentrar en un sector.** Cinco posiciones tecnológicas en un mal día para
-  la tecnología son una sola posición muy grande.
-- **Confundir modo autónomo con desatendido.** Autónomo significa que ejecuta
-  solo, no que no haya que mirarlo.
+- **Widening the stop because the position is down.** The fastest way to turn a
+  bearable loss into one that hurts.
+- **Concentrating in one sector.** Five tech positions on a bad day for tech are
+  one very large position.
+- **Confusing autonomous with unattended.** Autonomous means it executes on its
+  own, not that nobody needs to look.
 
-## Siguiente paso
+## Next
 
-- [Monitoring](../../pillars/monitoring/) — el detalle del pilar completo.
-- [Seguridad](../../security/) — qué controla TredOps y qué controlas tú.
+- [Monitoring](../../pillars/monitoring/) — the full pillar in detail.
+- [Security](../../security/) — what TredOps controls and what you control.

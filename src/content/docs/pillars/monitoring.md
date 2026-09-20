@@ -1,52 +1,52 @@
 ---
 title: Monitoring
-description: Take Profit y Stop Loss automáticos con monitorización continua de posiciones.
+description: Automatic Take Profit and Stop Loss with continuous position monitoring.
 ---
 
-El pilar de **Monitoring** es la capa de monitorización continua de posiciones con gestión automática de riesgo.
+The **Monitoring** pillar is the layer of continuous position monitoring with automatic risk management.
 
-**Toda orden** generada o gestionada a través de TredOps se abre siempre con **Take Profit** y **Stop Loss** definidos. El sistema monitoriza de forma continua las posiciones para capturar oportunidades o cerrar la operación cuando se cumplen las condiciones establecidas, reduciendo la exposición a decisiones impulsivas o a una gestión de riesgo deficiente.
+**Every order** generated or managed through TredOps always opens with a defined **Take Profit** and **Stop Loss**. The system continuously monitors positions to capture opportunities or close the trade when the configured conditions are met, reducing exposure to impulsive decisions or poor risk management.
 
-## Cómo funciona
+## How it works
 
-1. Un worker periódico revisa todas las posiciones abiertas.
-2. Para cada posición obtiene los datos de mercado actuales.
-3. Evalúa la posición con la misma estrategia que se usó al abrirla.
-4. Comprueba los niveles de riesgo:
+1. A periodic worker reviews all open positions.
+2. For each position it fetches current market data.
+3. It evaluates the position with the same strategy used to open it.
+4. It checks risk levels:
 
-   - **Stop Loss**: cierra si el precio cae por debajo del umbral de pérdida máxima.
-   - **Take Profit**: cierra si el precio alcanza el objetivo de ganancia.
-   - **Señal de estrategia**: cierra si la evaluación de la estrategia indica salir.
+   - **Stop Loss**: closes if the price drops below the maximum loss threshold.
+   - **Take Profit**: closes if the price reaches the profit target.
+   - **Strategy signal**: closes if the strategy evaluation says to exit.
 
-5. Si decide cerrar, actualiza el balance de tu portfolio automáticamente.
+5. If it decides to close, it updates your portfolio balance automatically.
 
-## Parámetros de riesgo
+## Risk parameters
 
-Configuras los niveles en la apertura de la orden:
+You configure the levels when the order opens:
 
-- **Stop Loss** — porcentaje de pérdida máxima aceptada.
-- **Take Profit** — porcentaje de ganancia objetivo.
-- **Trailing stop** (opcional) — sigue el precio en tu favor para proteger beneficios.
+- **Stop Loss** — maximum accepted loss percentage.
+- **Take Profit** — target profit percentage.
+- **Trailing stop** (optional) — follows the price in your favor to protect profits.
 
-> Una vez abierta la orden, se evalúa con sus propios parámetros guardados, no con los del día de apertura.
+> Once an order is open, it is evaluated with its own saved parameters, not those of the opening day.
 
-## Razones de cierre
+## Closing reasons
 
-| Razón | Descripción |
-|-------|-------------|
-| `STOP_LOSS` | El precio cayó por debajo del umbral de pérdida máxima |
-| `TAKE_PROFIT` | El precio alcanzó el objetivo de ganancia |
-| `STRATEGY_SIGNAL` | La estrategia indica cerrar la posición |
-| `FORCE_CLOSE` | Cierre manual forzado |
+| Reason | Description |
+|--------|-------------|
+| `STOP_LOSS` | Price fell below the maximum loss threshold |
+| `TAKE_PROFIT` | Price reached the profit target |
+| `STRATEGY_SIGNAL` | The strategy indicates closing the position |
+| `FORCE_CLOSE` | Forced manual close |
 
-## Gestión de riesgo de los agentes
+## Agent risk management
 
-Cuando un agente autónomo opera por ti, aplica además reglas de gestión de riesgo adicionales para proteger tu capital:
+When an autonomous agent operates for you, it also applies additional risk rules to protect your capital:
 
-- Máximo **25 %** por posición.
-- **10 %** de reserva de caja.
-- Cierre ante pérdida de **−5 %** en la cartera (por posición).
-- Cierre de la mitad de la posición con **+10 %** de beneficio.
-- Distancia de stop-loss de **15 %** por defecto.
+- Max **25%** per position.
+- **10%** cash reserve.
+- Close on a **−5%** loss.
+- Close half the position at **+10%** profit.
+- Default stop-loss distance of **15%**.
 
-Gracias a esta capa, TredOps automatiza y profesionaliza la gestión de riesgo: sin decisiones impulsivas, sin stops mal calculados por volatilidad.
+Thanks to this layer, TredOps automates and professionalizes risk management: no impulsive decisions, no badly calculated stops removed by volatility.

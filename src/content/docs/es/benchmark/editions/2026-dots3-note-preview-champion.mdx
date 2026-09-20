@@ -1,0 +1,71 @@
+---
+title: "Benchmark Trading Agents"
+description: "Seis sub-agentes LLM gestionan cada uno su propio portfolio durante dos semanas. Dots 3 (dots-3-note-preview) gana la primera edición con +17,10 %."
+benchmark:
+  edition: 2026-dots3-note-preview-champion
+  pubDate: 2026-09-19
+  window: 18 ago 2026 → 31 ago 2026
+  winner: Dots 3 · +17,10 %
+  agents: 6
+  hero: 2026-dots3-note-preview-champion.jpg
+  tags: [ETFs, LLM]
+---
+
+import hero from '../../../../../assets/benchmark/2026-dots3-note-preview-champion.jpg';
+import BenchmarkRace from '../../../../../components/benchmark/BenchmarkRace.astro';
+import BenchmarkSummary from '../../../../../components/benchmark/BenchmarkSummary.astro';
+import BenchmarkAgentDetails from '../../../../../components/benchmark/BenchmarkAgentDetails.astro';
+import BenchmarkEditions from '../../../../../components/benchmark/BenchmarkEditions.astro';
+
+<img
+	class="bmk-hero"
+	src={hero.src}
+	width={hero.width}
+	height={hero.height}
+	alt="Sub-agentes de trading compitiendo en el benchmark de agentes de TredOps"
+/>
+
+La **primera edición** del Benchmark público enfrenta a **seis sub-agentes** con modelos LLM distintos. Todos reciben **el mismo capital** (USD 10.000), la **misma ventana histórica** y la **misma cadencia de evaluación**; lo único que cambia es el modelo y su contexto. Durante dos semanas cada uno gestiona su portfolio de forma autónoma, con las mismas reglas de riesgo del broker.
+
+Consulta la [metodología completa](../../methodology/) para entender cómo se monta cada carrera.
+
+## Configuraciones comparadas
+
+- **Dots 3** — `dots-studio/dots-3-note-preview:free`
+- **Muse Glimmer** — `meta/muse-glimmer-30b`
+- **Deepseek** — `deepseek-v4-flash`
+- **OpenRouter** — `openrouter/free`
+- **Nemotron 3** — `nvidia/nemotron-3-super-120b-a12b`
+- **DeepSeek** — `deepseek-v4-pro`
+
+## Resultados
+
+<BenchmarkRace edition="2026-dots3-note-preview-champion" lang="es" />
+
+<BenchmarkSummary edition="2026-dots3-note-preview-champion" lang="es" />
+
+### Cómo leer el gráfico
+
+- **Barra de cada fila.** En el layout de capital, la barra es el *equity* del agente y se parte en **capital invertido** (una porción por posición abierta, con el logo del activo y su P&L) y **cash** (la liquidez restante).
+- **Columna de la derecha.** Muestra el **P&L respecto al capital inicial**: verde si gana, rojo si pierde.
+- **Ranking.** Las filas se reordenan en cada frame; el primer puesto es el de mayor equity en ese instante.
+- **Fecha.** El reloj superior avanza con la ventana histórica y convierte el gráfico en una repetición, no en una foto fija.
+- **↓ short.** Una flecha junto a un activo indica una posición corta.
+
+Las cifras de la tabla son las del **último snapshot** de la ventana, con las posiciones ya liquidadas.
+
+## Detalle por agente
+
+Cada pestaña muestra el desglose del portfolio de un agente al cierre de la ventana: sus **posiciones abiertas** (capital invertido y P&L no realizado) y el histórico de **operaciones cerradas** con el P&L realizado y el motivo del cierre (take profit, stop loss…).
+
+<BenchmarkAgentDetails edition="2026-dots3-note-preview-champion" lang="es" />
+
+## Conclusión
+
+**Dots 3** (`dots-3-note-preview:free`) se lleva la primera edición con **+17,10 %** y **USD 11.710** de equity final, por delante de **Muse Glimmer** (+9,10 %) y **Deepseek** (+4,65 %). La referencia **Buy & Hold** y **DeepSeek** (`deepseek-v4-pro`, −0,66 %) se quedan atrás.
+
+> Los resultados pasados no garantizan resultados futuros. El Benchmark es informativo y no constituye asesoramiento financiero.
+
+## Otras ediciones
+
+<BenchmarkEditions lang="es" exclude="es/benchmark/editions/2026-dots3-note-preview-champion" />

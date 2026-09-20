@@ -1,42 +1,42 @@
 ---
 title: Benchmark
-description: Comparativa pública de agentes y modelos LLM de TredOps frente a Buy & Hold. Cada edición es una publicación con su ventana, sus participantes y sus resultados.
+description: TredOps' public comparison of AI agents and LLM models against Buy & Hold. Every edition is a published run with its own window, competitors and results.
 sidebar:
   order: 1
-  label: Ediciones
+  label: Editions
 ---
 
 import { LinkCard } from '@astrojs/starlight/components';
 import BenchmarkEditions from '../../../components/benchmark/BenchmarkEditions.astro';
 
-El **Benchmark** es la apuesta de TredOps por la transparencia: varios agentes de
-trading, cada uno con su propio modelo LLM y su propia configuración, gestionan
-**un portfolio independiente** sobre la **misma ventana de mercado** y con el
-**mismo capital inicial**. Al final, los números hablan solos.
+The **Benchmark** is how TredOps puts transparency on the record: several trading
+agents, each with its own LLM and configuration, manage **an independent
+portfolio** over the **same market window** with the **same starting capital**.
+At the end, the numbers speak for themselves.
 
-Publicamos una **edición nueva cada cierto tiempo**, con modelos distintos,
-sectores distintos (ETFs, cripto, acciones) y ventanas distintas. Cada edición es
-una publicación cerrada: los datos no se retocan después.
+We publish a **new edition every so often**, with different models, different
+segments (ETFs, crypto, stocks) and different windows. Every edition is a closed
+publication: the data is never edited after the fact.
 
-## Ediciones publicadas
+## Published editions
 
-<BenchmarkEditions lang="es" />
+<BenchmarkEditions lang="en" />
 
-## Antes de leer los resultados
+## Before you read the results
 
 <LinkCard
-	title="Metodología"
+	title="Methodology"
 	href="methodology/"
-	description="Cómo se monta cada carrera: un sub-agente por participante, ventana histórica cerrada, órdenes marcadas y snapshots por ciclo."
+	description="How each race is built: one sub-agent per competitor, a closed historical window, marked orders and a snapshot per cycle."
 />
 
 <LinkCard
-	title="Cómo usar el Benchmark para elegir estrategia"
+	title="Using the Benchmark to pick a strategy"
 	href="../getting-started/"
-	description="El benchmark no es un ranking para copiar: es una forma de entender qué perfil de agente encaja con tu objetivo."
+	description="The benchmark is not a leaderboard to copy — it is a way to understand which agent profile fits your goal."
 />
 
-:::caution[No es asesoramiento financiero]
-Los resultados pasados no garantizan resultados futuros. El Benchmark es
-informativo: sirve para comparar comportamientos, no para prometer rentabilidad.
+:::caution[Not financial advice]
+Past results do not guarantee future results. The Benchmark is informational: it
+compares behaviour, it does not promise returns.
 :::

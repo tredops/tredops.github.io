@@ -1,92 +1,92 @@
 ---
-title: Conceptos clave
-description: Portfolio, bot, agente, señal, orden y calibración explicados en una página. La base para entender el resto de la documentación.
+title: Key concepts
+description: Portfolio, bot, agent, signal, order and calibration explained on one page. The foundation for everything else in these docs.
 ---
 
-Antes de tocar nada en la plataforma conviene tener claros seis conceptos. Con
-ellos entenderás todo lo demás.
+Six concepts are worth getting straight before you touch anything in the
+platform. With them, the rest follows.
 
 ## Portfolio
 
-Un **portfolio** es una cartera dentro de TredOps: tiene un capital asignado, una
-liquidez disponible, unas posiciones abiertas y unas reglas propias (qué activos
-puede operar, cuánto puede arriesgar por operación, qué filtros de señal acepta).
+A **portfolio** is a book inside TredOps: it has assigned capital, available
+cash, open positions and its own rules (which assets it may trade, how much it
+may risk per trade, which signal filters it accepts).
 
-Puedes tener varios portfolios a la vez y usarlos para separar estrategias: uno
-conservador de ETFs, otro agresivo de cripto, otro para probar un agente nuevo.
-Cada uno lleva su propia contabilidad.
+You can run several portfolios at once and use them to separate strategies: a
+conservative ETF book, an aggressive crypto one, another to try out a new agent.
+Each keeps its own accounting.
 
 :::note
-El portfolio es una unidad **contable y de reglas** dentro de TredOps. El dinero
-real sigue en tu cuenta del broker: TredOps nunca lo custodia.
+The portfolio is an **accounting and rules** unit inside TredOps. The real money
+stays in your broker account — TredOps never custodies it.
 :::
 
 ## Bot
 
-Un **bot** es una estrategia algorítmica aplicada a uno o varios activos. No usa
-un LLM: usa reglas e indicadores cuyos parámetros se optimizan sobre datos
-históricos.
+A **bot** is an algorithmic strategy applied to one or more assets. It does not
+use an LLM: it uses rules and indicators whose parameters are optimised over
+historical data.
 
-Un bot no decide por su cuenta qué entra en tu cartera. Lo que hace es **generar
-señales**.
+A bot does not decide what enters your book on its own. What it does is **produce
+signals**.
 
-## Señal y Signal Pool
+## Signal and Signal Pool
 
-Una **señal** es la propuesta de operación que emite un bot: "abrir largo en X a
-este precio, con este stop y este objetivo".
+A **signal** is the trade a bot proposes: "go long on X at this price, with this
+stop and this target."
 
-Todas las señales van a un **Signal Pool** compartido. Los agentes leen ese pool,
-lo filtran con los criterios de tu portfolio y deciden cuáles merece la pena
-ejecutar. Una señal, por sí sola, nunca mueve dinero.
+Every signal lands in a shared **Signal Pool**. Agents read that pool, filter it
+with your portfolio's criteria and decide which ones are worth executing. A
+signal on its own never moves money.
 
-## Agente y sub-agente
+## Agent and sub-agent
 
-Un **agente** es un modelo de lenguaje con un system prompt, un conjunto de
-herramientas y unos permisos. Es quien **decide**: lee el contexto de tu cartera,
-consulta el Signal Pool, analiza datos de mercado y abre o cierra operaciones.
+An **agent** is a language model with a system prompt, a set of tools and a set
+of permissions. It is the one that **decides**: it reads your portfolio context,
+queries the Signal Pool, analyses market data and opens or closes trades.
 
-Un **sub-agente** es un agente especializado al que el agente principal delega
-una parte del trabajo (analizar un sector, revisar el riesgo, proponer un
-rebalanceo). Puedes crear los tuyos en el Playground.
+A **sub-agent** is a specialised agent the main one delegates part of the work to
+(analysing a sector, reviewing risk, proposing a rebalance). You can build your
+own in the Playground.
 
-## Orden y posición
+## Order and position
 
-Una **orden** es la instrucción de compra o venta que se envía al broker. Una
-**posición** es el resultado: lo que tienes abierto en el mercado.
+An **order** is the buy or sell instruction sent to the broker. A **position** is
+the result: what you hold in the market.
 
-En TredOps toda orden se abre con **Take Profit** y **Stop Loss**. No es opcional:
-es la regla que hace que una operación no pueda quedarse abierta indefinidamente
-por descuido.
+In TredOps every order opens with a **Take Profit** and a **Stop Loss**. It is
+not optional — it is the rule that stops a trade from sitting open indefinitely
+by neglect.
 
-## Calibración
+## Calibration
 
-La **calibración** es el proceso que encuentra los parámetros óptimos de una
-estrategia para un activo concreto, sobre datos históricos. Es la fuente de
-verdad para evaluar si una señal es buena.
+**Calibration** is the process that finds the optimal parameters of a strategy
+for a given asset, over historical data. It is the source of truth for judging
+whether a signal is any good.
 
-Cada bot tiene su propio calendario de calibración y se reajusta de forma
-periódica a las condiciones recientes del mercado, porque un parámetro que
-funcionaba en un régimen de baja volatilidad deja de funcionar en uno alto.
+Every bot has its own calibration schedule and re-tunes periodically to recent
+market conditions, because a parameter that worked in a low-volatility regime
+stops working in a high one.
 
-## Cómo encajan
+## How it fits together
 
 ```
-Bot ──genera──► Señal ──entra en──► Signal Pool
-                                        │
-                                        ▼
-                         Agente (filtra, analiza, decide)
-                                        │
-                                        ▼
-                     Orden ──en tu broker──► Posición
-                                        │
-                                        ▼
-                    Monitoring (Take Profit / Stop Loss)
+Bot ──produces──► Signal ──enters──► Signal Pool
+                                          │
+                                          ▼
+                          Agent (filters, analyses, decides)
+                                          │
+                                          ▼
+                    Order ──at your broker──► Position
+                                          │
+                                          ▼
+                     Monitoring (Take Profit / Stop Loss)
 ```
 
-El bot propone, el agente decide, el monitoring protege. Tú fijas las reglas de
-cada capa y puedes intervenir en cualquier momento.
+The bot proposes, the agent decides, monitoring protects. You set the rules at
+each layer and can step in at any point.
 
-## Siguiente paso
+## Next
 
-- [Guía rápida](../getting-started/) — de cero a tu primera operación.
-- [Glosario](../glossary/) — el resto de términos que verás en la plataforma.
+- [Quick start](../getting-started/) — from zero to your first trade.
+- [Glossary](../glossary/) — every other term you will see in the platform.

@@ -3,7 +3,9 @@
 Documentación pública de TredOps: **https://tredops.github.io/**
 
 Sitio estático con [Astro](https://astro.build) y
-[Starlight](https://starlight.astro.build), en español e inglés. El repositorio
+[Starlight](https://starlight.astro.build), en inglés y español. **El inglés es
+el idioma por defecto**: vive en la raíz del sitio (`/`) y el español cuelga de
+`/es/`. El repositorio
 se llama `tredops.github.io` porque es el **sitio de organización** de GitHub
 Pages: ese nombre exacto es lo que hace que se sirva en la raíz del dominio y no
 bajo un subpath.
@@ -39,14 +41,14 @@ npm run check      # build + enlaces internos + revisión de datos internos
 src/
 ├── content/
 │   ├── docs/                 # documentación (Starlight)
-│   │   ├── *.md              # español (locale raíz)
+│   │   ├── *.md              # inglés (locale raíz, idioma por defecto)
 │   │   ├── guides/           # guías de uso paso a paso
 │   │   ├── pillars/          # los cuatro pilares de la plataforma
 │   │   ├── benchmark/
 │   │   │   ├── index.mdx     # listado de ediciones (formato blog)
 │   │   │   ├── methodology.mdx
 │   │   │   └── editions/     # una publicación por edición
-│   │   └── en/               # espejo en inglés, misma jerarquía
+│   │   └── es/               # espejo en español, misma jerarquía
 │   └── blog/                 # novedades y anuncios
 ├── components/
 │   ├── SiteTitle.astro       # logo: marca inline + wordmark Tred/Ops
@@ -76,7 +78,7 @@ El script filtra el export y escribe
 blanca: lo que no esté ahí no llega al sitio público.
 
 **2. Crea la publicación** en `src/content/docs/benchmark/editions/<edición>.mdx`
-(y su espejo en `en/`):
+(en inglés) y su espejo en `src/content/docs/es/benchmark/editions/<edición>.mdx`:
 
 ```mdx
 ---

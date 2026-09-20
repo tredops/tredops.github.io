@@ -1,105 +1,102 @@
 ---
-title: Trabajar con agentes
-description: Habla con tu agente, entiende sus modos de operación y crea tus propios sub-agentes en el Playground.
+title: Working with agents
+description: Talk to your agent, understand its operating modes, and build your own sub-agents in the Playground.
 ---
 
-Los bots proponen; los **agentes** deciden. Un agente es un modelo de lenguaje
-con acceso al contexto de tu cartera, a los datos de mercado y a un conjunto de
-herramientas para actuar. Esta guía te enseña a usarlo.
+Bots propose; **agents** decide. An agent is a language model with access to your
+portfolio context, market data and a set of tools to act with. This guide shows
+you how to use one.
 
-## 1. Empieza preguntando
+## 1. Start by asking
 
-Entra en el **chat** del dashboard y pregunta sin miedo. El agente tiene contexto
-real de tus portfolios, no responde de memoria:
+Open the dashboard **chat** and ask freely. The agent has real context on your
+portfolios — it is not answering from memory:
 
-- *"¿Cómo está mi portfolio hoy?"*
-- *"¿Qué posiciones tengo abiertas y cuánto llevo en cada una?"*
-- *"¿Por qué se cerró la posición de ayer?"*
-- *"¿Qué hay en el pool de señales para ETFs defensivos?"*
+- *"How is my portfolio doing today?"*
+- *"What positions are open and where is each one?"*
+- *"Why was yesterday's position closed?"*
+- *"What is in the signal pool for defensive ETFs?"*
 
-Estas preguntas son **de solo lectura**: el agente consulta y responde, no toca
-nada.
+These questions are **read-only**: the agent looks and answers, it touches
+nothing.
 
-## 2. Entiende los modos de operación
+## 2. Understand the operating modes
 
-Cada conversación y cada tarea corren en un modo, y el modo decide qué puede
-hacer el agente:
+Every conversation and every task runs in a mode, and the mode decides what the
+agent may do:
 
-| Modo | Qué puede hacer | Cuándo usarlo |
-|------|-----------------|---------------|
-| **Plan** | Solo leer y proponer. No abre ni cierra nada. | Siempre que estés explorando o aprendiendo |
-| **Trading** | Ejecutar, pero contigo delante | Cuando quieres que actúe y poder frenarlo |
-| **Autónomo** | Ejecutar sin supervisión, dentro de tus reglas | Tareas programadas ya rodadas |
+| Mode | What it can do | When to use it |
+|------|----------------|----------------|
+| **Plan** | Read and propose only. Opens and closes nothing. | Whenever you are exploring or learning |
+| **Trading** | Execute, but with you watching | When you want it to act and be able to stop it |
+| **Autonomous** | Execute unsupervised, within your rules | Scheduled tasks you have already proven |
 
 :::caution
-Empieza siempre en **Plan**. Pasa a **Trading** cuando ya reconozcas el tipo de
-decisiones que toma tu agente, y a **Autónomo** solo con reglas de riesgo que
-hayas comprobado.
+Always start in **Plan**. Move to **Trading** once you recognise the kind of
+decisions your agent makes, and to **Autonomous** only with risk rules you have
+actually tested.
 :::
 
-## 3. Pídele que actúe
+## 3. Ask it to act
 
-Cuando estés en modo Trading, el agente ejecuta lo que le pidas dentro de los
-límites del portfolio:
+In Trading mode the agent executes what you ask, within the portfolio's limits:
 
-- *"Analiza el pool de señales y abre las dos mejores oportunidades de esta
-  semana."*
-- *"Cierra la posición de TEST si pierde un 3 %."*
-- *"Reduce a la mitad la exposición a tecnología."*
-- *"Rebalancea la cartera hacia sectores defensivos."*
+- *"Review the signal pool and open the two best opportunities this week."*
+- *"Close the TEST position if it drops 3%."*
+- *"Halve my technology exposure."*
+- *"Rebalance the book towards defensive sectors."*
 
-El agente te explica **qué va a hacer y por qué** antes de hacerlo. Si la
-instrucción choca con las reglas de riesgo del portfolio, lo dice en lugar de
-saltárselas.
+The agent tells you **what it is about to do and why** before doing it. If the
+instruction conflicts with the portfolio's risk rules, it says so instead of
+working around them.
 
-## 4. Crea tus propios agentes en el Playground
+## 4. Build your own agents in the Playground
 
-En el **Playground** (Premium) defines agentes a medida:
+In the **Playground** (Premium) you define agents to taste:
 
-- **System prompt** — Cómo piensa, qué prioriza, qué evita. Aquí es donde se nota
-  la diferencia entre un agente conservador y uno agresivo.
-- **Modelo** — Qué LLM lo mueve. Puedes usar los créditos incluidos o conectar tu
-  propia cuenta de [OpenRouter o DeepSeek](../../pillars/integrations/).
-- **Herramientas** — Qué puede invocar: consultar cartera, leer señales, abrir o
-  cerrar órdenes, pedir datos de mercado.
-- **Portfolio asignado** — Sobre qué cartera trabaja.
+- **System prompt** — How it thinks, what it prioritises, what it avoids. This is
+  where a conservative agent and an aggressive one part ways.
+- **Model** — Which LLM drives it. Use the included credits or connect your own
+  [OpenRouter or DeepSeek](../../pillars/integrations/) account.
+- **Tools** — What it may call: read the book, read signals, open or close
+  orders, request market data.
+- **Assigned portfolio** — Which book it works on.
 
-Un buen system prompt es específico. Compara:
+A good system prompt is specific. Compare:
 
-> ❌ "Eres un agente de trading. Gana dinero."
+> ❌ "You are a trading agent. Make money."
 
-> ✅ "Gestionas una cartera de ETFs sectoriales con horizonte de 2 a 6 semanas.
-> Priorizas la preservación de capital: no abres más de tres posiciones
-> simultáneas ni destinas más del 20 % del capital a una sola. Descartas señales
-> con menos de 48 horas de histórico. Explicas siempre el motivo de cada cierre."
+> ✅ "You manage a book of sector ETFs with a 2–6 week horizon. You prioritise
+> capital preservation: never more than three simultaneous positions and never
+> more than 20% of capital in one. You discard signals with less than 48 hours of
+> history. You always explain the reason for every close."
 
-## 5. Delega en sub-agentes
+## 5. Delegate to sub-agents
 
-Un agente principal puede apoyarse en **sub-agentes** especializados: uno que
-analice el sector tecnológico, otro que revise el riesgo de la cartera, otro que
-prepare un rebalanceo.
+A main agent can lean on specialised **sub-agents**: one analysing the technology
+sector, one reviewing portfolio risk, one preparing a rebalance.
 
-El agente principal reparte el trabajo y consolida las respuestas. Es la forma de
-tener criterios distintos conviviendo sin meterlos todos en un mismo prompt
-imposible de mantener.
+The main agent splits the work and consolidates the answers. It is how you keep
+different criteria coexisting without cramming them all into one unmaintainable
+prompt.
 
-Las ediciones del [Benchmark](../../benchmark/) enfrentan precisamente a
-sub-agentes: mismo capital, misma ventana, distinto modelo y distinto prompt.
+[Benchmark](../../benchmark/) editions pit exactly these against each other: same
+capital, same window, different model and different prompt.
 
-## 6. Automatiza
+## 6. Automate
 
-Cuando una rutina funcione en el chat, conviértela en una tarea programada:
-[Programar tareas (AgentTask)](../agent-tasks/).
+Once a routine works in chat, turn it into a scheduled task:
+[Scheduling tasks (AgentTask)](../agent-tasks/).
 
-## Qué no hace un agente
+## What an agent will not do
 
-- **No opera fuera de las reglas del portfolio.** Los límites de capital por
-  posición y las reservas de liquidez mandan sobre cualquier instrucción.
-- **No abre órdenes sin Take Profit y Stop Loss.** No hay forma de desactivarlo.
-- **No ve tus credenciales.** Usa tokens con permisos acotados, nunca tus claves
-  del broker.
+- **Trade outside the portfolio's rules.** Per-position capital limits and cash
+  reserves override any instruction.
+- **Open an order without Take Profit and Stop Loss.** There is no way to turn
+  that off.
+- **See your credentials.** It uses scoped tokens, never your broker keys.
 
-## Siguiente paso
+## Next
 
-- [Programar tareas (AgentTask)](../agent-tasks/)
-- [Gestionar el riesgo](../risk/)
+- [Scheduling tasks (AgentTask)](../agent-tasks/)
+- [Managing risk](../risk/)

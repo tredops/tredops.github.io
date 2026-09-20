@@ -17,17 +17,49 @@ import mdx from '@astrojs/mdx';
 const site = 'https://docs.tredops.com';
 const base = '/';
 
+// El sitio nació con el español en la raíz y el inglés bajo `/en/`. Al pasar el
+// inglés a idioma por defecto, esas URL dejaron de existir: estas redirecciones
+// mandan cada una a su equivalente en la raíz para no dejar enlaces muertos.
+const enLegacyPaths = [
+	'',
+	'introduction',
+	'concepts',
+	'lifecycle',
+	'getting-started',
+	'guides/first-bot',
+	'guides/first-agent',
+	'guides/agent-tasks',
+	'guides/playground',
+	'guides/copy-trader',
+	'guides/risk',
+	'benchmark',
+	'benchmark/methodology',
+	'pillars/bots-ci',
+	'pillars/monitoring',
+	'pillars/agents',
+	'pillars/integrations',
+	'pricing',
+	'security',
+	'glossary',
+	'faq',
+];
+
+const redirects = Object.fromEntries(
+	enLegacyPaths.map((p) => [`/en/${p}`.replace(/\/$/, '') || '/en', `/${p}`]),
+);
+
 export default defineConfig({
 	site,
 	base,
+	redirects,
 	integrations: [
 		starlight({
 			title: 'TredOps',
-			description: 'Documentación oficial de TredOps, la plataforma de trading algorítmico.',
+			description: 'Official TredOps documentation, the algorithmic trading platform.',
 			defaultLocale: 'root',
 			locales: {
-				root: { label: 'Español', lang: 'es' },
-				en: { label: 'English', lang: 'en' },
+				root: { label: 'English', lang: 'en' },
+				es: { label: 'Español', lang: 'es' },
 			},
 			// El logo se dibuja en src/components/SiteTitle.astro (marca inline +
 			// wordmark «Tred» grueso / «Ops» fino), no con la opción `logo`.
@@ -63,59 +95,59 @@ export default defineConfig({
 			customCss: ['./src/styles/custom.css'],
 			sidebar: [
 				{
-					label: 'Introducción',
-					translations: { en: 'Introduction' },
+					label: 'Introduction',
+					translations: { es: 'Introducción' },
 					items: [
-						{ label: 'Qué es TredOps', translations: { en: 'What is TredOps' }, slug: 'introduction' },
-						{ label: 'Conceptos clave', translations: { en: 'Key concepts' }, slug: 'concepts' },
-						{ label: 'El ciclo de TredOps', translations: { en: 'The TredOps loop' }, slug: 'lifecycle' },
+						{ label: 'What is TredOps', translations: { es: 'Qué es TredOps' }, slug: 'introduction' },
+						{ label: 'Key concepts', translations: { es: 'Conceptos clave' }, slug: 'concepts' },
+						{ label: 'The TredOps loop', translations: { es: 'El ciclo de TredOps' }, slug: 'lifecycle' },
 					],
 				},
 				{
-					label: 'Primeros pasos',
-					translations: { en: 'Getting started' },
+					label: 'Getting started',
+					translations: { es: 'Primeros pasos' },
 					items: [
-						{ label: 'Guía rápida', translations: { en: 'Quick start' }, slug: 'getting-started' },
-						{ label: 'Tu primer bot', translations: { en: 'Your first bot' }, slug: 'guides/first-bot' },
-						{ label: 'Trabajar con agentes', translations: { en: 'Working with agents' }, slug: 'guides/first-agent' },
-						{ label: 'Programar tareas (AgentTask)', translations: { en: 'Scheduling tasks (AgentTask)' }, slug: 'guides/agent-tasks' },
-						{ label: 'Playground', translations: { en: 'Playground' }, slug: 'guides/playground' },
-						{ label: 'Copy Trader Agent', translations: { en: 'Copy Trader Agent' }, slug: 'guides/copy-trader' },
-						{ label: 'Gestionar el riesgo', translations: { en: 'Managing risk' }, slug: 'guides/risk' },
+						{ label: 'Quick start', translations: { es: 'Guía rápida' }, slug: 'getting-started' },
+						{ label: 'Your first bot', translations: { es: 'Tu primer bot' }, slug: 'guides/first-bot' },
+						{ label: 'Working with agents', translations: { es: 'Trabajar con agentes' }, slug: 'guides/first-agent' },
+						{ label: 'Scheduling tasks (AgentTask)', translations: { es: 'Programar tareas (AgentTask)' }, slug: 'guides/agent-tasks' },
+						{ label: 'Playground', translations: { es: 'Playground' }, slug: 'guides/playground' },
+						{ label: 'Copy Trader Agent', translations: { es: 'Copy Trader Agent' }, slug: 'guides/copy-trader' },
+						{ label: 'Managing risk', translations: { es: 'Gestionar el riesgo' }, slug: 'guides/risk' },
 					],
 				},
 				{
 					label: 'Benchmark',
-					translations: { en: 'Benchmark' },
+					translations: { es: 'Benchmark' },
 					items: [
-						{ label: 'Ediciones', translations: { en: 'Editions' }, slug: 'benchmark' },
-						{ label: 'Metodología', translations: { en: 'Methodology' }, slug: 'benchmark/methodology' },
+						{ label: 'Editions', translations: { es: 'Ediciones' }, slug: 'benchmark' },
+						{ label: 'Methodology', translations: { es: 'Metodología' }, slug: 'benchmark/methodology' },
 						{
-							label: 'Publicaciones',
-							translations: { en: 'Published' },
+							label: 'Published',
+							translations: { es: 'Publicaciones' },
 							collapsed: true,
 							items: [{ autogenerate: { directory: 'benchmark/editions' } }],
 						},
 					],
 				},
 				{
-					label: 'Pilares',
-					translations: { en: 'Pillars' },
+					label: 'Pillars',
+					translations: { es: 'Pilares' },
 					items: [
-						{ label: 'Bots (CI)', translations: { en: 'Bots (CI)' }, slug: 'pillars/bots-ci' },
-						{ label: 'Monitoring', translations: { en: 'Monitoring' }, slug: 'pillars/monitoring' },
-						{ label: 'Agentes IA', translations: { en: 'AI Agents' }, slug: 'pillars/agents' },
-						{ label: 'Integraciones', translations: { en: 'Integrations' }, slug: 'pillars/integrations' },
+						{ label: 'Bots (CI)', translations: { es: 'Bots (CI)' }, slug: 'pillars/bots-ci' },
+						{ label: 'Monitoring', translations: { es: 'Monitoring' }, slug: 'pillars/monitoring' },
+						{ label: 'AI Agents', translations: { es: 'Agentes IA' }, slug: 'pillars/agents' },
+						{ label: 'Integrations', translations: { es: 'Integraciones' }, slug: 'pillars/integrations' },
 					],
 				},
 				{
-					label: 'Referencia',
-					translations: { en: 'Reference' },
+					label: 'Reference',
+					translations: { es: 'Referencia' },
 					items: [
-						{ label: 'Planes y precios', translations: { en: 'Plans & pricing' }, slug: 'pricing' },
-						{ label: 'Seguridad', translations: { en: 'Security' }, slug: 'security' },
-						{ label: 'Glosario', translations: { en: 'Glossary' }, slug: 'glossary' },
-						{ label: 'FAQ', translations: { en: 'FAQ' }, slug: 'faq' },
+						{ label: 'Plans & pricing', translations: { es: 'Planes y precios' }, slug: 'pricing' },
+						{ label: 'Security', translations: { es: 'Seguridad' }, slug: 'security' },
+						{ label: 'Glossary', translations: { es: 'Glosario' }, slug: 'glossary' },
+						{ label: 'FAQ', translations: { es: 'FAQ' }, slug: 'faq' },
 					],
 				},
 			],

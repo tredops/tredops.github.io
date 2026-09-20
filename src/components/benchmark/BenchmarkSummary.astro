@@ -9,7 +9,26 @@ interface Props {
 	lang?: "es" | "en";
 }
 
-const { edition = DEFAULT_EDITION } = Astro.props;
+const { edition = DEFAULT_EDITION, lang = "en" } = Astro.props;
+
+const t = {
+	es: {
+		bestAgent: "Mejor agente", span: "Pérdida / ganancia", points: "ptos",
+		closedTrades: "Operaciones cerradas", initialCapital: "Capital inicial",
+		every: (v: string) => `Cada ${v}`, samples: "muestras", agents: "agentes",
+		agent: "Agente", model: "Modelo", finalEquity: "Equity final",
+		maxMin: "Máx / mín", closed: "Cerradas", open: "Abiertas",
+		barsLabel: "Equity final por agente", locale: "es-ES",
+	},
+	en: {
+		bestAgent: "Best agent", span: "Loss / gain", points: "pts",
+		closedTrades: "Closed trades", initialCapital: "Initial capital",
+		every: (v: string) => `Every ${v}`, samples: "samples", agents: "agents",
+		agent: "Agent", model: "Model", finalEquity: "Final equity",
+		maxMin: "Max / min", closed: "Closed", open: "Open",
+		barsLabel: "Final equity per agent", locale: "en-US",
+	},
+}[lang];
 const scene = loadScene(edition);
 const { portfolios, frames, range } = scene;
 const last = frames[frames.length - 1];
@@ -56,18 +75,18 @@ const barPct = (v) => Math.max(2, (v / maxEquityOverall) * 100);
 
 <div class="b-summary">
 	<div class="b-sum-grid">
-		<div class="b-sum-card"><span class="b-sum-k">Mejor agente</span><span class="b-sum-v b-win">{best.label} · {capitalPercent(best.profitPct)}</span></div>
-		<div class="b-sum-card"><span class="b-sum-k">Pérdida / ganancia</span><span class="b-sum-v">{spanPct.toFixed(2)} ptos</span></div>
-		<div class="b-sum-card"><span class="b-sum-k">Operaciones cerradas</span><span class="b-sum-v">{totalClosed} ({totalWins} W · {totalLosses} L)</span></div>
-		<div class="b-sum-card"><span class="b-sum-k">Capital inicial</span><span class="b-sum-v">{initial == null ? "—" : money(initial, 0)}</span></div>
+		<div class="b-sum-card"><span class="b-sum-k">{t.bestAgent}</span><span class="b-sum-v b-win">{best.label} · {capitalPercent(best.profitPct)}</span></div>
+		<div class="b-sum-card"><span class="b-sum-k">{t.span}</span><span class="b-sum-v">{spanPct.toFixed(2)} {t.points}</span></div>
+		<div class="b-sum-card"><span class="b-sum-k">{t.closedTrades}</span><span class="b-sum-v">{totalClosed} ({totalWins} W · {totalLosses} L)</span></div>
+		<div class="b-sum-card"><span class="b-sum-k">{t.initialCapital}</span><span class="b-sum-v">{initial == null ? "—" : money(initial, 0)}</span></div>
 	</div>
 
 	<div class="b-sum-window">
-		<span>{range.stepHours < 24 ? `Cada ${range.stepHours} h` : `Cada ${range.stepHours / 24} d`} · {frames.length} muestras</span>
+		<span>{t.every(range.stepHours < 24 ? `${range.stepHours} h` : `${range.stepHours / 24} d`)} · {frames.length} {t.samples}</span>
 		<span role="separator">·</span>
-		<span>{new Date(range.from).toLocaleDateString("es-ES", { day: "numeric", month: "short" })} → {new Date(range.to).toLocaleDateString("es-ES", { day: "numeric", month: "short", year: "numeric" })}</span>
+		<span>{new Date(range.from).toLocaleDateString(t.locale, { day: "numeric", month: "short" })} → {new Date(range.to).toLocaleDateString(t.locale, { day: "numeric", month: "short", year: "numeric" })}</span>
 		<span role="separator">·</span>
-		<span>{portfolios.length} agentes</span>
+		<span>{portfolios.length} {t.agents}</span>
 	</div>
 
 	<div class="b-sum-scroll">
@@ -75,14 +94,14 @@ const barPct = (v) => Math.max(2, (v / maxEquityOverall) * 100);
 		<thead>
 			<tr>
 				<th scope="col">#</th>
-				<th scope="col">Agente</th>
-				<th scope="col">Modelo</th>
-				<th scope="col">Equity final</th>
+				<th scope="col">{t.agent}</th>
+				<th scope="col">{t.model}</th>
+				<th scope="col">{t.finalEquity}</th>
 				<th scope="col">P&amp;L</th>
-				<th scope="col">Máx / mín</th>
+				<th scope="col">{t.maxMin}</th>
 				<th scope="col">W / L</th>
-				<th scope="col">Cerradas</th>
-				<th scope="col">Abiertas</th>
+				<th scope="col">{t.closed}</th>
+				<th scope="col">{t.open}</th>
 			</tr>
 		</thead>
 		<tbody>
@@ -110,7 +129,7 @@ const barPct = (v) => Math.max(2, (v / maxEquityOverall) * 100);
 	</table>
 	</div>
 
-	<div class="b-sum-bars" aria-label="Equity final por agente">
+	<div class="b-sum-bars" aria-label={t.barsLabel}>
 		{agentStats.map((a) => (
 			<div class="b-sum-bar-row">
 				<span class="b-sum-bar-name">{a.label}</span>

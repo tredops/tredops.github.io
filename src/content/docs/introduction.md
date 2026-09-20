@@ -1,39 +1,39 @@
 ---
-title: Qué es TredOps
-description: Plataforma de trading algorítmico con bots y agentes de IA, no custodial y orientada a todos los niveles.
+title: What is TredOps
+description: Non-custodial algorithmic trading platform with AI bots and agents, for every skill level.
 ---
 
-TredOps es una plataforma de software que facilita la **creación**, **optimización**, **monitorización** y **orquestación** de estrategias de trading mediante bots y agentes de inteligencia artificial.
+TredOps is a software platform that makes it easy to **create**, **optimize**, **monitor**, and **orchestrate** trading strategies with bots and AI agents.
 
-No es una plataforma de trading ni gestiona capital de inversión. **El usuario mantiene siempre el control total de sus fondos** y cuentas en brokers externos. TredOps se conecta a través de integraciones (por ejemplo, Alpaca) para que los agentes y las señales generadas en la plataforma puedan interactuar con tus propias cuentas.
+It is not a trading platform and does not manage investment capital. **You always keep full control of your funds** and accounts at external brokers. TredOps connects through integrations (e.g., Alpaca) so the agents and signals generated on the platform can interact with your own accounts.
 
-## Los cuatro pilares
+## The four pillars
 
-TredOps se estructura en cuatro pilares fundamentales, independientes pero interconectados:
+TredOps is structured around four fundamental, interconnected pillars:
 
-1. **Integración Continua de Bots** — Crea bots a partir de cualquier activo, con optimización genética, performance testing sobre datos históricos y calibración automática periódica.
-2. **Monitoring** — Toda operación se abre con *Take Profit* y *Stop Loss* definidos, y se monitoriza de forma continua para capturar oportunidades o cerrar posiciones con disciplina.
-3. **AI Agents y SubAgents** — Un chat RAG para gestionar carteras y estrategias en lenguaje natural, con la opción de crear tus propios agentes en el Playground y programar tareas automáticas.
-4. **Integraciones** — Conecta brokers (Alpaca) y proveedores de LLM (OpenRouter, DeepSeek, entre otros) manteniendo siempre el control de tus credenciales.
+1. **Continuous Bot Integration** — Create bots from any asset, with genetic optimization, performance testing on historical data, and automatic periodic calibration.
+2. **Monitoring** — Every trade opens with a defined *Take Profit* and *Stop Loss* and is continuously monitored to capture opportunities or close positions with discipline.
+3. **AI Agents & SubAgents** — A RAG chat to manage portfolios and strategies in natural language, with the option to create your own agents in the Playground and schedule automatic tasks.
+4. **Integrations** — Connect brokers (Alpaca) and LLM providers (OpenRouter, DeepSeek, and more) while keeping control of your credentials.
 
-## Enfoque no custodial
+## Non-custodial approach
 
-- Tu capital permanece siempre en tu cuenta del broker externo.
-- TredOps **no custodia fondos** ni gestiona cuentas de inversión.
-- La plataforma ejecuta órdenes a través de tus integraciones, bajo reglas de gestión de riesgo profesionales.
-- Tú decides qué credenciales conectar y puedes revocarlas cuando quieras.
+- Your capital always stays in your external broker account.
+- TredOps **does not custody funds** or manage investment accounts.
+- The platform executes orders through your integrations, under professional risk management rules.
+- You decide which credentials to connect and can revoke them at any time.
 
-## Propuesta de valor
+## Value proposition
 
-TredOps es una herramienta dual:
+TredOps is a dual tool:
 
-- Un usuario **sin experiencia** puede usar bots y agentes mantenidos y gestionados por el equipo de TredOps.
-- Un usuario **avanzado** puede crear y personalizar sus propios bots, agentes y subagentes.
+- An **inexperienced user** can use bots and agents maintained by the TredOps team.
+- An **advanced user** can create and customize their own bots, agents, and subagents.
 
-El resultado combina accesibilidad para principiantes con potencia y control para profesionales, en una única plataforma multi-proveedor de LLMs y multi-broker.
+The result combines beginner accessibility with power and control for professionals, in a single multi-LLM, multi-broker platform.
 
-## Para quién es
+## Who it is for
 
-TredOps está pensado para personas de entre 25 y 50 años que buscan una forma más segura e innovadora de invertir a corto y medio plazo: profesionales con poco tiempo que quieren automatizar su estrategia e inversores que quieren eliminar de sus decisiones el miedo y la codicia.
+TredOps is designed for people aged 25–50 looking for a safer, more innovative way to invest in the short and medium term: busy professionals who want to automate their strategy, and investors who want to remove fear and greed from their decisions.
 
-**Objetivo de producto:** que un usuario con conocimientos básicos pueda entender y operar TredOps en **menos de 2 minutos**.
+**Product goal:** a basic user should be able to understand and operate TredOps in **under 2 minutes**.

@@ -1,94 +1,92 @@
 ---
-title: Programar tareas (AgentTask)
-description: Convierte una rutina del chat en una tarea agéntica que se ejecuta sola, con el alcance y la frecuencia que tú decidas.
+title: Scheduling tasks (AgentTask)
+description: Turn a chat routine into an agentic task that runs on its own, with the scope and frequency you decide.
 ---
 
-Una **AgentTask** es una instrucción que un agente ejecuta de forma periódica sin
-que tengas que abrir el chat. Es la diferencia entre "reviso la cartera cuando me
-acuerdo" y "la cartera se revisa sola cada mañana".
+An **AgentTask** is an instruction an agent runs periodically without you opening
+the chat. It is the difference between "I check the book when I remember" and
+"the book checks itself every morning."
 
-## Cuándo crear una
+## When to create one
 
-Una rutina merece ser una tarea cuando cumple tres cosas:
+A routine deserves to be a task when three things hold:
 
-1. **La repites.** Si la haces una vez, hazla en el chat.
-2. **Ya la has probado en el chat** y el agente responde como esperas.
-3. **Tiene un criterio de parada claro.** "Analiza el mercado" no lo tiene;
-   "cierra si la posición pierde un 3 %" sí.
+1. **You repeat it.** If you do it once, do it in chat.
+2. **You have already tested it in chat** and the agent answers as expected.
+3. **It has a clear stopping condition.** "Analyse the market" does not have one;
+   "close if the position drops 3%" does.
 
-## Crear una tarea
+## Creating a task
 
-Desde **Agentes → Tareas → Nueva tarea**:
+From **Agents → Tasks → New task**:
 
-| Campo | Qué define |
-|-------|-----------|
-| **Agente** | Quién la ejecuta: tu agente principal o un sub-agente especializado |
-| **Portfolio** | Sobre qué cartera actúa |
-| **Instrucción** | Qué tiene que hacer, en lenguaje natural |
-| **Frecuencia** | Cada cuánto despierta |
-| **Modo** | Plan (solo informa) o Autónomo (puede ejecutar) |
-| **Notificaciones** | Si quieres un aviso en cada ejecución o solo cuando actúe |
+| Field | What it sets |
+|-------|--------------|
+| **Agent** | Who runs it: your main agent or a specialised sub-agent |
+| **Portfolio** | Which book it acts on |
+| **Instruction** | What it must do, in plain language |
+| **Frequency** | How often it wakes up |
+| **Mode** | Plan (reports only) or Autonomous (may execute) |
+| **Notifications** | Whether you want an alert on every run or only when it acts |
 
-Los agentes también pueden crear tareas por su cuenta cuando tú se lo pides
-("revisa esto cada lunes"), siempre dentro de los permisos del portfolio.
+Agents can also create tasks themselves when you ask them to ("check this every
+Monday"), always within the portfolio's permissions.
 
-## Cuatro tareas que merecen la pena
+## Four tasks worth having
 
-**Resumen diario (modo Plan)**
+**Daily summary (Plan mode)**
 
-> Cada día de mercado a las 09:00, resume el estado del portfolio: equity, P&L
-> del día, posiciones abiertas con su resultado y cualquier posición que haya
-> cerrado en las últimas 24 horas con su motivo.
+> Every trading day at 09:00, summarise the portfolio: equity, day P&L, open
+> positions with their result, and any position closed in the last 24 hours with
+> its reason.
 
-**Filtro de señales (modo Plan)**
+**Signal filter (Plan mode)**
 
-> Cada 4 horas, revisa el Signal Pool y propón las tres mejores oportunidades
-> para este portfolio. No abras nada: solo explica por qué cada una encaja.
+> Every 4 hours, review the Signal Pool and propose the three best opportunities
+> for this portfolio. Do not open anything: just explain why each one fits.
 
-**Supervisión de riesgo (modo Autónomo)**
+**Risk supervision (Autonomous mode)**
 
-> Cada hora, revisa las posiciones abiertas. Si alguna supera el 25 % del capital
-> del portfolio, reduce la exposición hasta ese límite. Avísame de cada ajuste.
+> Every hour, review open positions. If any exceeds 25% of the portfolio's
+> capital, reduce the exposure down to that limit. Notify me of every adjustment.
 
-**Rebalanceo semanal (modo Autónomo)**
+**Weekly rebalance (Autonomous mode)**
 
-> Cada lunes al abrir el mercado, rebalancea la cartera para que ningún sector
-> supere el 40 % de la exposición total. No abras posiciones nuevas: solo ajusta
-> las existentes.
+> Every Monday at the open, rebalance the book so no sector exceeds 40% of total
+> exposure. Do not open new positions: only adjust existing ones.
 
-## Cómo escribir la instrucción
+## Writing the instruction
 
-Una buena instrucción responde a cuatro preguntas: **cuándo**, **qué mirar**,
-**qué hacer** y **qué no hacer**.
+A good instruction answers four questions: **when**, **what to look at**, **what
+to do** and **what not to do**.
 
-> ❌ "Vigila mi cartera y haz lo que haga falta."
+> ❌ "Watch my book and do whatever is needed."
 
-> ✅ "Cada hora, revisa las posiciones abiertas de este portfolio. Si una lleva
-> más de 10 días abierta y su P&L está entre −1 % y +1 %, ciérrala y explica por
-> qué. No abras posiciones nuevas ni toques las que estén en ganancias."
+> ✅ "Every hour, review this portfolio's open positions. If one has been open
+> more than 10 days and its P&L is between −1% and +1%, close it and explain why.
+> Do not open new positions and do not touch anything that is in profit."
 
-El "qué no hacer" es la parte que más gente se salta y la que más disgustos
-evita.
+The "what not to do" is the part most people skip, and the one that prevents the
+most damage.
 
-## Seguimiento
+## Follow-up
 
-Cada ejecución deja un registro con lo que el agente vio, lo que decidió y lo que
-hizo. Puedes revisarlo en el historial de la tarea, incluido el coste en créditos
-de cada ejecución.
+Every run leaves a record of what the agent saw, what it decided and what it did.
+You can review it in the task history, including the credit cost of each run.
 
-Si una tarea empieza a comportarse de forma rara, pásala a modo **Plan**: seguirá
-informándote sin tocar la cartera mientras ajustas la instrucción.
+If a task starts behaving oddly, switch it to **Plan**: it will keep reporting
+without touching the book while you fix the instruction.
 
-## Límites
+## Limits
 
-- Las tareas nunca se saltan las reglas de riesgo del portfolio.
-- Toda orden abierta por una tarea lleva Take Profit y Stop Loss.
-- Puedes pausar o borrar una tarea en cualquier momento; la pausa surte efecto
-  antes de la siguiente ejecución.
-- Cada ejecución consume créditos de LLM. Una tarea cada 5 minutos consume 12
-  veces más que una cada hora, y rara vez decide 12 veces mejor.
+- Tasks never bypass the portfolio's risk rules.
+- Every order a task opens carries Take Profit and Stop Loss.
+- You can pause or delete a task at any time; a pause takes effect before the
+  next run.
+- Every run consumes LLM credits. A task every 5 minutes costs 12× one every
+  hour, and rarely decides 12× better.
 
-## Siguiente paso
+## Next
 
-- [Gestionar el riesgo](../risk/)
-- [Planes y precios](../../pricing/) — cuántos créditos incluye cada plan.
+- [Managing risk](../risk/)
+- [Plans & pricing](../../pricing/) — how many credits each plan includes.

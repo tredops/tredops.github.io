@@ -1,137 +1,139 @@
 ---
-title: El ciclo de TredOps
-description: Los seis controles por los que pasa una estrategia antes y después de operar con tu dinero — optimización, backtesting, calidad, trading, calibración y supervisión por IA.
+title: The TredOps loop
+description: The six checks a strategy goes through before and while it trades your money — optimization, backtesting, quality, trading, calibration and AI supervision.
 ---
 
 import LifecycleLoop from '../../components/LifecycleLoop.astro';
 
-TredOps toma su nombre de **DevOps**, y no por gusto: la idea es la misma. En
-DevOps, el software no se escribe una vez y se abandona — entra en un bucle de
-integración, pruebas, despliegue y observación que no se detiene. Aquí lo que
-recorre ese bucle es una **estrategia de trading**.
+TredOps takes its name from **DevOps**, and not as a pun: the idea is the same.
+In DevOps, software is not written once and abandoned — it enters a loop of
+integration, testing, deployment and observation that never stops. Here, what
+travels that loop is a **trading strategy**.
 
-<LifecycleLoop lang="es" />
+<LifecycleLoop lang="en" />
 
-El lazo izquierdo es **Trading**: lo que ocurre antes de que una estrategia
-toque dinero real. El derecho es **Ops**: lo que ocurre mientras opera. Ninguno
-de los dos termina. Una estrategia que hoy pasa todos los controles vuelve a
-pasarlos dentro de dos semanas, porque el mercado de dentro de dos semanas no
-es el de hoy.
+The left loop is **Trading**: what happens before a strategy touches real money.
+The right one is **Ops**: what happens while it trades. Neither ever ends. A
+strategy that clears every check today has to clear them again in two weeks,
+because the market two weeks from now is not this one.
 
-## Por qué existe cada control
+## Why each check exists
 
-Cada parada del recorrido está ahí para descartar un modo de fallo concreto.
-Esta es la lista, en el orden en que se atraviesan.
+Every stop on the route is there to rule out one specific failure mode. Here
+they are, in the order they are crossed.
 
-### 1. Optimización
+### 1. Optimization
 
-**Descarta:** parámetros elegidos a ojo.
+**Rules out:** parameters picked by eye.
 
-Los parámetros de una estrategia (cuánto mira atrás, cuánta desviación tolera,
-dónde pone el objetivo) no se eligen a mano. Se buscan con **algoritmos
-genéticos** sobre el histórico real del activo: se puntúan combinaciones, se
-cruzan las mejores y se mutan, durante generaciones.
+A strategy's parameters (how far back it looks, how much deviation it tolerates,
+where it sets its target) are not chosen by hand. They are searched for with
+**genetic algorithms** over the asset's real history: combinations are scored,
+the best ones crossed and mutated, across generations.
 
-Esto no garantiza nada por sí solo —de hecho es el paso que *más* fácilmente
-engaña—, y por eso nunca es el último.
+This guarantees nothing on its own — it is in fact the step that most easily
+fools you — which is why it is never the last one.
 
 ### 2. Backtesting
 
-**Descarta:** el sobreajuste.
+**Rules out:** overfitting.
 
-Una estrategia optimizada siempre se ve bien sobre los datos con los que se
-optimizó. La pregunta que importa es otra: **¿qué hace con datos que no vio?**
+An optimised strategy always looks good on the data it was optimised against.
+The question that matters is a different one: **what does it do with data it
+never saw?**
 
-El backtesting la ejecuta sobre periodos que quedaron fuera de la optimización,
-y la enfrenta a lo que no estaba previsto: huecos de apertura, picos de
-volatilidad, cambios de régimen de mercado. Se compara siempre contra
-**Buy & Hold** del mismo activo, porque una estrategia que no bate a comprar y
-esperar no compensa su complejidad.
+Backtesting runs it over periods left out of the optimisation, and puts it up
+against what was not planned for: opening gaps, volatility spikes, regime
+changes. The result is always compared to **Buy & Hold** on the same asset,
+because a strategy that cannot beat buying and waiting is not worth its
+complexity.
 
-:::note[Lo que hace creíble un backtest]
-Toda evaluación usa **solo datos anteriores al momento evaluado**. Es lo que se
-llama evitar el *look-ahead bias*: decidir con información que, en su momento,
-no existía. Un backtest que se salta esto produce resultados espectaculares y
-absolutamente inútiles.
+:::note[What makes a backtest credible]
+Every evaluation uses **only data from before the moment being evaluated**. This
+is what avoiding *look-ahead bias* means: deciding with information that, at the
+time, did not exist. A backtest that skips this produces spectacular and
+completely useless results.
 :::
 
-### 3. Calidad
+### 3. Quality
 
-**Descarta:** lo que no llega al listón.
+**Rules out:** anything below the bar.
 
-Aquí hay un umbral automático, y es binario:
+There is an automatic threshold here, and it is binary:
 
-- **Lo supera** → el bot pasa a **producción** y sus señales entran en el
+- **Clears it** → the bot goes to **production** and its signals enter the
   Signal Pool.
-- **No lo supera** → se queda en **staging**: sigue ejecutándose en segundo
-  plano y acumulando resultados, pero sus señales no llegan a tu cartera.
+- **Does not** → it stays in **staging**: still running in the background,
+  still accumulating results, but its signals never reach your book.
 
-Un bot en staging no está descartado; está sin demostrar. Nada llega a tu
-dinero por el camino de "bueno, ya veremos".
+A bot in staging is not rejected; it is unproven. Nothing reaches your money via
+"well, let's see how it goes".
 
 ### 4. Trading
 
-**Descarta:** las operaciones sin red.
+**Rules out:** trades without a net.
 
-Es el punto en el que la estrategia opera de verdad, y donde entran dos reglas
-que no se pueden desactivar:
+This is where the strategy actually trades, and where two rules kick in that
+cannot be switched off:
 
-- **Toda orden se abre con Take Profit y Stop Loss.** No hay casilla para
-  quitarlo: ni para los agentes, ni para las tareas programadas, ni en modo
-  autónomo.
-- **Las reglas de tu portfolio mandan sobre cualquier agente.** Si una decisión
-  supera tu máximo por posición o se come tu reserva de liquidez, la operación
-  no se abre. Es un bloqueo, no una advertencia.
+- **Every order opens with a Take Profit and a Stop Loss.** There is no checkbox
+  to remove it — not for agents, not for scheduled tasks, not in autonomous
+  mode.
+- **Your portfolio's rules override any agent.** If a decision exceeds your
+  maximum per position or eats into your cash reserve, the trade does not open.
+  It is a block, not a warning.
 
-Además, una señal de un bot **nunca** se ejecuta sola: pasa por el Signal Pool,
-por los filtros de tu portfolio y por la decisión de un agente. Tres capas entre
-"el bot ha visto algo" y "tienes una posición abierta".
+On top of that, a bot's signal is **never** executed on its own: it goes through
+the Signal Pool, through your portfolio's filters and through an agent's
+decision. Three layers between "the bot saw something" and "you have an open
+position".
 
-### 5. Calibración
+### 5. Calibration
 
-**Descarta:** los parámetros caducados.
+**Rules out:** stale parameters.
 
-Un parámetro que funcionaba en un régimen de baja volatilidad deja de funcionar
-en uno alto. Por eso cada bot tiene su **calendario de calibración** propio y
-reajusta sus parámetros de forma periódica a las condiciones recientes, sin que
-tengas que hacer nada.
+A parameter that worked in a low-volatility regime stops working in a high one.
+So every bot has its own **calibration schedule** and periodically re-tunes its
+parameters to recent conditions, without you doing anything.
 
-Es el control que convierte esto en un ciclo en lugar de una línea recta: la
-calibración devuelve la estrategia al principio del bucle.
+This is the check that makes it a loop rather than a straight line: calibration
+sends the strategy back to the start.
 
-### 6. Supervisión por IA
+### 6. AI supervision
 
-**Descarta:** las posiciones olvidadas.
+**Rules out:** forgotten positions.
 
-Mientras una posición está abierta, un proceso periódico la revisa: obtiene el
-precio actual, **vuelve a evaluarla con la misma estrategia que la abrió** y la
-cierra si se alcanza el Take Profit, si se toca el Stop Loss o si la propia
-estrategia indica salir antes que ninguno de los dos.
+While a position is open, a periodic process reviews it: it pulls the current
+price, **re-evaluates the position with the same strategy that opened it**, and
+closes it on Take Profit, on Stop Loss, or when the strategy itself says to get
+out before either.
 
-Esa última condición es la importante: no esperas a que el precio toque un nivel
-si la razón para estar dentro ya desapareció.
+That last condition is the important one: you do not wait for a price level if
+the reason for being in the trade has already gone.
 
-Por encima, tus [agentes](../guides/first-agent/) y
-[tareas programadas](../guides/agent-tasks/) añaden la capa de criterio: revisar la
-concentración por sector, reducir exposición, cerrar lo que lleva demasiado
-tiempo sin ir a ningún sitio.
+Above that, your [agents](../guides/first-agent/) and
+[scheduled tasks](../guides/agent-tasks/) add the layer of judgement: reviewing
+sector concentration, cutting exposure, closing what has been going nowhere for
+too long.
 
-## Lo que este ciclo no hace
+## What this loop does not do
 
-Conviene decirlo con la misma claridad:
+Worth saying just as plainly:
 
-- **No predice el mercado.** Descarta fallos evitables; no acierta más.
-- **No elimina el riesgo.** Un Stop Loss acota una pérdida, no la evita.
-- **No sustituye tu criterio.** Tú fijas los límites de cada capa, y los
-  límites que pongas son los que se aplican.
+- **It does not predict the market.** It rules out avoidable failures; it does
+  not get things right more often.
+- **It does not remove risk.** A Stop Loss bounds a loss, it does not prevent
+  one.
+- **It does not replace your judgement.** You set the limits at each layer, and
+  the limits you set are the ones that apply.
 
-El objetivo es más modesto y más útil: que ninguna pérdida venga de no haber
-decidido de antemano cuándo salir.
+The goal is more modest and more useful: that no loss comes from not having
+decided in advance when to get out.
 
-## Seguir leyendo
+## Read next
 
-- [Bots (Integración Continua)](../pillars/bots-ci/) — el detalle de los tres
-  primeros controles.
-- [Monitoring](../pillars/monitoring/) — el detalle de los tres últimos.
-- [Gestionar el riesgo](../guides/risk/) — los límites que puedes fijar tú.
-- [Benchmark](../benchmark/) — el ciclo completo, corriendo en público.
+- [Bots (Continuous Integration)](../pillars/bots-ci/) — the first three checks in
+  detail.
+- [Monitoring](../pillars/monitoring/) — the last three in detail.
+- [Managing risk](../guides/risk/) — the limits you get to set.
+- [Benchmark](../benchmark/) — the whole loop, running in public.

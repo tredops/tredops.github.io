@@ -12,14 +12,14 @@ interface Props {
 	exclude?: string;
 }
 
-const { lang = "es", exclude } = Astro.props;
+const { lang = "en", exclude } = Astro.props;
 
 const t = {
 	es: { empty: "Todavía no hay ediciones publicadas.", winner: "Ganador", window: "Ventana", agents: "agentes", read: "Leer la edición" },
 	en: { empty: "No editions published yet.", winner: "Winner", window: "Window", agents: "agents", read: "Read the edition" },
 }[lang];
 
-const prefix = lang === "en" ? "en/benchmark/editions/" : "benchmark/editions/";
+const prefix = lang === "es" ? "es/benchmark/editions/" : "benchmark/editions/";
 const base = import.meta.env.BASE_URL;
 
 const editions = (await getCollection("docs"))
