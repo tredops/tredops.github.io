@@ -27,6 +27,7 @@ const enLegacyPaths = [
 	'lifecycle',
 	'getting-started',
 	'guides/first-bot',
+	'guides/bot-settings',
 	'guides/first-agent',
 	'guides/agent-tasks',
 	'guides/playground',
@@ -109,6 +110,7 @@ export default defineConfig({
 					items: [
 						{ label: 'Quick start', translations: { es: 'Guía rápida' }, slug: 'getting-started' },
 						{ label: 'Your first bot', translations: { es: 'Tu primer bot' }, slug: 'guides/first-bot' },
+						{ label: 'Bot settings explained', translations: { es: 'Opciones de un bot, explicadas' }, slug: 'guides/bot-settings' },
 						{ label: 'Working with agents', translations: { es: 'Trabajar con agentes' }, slug: 'guides/first-agent' },
 						{ label: 'Scheduling tasks (AgentTask)', translations: { es: 'Programar tareas (AgentTask)' }, slug: 'guides/agent-tasks' },
 						{ label: 'Playground', translations: { es: 'Playground' }, slug: 'guides/playground' },
