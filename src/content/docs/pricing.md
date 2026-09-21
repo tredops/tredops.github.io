@@ -1,10 +1,11 @@
 ---
 title: Plans & pricing
-description: TredOps' Free Trial, Premium trial and Premium plan, what each includes, and how LLM credits work.
+description: TredOps' Freemium plan (with its 14-day full trial), Premium trial and Premium plan, what each includes, and how LLM credits work.
 ---
 
-TredOps has a free plan to try it, a short paid trial and a Premium plan.
-Everything is managed from **Settings → Billing**.
+TredOps has a free plan you can keep forever — **Freemium**, which starts with
+14 days of full trial — a short paid trial and a Premium plan. Everything is
+managed from **Settings → Billing**.
 
 :::note
 The prices here are the public reference. [tredops.com](https://tredops.com)
@@ -13,31 +14,58 @@ takes precedence in case of any discrepancy, and launch offers may change.
 
 ## At a glance
 
-| | **Free Trial** | **Premium trial** | **Premium** |
-|---|---|---|---|
-| Price | Free, 14 days | $4.99 / 7 days | $24.99 / month |
-| TredOps-maintained bots and agents | ✅ | ✅ | ✅ |
-| Monitoring (Take Profit / Stop Loss) | Basic | Basic | Advanced |
-| Active bots | 2 | 2 + 1 of your own | 10 |
-| Assets per bot | — | — | 30 |
-| Portfolios | 1 | 1 | Unlimited |
-| Playground / ExpertMode | ❌ | Temporary | ✅ |
-| Your own bots (optimisation and calibration) | ❌ | 1 | ✅ |
-| Multi-agents, sub-agents and AgentTask | ❌ | ❌ | ✅ |
-| Signal Pool | Partial | Partial | Full |
-| Benchmark | View only | View only | Full + history |
-| LLM credits | Limited | Extended | Generous |
-| Broker integrations | ✅ | ✅ | ✅ |
-| Support | Standard | Standard | Priority |
+| | **Free Trial** (first 14 days) | **Freemium** (after) | **Premium trial** | **Premium** |
+|---|---|---|---|---|
+| Price | Free | Free, forever | $4.99 / 7 days | $24.99 / month |
+| TredOps-maintained bots and agents | ✅ | ❌ | ✅ | ✅ |
+| Dashboard, portfolios, orders and positions | ✅ | ✅ view everything | ✅ | ✅ |
+| Manual trading with Take Profit / Stop Loss | ✅ | ✅ | ✅ | ✅ |
+| Monitoring (Take Profit / Stop Loss) | Basic | Basic | Basic | Advanced |
+| Copy Trader Agents marked **Free** | ✅ (1 portfolio) | ✅ (1 portfolio), no copy fee | ✅ | ✅ unlimited |
+| Copy Trader Agents marked **Pro** | ✅ (1 portfolio) | ❌ | ✅ | ✅ unlimited |
+| Chat with the agent | While credits last | While credits last | ✅ | ✅ |
+| Active bots | 2 | — | 2 + 1 of your own | 10 |
+| Assets per bot | — | — | — | 30 |
+| Portfolios | 1 | Yours stay | 1 | Unlimited |
+| Playground / ExpertMode | ❌ | ❌ | Temporary | ✅ |
+| Your own bots (optimisation and calibration) | ❌ | ❌ | 1 | ✅ |
+| Multi-agents, sub-agents and AgentTask | ❌ | ❌ | ❌ | ✅ |
+| Signal Pool | Partial | View | Partial | Full |
+| Benchmark | View only | View only | View only | Full + history |
+| LLM credits | Limited | None included | Extended | Generous |
+| Broker integrations | ✅ | ✅ | ✅ | ✅ |
+| Support | Standard | Standard | Standard | Priority |
 
-## Free Trial (14 days)
+## Freemium
+
+Freemium is the plan every account is on when it is not paying — and it never
+runs out. It starts with a **14-day full trial** and then settles into a mode
+that keeps you inside the platform for free.
+
+### The first 14 days (Free Trial)
 
 Full access to the bots and agents **maintained by the TredOps team**, with
-limited LLM credits — enough to actually use them, not just look at them.
+limited LLM credits — enough to actually use them, not just look at them. No
+card required.
 
-No card required. After 14 days — or once the credits run out — you can move to
-Premium or stay on a limited mode with the TredOps-maintained bots and agents and
-some restrictions.
+### After the trial
+
+Nothing you built goes away and nothing locks you out. What stays open, for as
+long as you like:
+
+- **Everything is visible**: your portfolios, orders, open positions, the
+  Signal Pool and the Benchmark.
+- **Manual trading**: open and close positions yourself; every order still
+  carries Take Profit and Stop Loss and Monitoring keeps watching them.
+- **Copy Trader Agents marked Free**: one of your portfolios can copy one of
+  them, with no credits and **no copy fee** — that is the heart of the plan.
+  See [Copy Trader Agent](../guides/copy-trader/).
+- **The chat**, if you still have credits: it stops by itself when they run
+  out, it never becomes a bill.
+
+What moves to Premium: the Playground, creating your own bots, new scheduled
+AgentTasks, and the Copy Trader Agents marked **Pro**. Wherever one of those
+shows up you will see a *Pro* badge and a one-click upgrade — never an error.
 
 ## Premium trial ($4.99 · 7 days)
 
@@ -100,6 +128,16 @@ deleted; reactivate them if you upgrade again.
 **Do unused credits roll over?**
 No. Credits included in a plan belong to that cycle and do not carry over.
 Additional packs you buy do stay until you spend them.
+
+**What exactly happens when my 14 days are over?**
+You move to Freemium automatically: no card, no lock screen. You keep seeing
+everything, you can trade by hand and copy the free Copy Trader Agents. The
+chat keeps working while you have credits left. Upgrade whenever you want the
+Playground, your own bots or Agent Tasks back.
+
+**Can I use TredOps for free forever?**
+Yes. Freemium has no end date. It is a promotional plan: it is meant to be
+useful on its own, and it never charges you anything.
 
 **Do I need Premium to use the Benchmark?**
 No. Any plan — and any visitor to these docs — can read the

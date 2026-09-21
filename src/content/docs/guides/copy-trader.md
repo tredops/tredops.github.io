@@ -26,6 +26,21 @@ It makes sense if:
 It does not make sense if you want fine control over each decision. That is what
 the [Playground](../playground/) is for.
 
+## Free and Pro agents
+
+Every Copy Trader Agent carries one of two badges:
+
+- **Free** — open to every plan, the Freemium one included. Copying it costs
+  **no credits and no copy fee**. It is the way a free account keeps trading
+  with an agent after the trial.
+- **Pro** — for Premium accounts (and for the free trial). These are the ones
+  that pay the copy fee described below.
+
+How many of your portfolios can copy at the same time depends on your plan:
+one on Freemium, unlimited on Premium. Where a Pro agent or an extra portfolio
+is out of reach you will see the *Pro* badge and an upgrade button, never a
+failed request. See [Plans & pricing](../../pricing/).
+
 ## Choosing an agent
 
 Every published agent shows, publicly and unedited:
@@ -106,12 +121,14 @@ Stopping also reactivates the AgentTasks that were paused.
 ## What it costs
 
 A follower portfolio consumes no credits for deciding, because it does not
-decide. What it does pay is a **token fee**: a percentage of the source agent's
-credit consumption, and only on the runs where that agent actually opened or
-closed something.
+decide. Copying an agent marked **Free** costs nothing at all — no credits, no
+fee, whatever your plan.
 
-By default that is **10%** of what the agent spent on that run, and it can be
-configured to zero. You see it itemised in your credit usage.
+Copying a **Pro** agent pays a **token fee**: a percentage of the source agent's
+credit consumption, and only on the runs where that agent actually opened or
+closed something. By default that is **10%** of what the agent spent on that
+run, and it can be configured to zero. You see it itemised in your credit
+usage.
 
 It works out cheaper than running your own agent precisely because one agent
 splits its cost across all of its followers.

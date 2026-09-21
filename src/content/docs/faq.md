@@ -29,7 +29,15 @@ Yes. **Every order opens with a defined Take Profit and Stop Loss** and is conti
 
 ## Can I try before paying?
 
-Yes. You start with a **14-day free trial** without a card. For a short full experience, there's the **Hook Plan** at $4.99 for 7 days.
+Yes. Every account starts on **Freemium**: a **14-day free trial** without a card, and after that a free plan that never expires. For a short full experience, there's the **Hook Plan** at $4.99 for 7 days.
+
+## What happens when my trial ends?
+
+You stay in. Freemium keeps everything visible — portfolios, orders, positions, Benchmark — lets you trade by hand with Take Profit and Stop Loss, and lets one of your portfolios copy a **Copy Trader Agent marked Free** at no cost. The chat keeps working while you have credits. The Playground, your own bots, new Agent Tasks and the *Pro* Copy Trader Agents are Premium. See [Plans & pricing](../pricing/).
+
+## Can I use TredOps for free forever?
+
+Yes. Freemium has no end date and never charges you anything.
 
 ## What happens if my LLM tokens run out?
 

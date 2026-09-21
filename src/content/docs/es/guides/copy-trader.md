@@ -27,6 +27,21 @@ Tiene sentido si:
 No tiene sentido si quieres control fino sobre cada decisión. Para eso está el
 [Playground](../playground/).
 
+## Agentes Free y Pro
+
+Cada Copy Trader Agent lleva una de dos etiquetas:
+
+- **Free** — abierto a todos los planes, Freemium incluido. Copiarlo **no cuesta
+  créditos ni fee de copia**. Es la forma en que una cuenta gratuita sigue
+  operando con un agente después de la prueba.
+- **Pro** — para cuentas Premium (y durante la prueba gratuita). Son los que
+  pagan el fee de copia que se describe más abajo.
+
+Cuántos de tus portfolios pueden copiar a la vez depende de tu plan: uno en
+Freemium, sin límite en Premium. Donde un agente Pro o un portfolio extra quede
+fuera de tu alcance verás la etiqueta *Pro* y un botón de upgrade, nunca una
+petición fallida. Ver [Planes y precios](../../pricing/).
+
 ## Elegir un agente
 
 Cada agente publicado muestra, de forma pública y sin retoques:
@@ -106,13 +121,15 @@ Al dejar de copiar se reactivan las AgentTasks que estaban pausadas.
 
 ## Qué cuesta
 
-Un portfolio seguidor no consume créditos por decidir, porque no decide. Lo que
-sí paga es un **fee simbólico**: un porcentaje del consumo de créditos del
-agente fuente, y solo en las ejecuciones en las que ese agente realmente abrió o
-cerró alguna operación.
+Un portfolio seguidor no consume créditos por decidir, porque no decide. Copiar
+un agente marcado **Free** no cuesta nada en absoluto: ni créditos ni fee, sea
+cual sea tu plan.
 
-Por defecto es el **10 %** de lo que gastó el agente en esa ejecución, y puede
-estar configurado a cero. Lo ves desglosado en tu consumo de créditos.
+Copiar un agente **Pro** paga un **fee simbólico**: un porcentaje del consumo de
+créditos del agente fuente, y solo en las ejecuciones en las que ese agente
+realmente abrió o cerró alguna operación. Por defecto es el **10 %** de lo que
+gastó el agente en esa ejecución, y puede estar configurado a cero. Lo ves
+desglosado en tu consumo de créditos.
 
 Sale a cuenta frente a un agente propio precisamente porque un agente reparte su
 coste entre todos sus seguidores.

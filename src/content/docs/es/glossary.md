@@ -86,6 +86,10 @@ debe ser un stop.
 
 ## Cuenta y facturación
 
+**Freemium** — El plan en el que está toda cuenta que no paga: 14 días de prueba
+completa y después gratis para siempre, con todo visible, trading manual y los
+Copy Trader Agents marcados Free. Ver [Planes y precios](../pricing/).
+
 **Créditos** — Unidad de consumo de los modelos de lenguaje. Cada mensaje y cada
 ejecución de tarea gasta créditos. Ver [Planes y precios](../pricing/).
 
