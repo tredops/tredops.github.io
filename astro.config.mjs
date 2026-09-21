@@ -147,6 +147,7 @@ export default defineConfig({
 					translations: { es: 'Blog' },
 					items: [
 						{ label: 'Experiments & updates', translations: { es: 'Experimentos y novedades' }, link: '/blog/' },
+						{ label: 'TredOps vs Other', translations: { es: 'TredOps vs Other' }, slug: 'landscape' },
 					],
 				},
 				{

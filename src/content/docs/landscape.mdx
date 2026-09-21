@@ -1,0 +1,62 @@
+---
+title: "TredOps vs Other — platform landscape 2026"
+description: "State of the art in automated and AI trading platforms, September 2026: one feature per row, one platform per column. TredOps, 3Commas, Cryptohopper, Pionex, Composer, TradersPost, Trade Ideas, Freqtrade, Alphio and the LLM arenas."
+tableOfContents: false
+---
+
+A feature-by-feature map of the automated trading market as of **September 2026**. It is meant as a reference, not a ranking: every platform here is good at something, and several are not direct competitors of each other. Facts come from each vendor's own pricing and product pages and from third-party reviews checked in September 2026; prices change, so follow the links.
+
+Legend: **✅** included · **🟡** partial, paid add-on or top tier only · **❌** not offered · **—** not applicable.
+
+<div class="landscape">
+
+| Feature | [TredOps](https://tredops.com) | [3Commas](https://3commas.io) | [Cryptohopper](https://www.cryptohopper.com) | [Pionex](https://www.pionex.com) | [Composer](https://www.composer.trade) | [TradersPost](https://traderspost.io) | [Trade Ideas](https://www.trade-ideas.com) | [Freqtrade](https://www.freqtrade.io) | [Alphio](https://alphio.ai) | [TradeRank](https://traderank.ai) / [Alpha Arena](https://nof1.ai) |
+|---|---|---|---|---|---|---|---|---|---|---|
+| **Category** | Bots + LLM agents, non-custodial | Crypto bots | Crypto bots + marketplace | Exchange with built-in bots | No-code stock strategies | Webhook order router | AI stock scanner | Open-source bot framework | Natural-language trading agent | Public LLM trading benchmarks |
+| **Custody of funds** | ✅ Stays at your broker | ✅ Stays at exchange (API keys) | ✅ Stays at exchange (API keys) | ❌ Custodial (it is the exchange) | ✅ Alpaca / Apex accounts | ✅ Stays at broker | ✅ Stays at broker | ✅ Stays at exchange | ✅ Stays at broker | — (no user funds) |
+| **US stocks & ETFs** | ✅ | ❌ | ❌ | ❌ | ✅ | ✅ | ✅ | ❌ | ✅ | ✅ (simulated) |
+| **Crypto** | ✅ | ✅ | ✅ | ✅ | ❌ | ✅ | ❌ | ✅ | ✅ (KuCoin, OKX, Hyperliquid) | ✅ (simulated / Hyperliquid real) |
+| **Options / futures** | ❌ | 🟡 Crypto futures | 🟡 Crypto futures | 🟡 Crypto futures | ❌ | ✅ | ❌ | 🟡 Crypto futures | 🟡 Prediction markets (Polymarket) | 🟡 Crypto perps (Alpha Arena) |
+| **Brokers / exchanges** | 1 (Alpaca; more planned) | Up to 25 exchanges | 16+ exchanges | Itself only | Alpaca / Apex | 17+ brokers & exchanges | Several US brokers | Many via CCXT | 7 brokers + 4 exchanges | ❌ Read-only |
+| **Strategy source** | Bots generated per asset + agent reasoning | Pre-built DCA / grid / signal bots | Pre-built bots + marketplace + designer | 16 pre-built bots | Visual logic blocks ("symphonies") | Your TradingView / TrendSpider alerts | 300+ Holly scanner strategies | Your Python code | Natural-language rules | Fixed prompts per model |
+| **Backtesting** | ✅ Automatic, part of bot creation | 🟡 Limited | ✅ | ❌ | ✅ Fast, unlimited | ❌ (done upstream) | ✅ OddsMaker | ✅ | ❌ | — |
+| **Parameter optimisation** | ✅ Genetic algorithms, walk-forward | ❌ | 🟡 | ❌ | ❌ | ❌ | ❌ | ✅ Hyperopt / FreqAI | ❌ | — |
+| **Quality gate before live** | ✅ Staging → production threshold | ❌ | ❌ | ❌ | ❌ | ❌ | ❌ | 🟡 Dry-run, manual | ❌ | — |
+| **Automatic recalibration** | ✅ Scheduled per bot | ❌ | ❌ | ❌ | ❌ | ❌ | 🟡 Holly retrains nightly | 🟡 Manual re-run | ❌ | — |
+| **Paper trading** | ✅ | ✅ Demo | ✅ | ❌ | ✅ | ✅ | ✅ | ✅ Dry-run | 🟡 | ✅ (TradeRank) |
+| **Live execution** | ✅ | ✅ | ✅ | ✅ | ✅ Daily at close | ✅ | ✅ Auto-trade | ✅ | ✅ | ❌ |
+| **TP / SL on every order** | ✅ Mandatory | ✅ Configurable | ✅ Configurable | ✅ In bots | 🟡 Via rules | 🟡 Passed from alert | 🟡 | ✅ Configurable | 🟡 Via rules | — |
+| **Portfolio risk limits override automation** | ✅ Per order, per bot, allowed assets | 🟡 Per bot | 🟡 Per bot | 🟡 Per bot | 🟡 | 🟡 Manual approval | ❌ | 🟡 In code | 🟡 | — |
+| **LLM agent that reasons about signals** | ✅ | ❌ | 🟡 "AI strategies", rule-based | ❌ | 🟡 "Trade with AI" for ideas | ❌ | ❌ Rules engine | 🟡 FreqAI (ML, not LLM) | ✅ | ✅ (research only) |
+| **Choice of LLM / bring your own keys** | ✅ OpenRouter, DeepSeek, OpenAI, NVIDIA | — | ❌ | — | ❌ | — | — | 🟡 Any Python model | ❌ | 🟡 Local models on some arenas |
+| **Scheduled autonomous tasks** | ✅ AgentTask | 🟡 Bots run 24/7 | 🟡 Bots run 24/7 | 🟡 | 🟡 Daily rebalance | ❌ | ❌ | ✅ | ✅ | — |
+| **Chat with your portfolio** | ✅ RAG chat | ❌ | ❌ | ❌ | 🟡 | ❌ | ❌ | 🟡 Telegram bot | ✅ | ❌ |
+| **Copy trading** | ✅ Copy Trader Agents | 🟡 | 🟡 Paid add-on | ❌ | 🟡 Copy symphonies | ❌ | ❌ | ❌ | ✅ | 🟡 BingX-style arenas |
+| **Marketplace / community strategies** | 🟡 Public bots & agents | 🟡 Signals | ✅ Marketplace | ❌ | ✅ 3,000+ shared | 🟡 Script library | ✅ | ✅ Community strategies | ❌ | — |
+| **Public benchmark with prompts & costs** | ✅ Every edition | ❌ | ❌ | ❌ | ❌ | ❌ | 🟡 Holly stats | ❌ | ❌ | ✅ Decisions & reasoning |
+| **Webhooks / API** | 🟡 MCP for agents; API planned | ✅ | ✅ | ❌ | 🟡 Pro plan | ✅ Core feature | 🟡 | ✅ REST | 🟡 | ❌ |
+| **Open source** | ❌ | ❌ | ❌ | ❌ | ❌ | ❌ | ❌ | ✅ GPL | ❌ | ❌ |
+| **Entry price** | Free · Pro $24.99/mo | $15/mo | $29/mo | Free (0.05% fee) | Free · $10 · $32/mo | Free paper · $41.65/mo live | Free · ~$127/mo | Free | Not published | Free to read |
+| **Track record** | Editions since Aug 2026 (replays) | Since 2017 | Since 2017 | Since 2019 | Since 2020 | Since 2020 | Holly since 2016 | Since 2017 | 2025–2026 | Alpha Arena S1 Oct 2025; TradeRank daily |
+
+</div>
+
+## Reading the table
+
+- **Four families, not one market.** Crypto bot platforms (3Commas, Cryptohopper, Pionex) sell pre-built strategies you configure. No-code stock tools (Composer, TradersPost, Trade Ideas) turn rules or alerts into orders. Open-source frameworks (Freqtrade, plus Hummingbot and QuantConnect Lean) give unlimited depth to whoever can code and host them. LLM products and arenas (Alphio, TradeRank, Alpha Arena, TredOps) let language models reason about markets.
+- **"AI" means different things.** Trade Ideas' Holly and Cryptohopper's "AI strategies" are rule and statistics engines. Freqtrade's FreqAI is classic machine learning. Alphio, TredOps and the arenas run large language models that read context and justify each decision.
+- **Custody is the first filter.** Pionex is the only custodial option: its bots are the cheapest to run precisely because your funds sit on its exchange. Everyone else connects to a broker or exchange account you keep.
+- **Coverage vs. depth.** TradersPost and 3Commas win on the number of venues; Composer and Freqtrade on strategy tooling; the arenas on transparency. TredOps combines bot generation, optimisation, quality gating, recalibration and LLM supervision in one loop, on a single broker today.
+- **Where the frontier is moving.** Kraken bought Capitalise.ai (August 2025) to put natural-language automation inside an exchange; Alphio launched agentic accounts with Robinhood (July 2026); nof1 raised $15M after Alpha Arena to build a consumer product. Expect every family to add an LLM layer within a year.
+
+> Snapshot of September 2026. Vendors change plans and features often; each column header links to the source. If you spot an error, write to **support@tredops.com** and we will fix it. Nothing here is financial advice.
+
+For the narrative version with pros, cons and a verdict per use case, read [Where TredOps stands](../blog/tredops-vs-ai-trading-platforms-2026/).
+
+<style>{`
+.landscape { overflow-x: auto; margin: 1.5rem 0; }
+.landscape table { display: table; overflow: visible; min-width: 1500px; width: max-content; font-size: 0.82rem; }
+.landscape th, .landscape td { vertical-align: top; white-space: normal; min-width: 8.5rem; }
+.landscape th:first-child, .landscape td:first-child { position: sticky; left: 0; background: var(--sl-color-bg); min-width: 12rem; font-weight: 600; z-index: 1; box-shadow: 1px 0 0 var(--sl-color-hairline); }
+.landscape th:nth-child(2), .landscape td:nth-child(2) { background: color-mix(in srgb, var(--sl-color-accent) 8%, transparent); }
+`}</style>
