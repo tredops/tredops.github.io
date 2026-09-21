@@ -14,13 +14,16 @@ Si no tienes claro qué es un portfolio, un bot o una señal, empieza por
 
 ## 1. Crea tu cuenta
 
-Entra en [tredops.com](https://tredops.com) y regístrate. Empiezas con un **Free
-Trial de 14 días**, sin tarjeta:
+Entra en [tredops.com](https://tredops.com) y regístrate. Empiezas en
+**Freemium** con **14 días de prueba completa**, sin tarjeta:
 
 - Acceso a los bots y agentes mantenidos por el equipo de TredOps.
 - Créditos de LLM limitados, suficientes para probar de verdad.
 - Monitoring con Take Profit y Stop Loss.
 - Hasta 2 bots activos.
+
+Al acabar los 14 días sigues en Freemium sin coste: todo sigue visible, puedes
+operar a mano y copiar los Copy Trader Agents marcados Free.
 
 Ver [Planes y precios](../pricing/) para el detalle de cada plan.
 

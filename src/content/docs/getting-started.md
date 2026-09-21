@@ -13,13 +13,16 @@ If portfolio, bot and signal are not yet clear terms, start with
 
 ## 1. Create your account
 
-Go to [tredops.com](https://tredops.com) and sign up. You start on a **14-day
-Free Trial**, no card required:
+Go to [tredops.com](https://tredops.com) and sign up. You start on **Freemium**
+with a **14-day full trial**, no card required:
 
 - Access to the bots and agents maintained by the TredOps team.
 - Limited LLM credits, enough for a real test drive.
 - Monitoring with Take Profit and Stop Loss.
 - Up to 2 active bots.
+
+When the 14 days are over you stay on Freemium for free: everything remains
+visible, you can trade by hand and copy the Copy Trader Agents marked Free.
 
 See [Plans & pricing](../pricing/) for the detail on each plan.
 

@@ -29,7 +29,15 @@ Sí. **Toda orden se abre con Take Profit y Stop Loss definidos** y se monitoriz
 
 ## ¿Puedo probar antes de pagar?
 
-Sí. Empiezas con un **Free Trial de 14 días** sin tarjeta. Si quieres la experiencia completa por un par de días, existe el **Plan Gancho** de $4.99 por 7 días.
+Sí. Toda cuenta empieza en **Freemium**: un **Free Trial de 14 días** sin tarjeta y, después, un plan gratuito que no caduca. Si quieres la experiencia completa por un par de días, existe el **Plan Gancho** de $4.99 por 7 días.
+
+## ¿Qué pasa cuando termina mi prueba?
+
+Te quedas dentro. Freemium mantiene todo visible —portfolios, órdenes, posiciones, Benchmark—, te deja operar a mano con Take Profit y Stop Loss y permite que uno de tus portfolios copie un **Copy Trader Agent marcado Free** sin coste. El chat sigue funcionando mientras te queden créditos. El Playground, los bots propios, las Agent Tasks nuevas y los Copy Trader Agents *Pro* son Premium. Ver [Planes y precios](../pricing/).
+
+## ¿Puedo usar TredOps gratis para siempre?
+
+Sí. Freemium no tiene fecha de fin y nunca te cobra nada.
 
 ## ¿Qué pasa si se agotan mis tokens de LLM?
 
