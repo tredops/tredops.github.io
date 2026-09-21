@@ -69,7 +69,7 @@ export default defineConfig({
 			},
 			social: [
 				{ icon: 'github', label: 'GitHub', href: 'https://github.com/tredops/tredops.github.io' },
-				{ icon: 'x.com', label: 'X / Twitter', href: 'https://x.com/tredops' },
+				{ icon: 'x.com', label: 'X / Twitter', href: 'https://x.com/tredopsAI' },
 			],
 			editLink: { enabled: false },
 			head: [
