@@ -1,0 +1,59 @@
+---
+// Página de un post: metadatos sociales (og:image, article:*), fecha, autor,
+// etiquetas, enlace al mismo post en el otro idioma y el aviso legal al pie.
+import StarlightPage from "@astrojs/starlight/components/StarlightPage.astro";
+import { render } from "astro:content";
+import { blogHref, counterpart, langOf, postHref, T, type Post } from "./blog";
+
+interface Props {
+	post: Post;
+}
+
+const { post } = Astro.props;
+const lang = langOf(post);
+const t = T[lang];
+const { Content } = await render(post);
+const base = import.meta.env.BASE_URL;
+const site = Astro.site ? Astro.site.href.replace(/\/$/, "") : "";
+const { title, description, pubDate, updatedDate, author, tags, ogImage } = post.data;
+const fmt = new Intl.DateTimeFormat(t.locale, { year: "numeric", month: "long", day: "numeric" });
+const other = await counterpart(post);
+const imageUrl = ogImage ? `${site}${ogImage}` : null;
+const canonical = `${site}${postHref(post, base)}`;
+
+const head: Array<{ tag: "meta" | "link"; attrs: Record<string, string> }> = [
+	{ tag: "meta", attrs: { property: "og:type", content: "article" } },
+	{ tag: "meta", attrs: { property: "og:url", content: canonical } },
+	{ tag: "meta", attrs: { property: "article:published_time", content: pubDate.toISOString() } },
+	{ tag: "meta", attrs: { name: "twitter:card", content: imageUrl ? "summary_large_image" : "summary" } },
+	...(imageUrl
+		? [
+			{ tag: "meta" as const, attrs: { property: "og:image", content: imageUrl } },
+			{ tag: "meta" as const, attrs: { name: "twitter:image", content: imageUrl } },
+		]
+		: []),
+	...tags.map((tag) => ({ tag: "meta" as const, attrs: { property: "article:tag", content: tag } })),
+	...(other ? [{ tag: "link" as const, attrs: { rel: "alternate", hreflang: langOf(other), href: `${site}${postHref(other, base)}` } }] : []),
+];
+---
+
+<StarlightPage frontmatter={{ title, description, head }}>
+	<p class="post-meta">
+		<time datetime={pubDate.toISOString()}>{fmt.format(pubDate)}</time>
+		{updatedDate && <span> · {fmt.format(updatedDate)}</span>}
+		<span> · {t.by} {author}</span>
+		{tags.length > 0 && <span class="post-tags">{tags.map((tag) => <span class="post-tag">{tag}</span>)}</span>}
+		{other && <a class="post-alt" href={postHref(other, base)}>{t.alsoIn}</a>}
+	</p>
+	<Content />
+	<p class="post-legal">{t.notAdvice}</p>
+	<p><a href={blogHref(lang, base)}>{t.back}</a></p>
+</StarlightPage>
+
+<style>
+	.post-meta { display: flex; flex-wrap: wrap; align-items: center; gap: 0.25rem 0.35rem; margin-bottom: 1.5rem; color: var(--sl-color-gray-3); font-size: 0.9rem; }
+	.post-tags { display: inline-flex; flex-wrap: wrap; gap: 0.3rem; margin-left: 0.35rem; }
+	.post-tag { font-size: 0.7rem; padding: 0.1rem 0.5rem; border-radius: 999px; background: var(--sl-color-gray-5); color: var(--sl-color-gray-2); }
+	.post-alt { margin-left: auto; font-size: 0.85rem; }
+	.post-legal { margin-top: 2.5rem; padding: 0.75rem 1rem; border-radius: 0.6rem; background: var(--sl-color-gray-6); border: 1px solid var(--sl-color-gray-5); font-size: 0.8rem; color: var(--sl-color-gray-3); }
+</style>

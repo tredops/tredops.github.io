@@ -19,6 +19,7 @@
   },
   "dependencies": {
     "@astrojs/mdx": "^8.0.1",
+    "@astrojs/rss": "^4.0.19",
     "@astrojs/starlight": "^0.42.2",
     "astro": "^7.2.10",
     "chart.js": "^4.5.1",

@@ -69,7 +69,7 @@ export default defineConfig({
 			},
 			social: [
 				{ icon: 'github', label: 'GitHub', href: 'https://github.com/tredops/tredops.github.io' },
-				{ icon: 'x.com', label: 'X / Twitter', href: 'https://x.com/tredops' },
+				{ icon: 'x.com', label: 'X / Twitter', href: 'https://x.com/tredopsAI' },
 			],
 			editLink: { enabled: false },
 			head: [
@@ -140,6 +140,13 @@ export default defineConfig({
 						{ label: 'Monitoring', translations: { es: 'Monitoring' }, slug: 'pillars/monitoring' },
 						{ label: 'AI Agents', translations: { es: 'Agentes IA' }, slug: 'pillars/agents' },
 						{ label: 'Integrations', translations: { es: 'Integraciones' }, slug: 'pillars/integrations' },
+					],
+				},
+				{
+					label: 'Blog',
+					translations: { es: 'Blog' },
+					items: [
+						{ label: 'Experiments & updates', translations: { es: 'Experimentos y novedades' }, link: '/blog/' },
 					],
 				},
 				{

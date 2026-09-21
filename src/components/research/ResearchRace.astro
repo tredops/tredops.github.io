@@ -1,0 +1,14 @@
+---
+// Chart race de un experimento del blog: el mismo motor que las ediciones del
+// Benchmark, leyendo la escena de `public/research/<slug>.json`.
+import BenchmarkRace from "../benchmark/BenchmarkRace.astro";
+
+interface Props {
+	slug: string;
+	lang?: "es" | "en";
+}
+
+const { slug, lang = "en" } = Astro.props;
+---
+
+<BenchmarkRace edition={slug} lang={lang} dir="research" />

@@ -97,22 +97,30 @@ export const DEFAULT_EDITION = "2026-dots3-note-preview-champion";
 
 const cache = new Map<string, Scene>();
 
+/**
+ * Carpeta pública de la escena: `benchmark/` para las ediciones del Benchmark,
+ * `research/` para los experimentos publicados en el blog (misma forma de
+ * fichero, generado por tredops-research a partir de un Portfolio Compare).
+ */
+export type SceneDir = "benchmark" | "research";
+
 /** Ruta pública de la escena, tal y como la descarga el navegador. */
-export function sceneUrl(edition: string, base: string): string {
-	return `${base.endsWith("/") ? base : `${base}/`}benchmark/${edition}.json`;
+export function sceneUrl(edition: string, base: string, dir: SceneDir = "benchmark"): string {
+	return `${base.endsWith("/") ? base : `${base}/`}${dir}/${edition}.json`;
 }
 
 /**
  * Lee una escena en tiempo de build. Solo para el frontmatter de los
  * componentes `.astro`: en cliente se usa `fetch(sceneUrl(...))`.
  */
-export function loadScene(edition: string = DEFAULT_EDITION): Scene {
-	const cached = cache.get(edition);
+export function loadScene(edition: string = DEFAULT_EDITION, dir: SceneDir = "benchmark"): Scene {
+	const key = `${dir}/${edition}`;
+	const cached = cache.get(key);
 	if (cached) return cached;
 	if (!/^[a-z0-9][a-z0-9-]*$/.test(edition)) {
 		throw new Error(`Edición de benchmark no válida: "${edition}"`);
 	}
-	const file = resolve(process.cwd(), "public/benchmark", `${edition}.json`);
+	const file = resolve(process.cwd(), "public", dir, `${edition}.json`);
 	let raw: string;
 	try {
 		raw = readFileSync(file, "utf8");
@@ -123,6 +131,6 @@ export function loadScene(edition: string = DEFAULT_EDITION): Scene {
 		);
 	}
 	const scene = JSON.parse(raw) as Scene;
-	cache.set(edition, scene);
+	cache.set(key, scene);
 	return scene;
 }

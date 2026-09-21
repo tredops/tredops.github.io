@@ -1,0 +1,129 @@
+---
+// "Enséñame todo": la ficha completa de un experimento — prompt del benchmark,
+// temperatura, razonamiento, filtros del portfolio y, por agente, el modelo,
+// el proveedor, el coste real y el system prompt íntegro.
+import { loadMethodology } from "./methodology";
+
+interface Props {
+	slug: string;
+	lang?: "es" | "en";
+}
+
+const { slug, lang = "en" } = Astro.props;
+const m = loadMethodology(slug);
+
+const t = {
+	es: {
+		setup: "Configuración del experimento", capital: "Capital por agente", window: "Ventana", cadence: "Cadencia", cycles: "ciclos",
+		everyDays: (n: number) => (n === 1 ? "cada día" : `cada ${n} días`), stages: "Fuentes de señal (etapas de bot)", reasoning: "Razonamiento",
+		temperature: "Temperatura", maxTurns: "Turnos máx. por ciclo", prompt: "Prompt de cada ciclo", template: "Plantilla del portfolio",
+		agents: "Agentes", model: "Modelo", provider: "Proveedor", free: "gratuito", cost: "Coste LLM del experimento", tokens: "tokens",
+		runs: "ejecuciones", latency: "latencia media", systemPrompt: "System prompt (íntegro)", show: "Ver system prompt",
+		decisions: "Decisiones citadas", paper: "Paper trading sobre datos históricos: ninguna orden llegó a un broker real.",
+		na: "—", fromAgent: "de cada agente", inherited: "la del agente",
+	},
+	en: {
+		setup: "Experiment setup", capital: "Capital per agent", window: "Window", cadence: "Cadence", cycles: "cycles",
+		everyDays: (n: number) => (n === 1 ? "every day" : `every ${n} days`), stages: "Signal sources (bot stages)", reasoning: "Reasoning",
+		temperature: "Temperature", maxTurns: "Max turns per cycle", prompt: "Prompt of every cycle", template: "Portfolio template",
+		agents: "Agents", model: "Model", provider: "Provider", free: "free", cost: "LLM cost of the run", tokens: "tokens",
+		runs: "runs", latency: "avg latency", systemPrompt: "System prompt (verbatim)", show: "Show system prompt",
+		decisions: "Quoted decisions", paper: "Paper trading on historical data: no order reached a real broker.",
+		na: "—", fromAgent: "per agent", inherited: "the agent's own",
+	},
+}[lang];
+
+const locale = lang === "es" ? "es-ES" : "en-US";
+const day = (iso: string) => new Date(iso).toLocaleDateString(locale, { day: "numeric", month: "short", year: "numeric" });
+const usd = (v: number | null | undefined, d = 2) => (v == null ? t.na : `$${v.toLocaleString("en-US", { minimumFractionDigits: d, maximumFractionDigits: d })}`);
+const pct = (v: number | null | undefined) => (v == null ? t.na : `${v > 0 ? "+" : ""}${v.toFixed(2)}%`);
+const tpl = m.portfolioTemplate as any;
+---
+
+<div class="r-meth">
+	<p class="r-meth-paper">{t.paper}</p>
+
+	<h4>{t.setup}</h4>
+	<dl class="r-meth-grid">
+		<div><dt>{t.capital}</dt><dd>{usd(m.benchmark.balance, 0)}</dd></div>
+		<div><dt>{t.window}</dt><dd>{day(m.benchmark.startAt)} → {day(m.benchmark.endAt)}</dd></div>
+		<div><dt>{t.cadence}</dt><dd>{t.everyDays(m.benchmark.intervalDay)} · {m.benchmark.cyclesTotal} {t.cycles}</dd></div>
+		<div><dt>{t.stages}</dt><dd>{m.stages.join(", ") || t.na}</dd></div>
+		<div><dt>{t.reasoning}</dt><dd>{m.reasoningLevel ?? t.inherited}</dd></div>
+		<div><dt>{t.temperature}</dt><dd>{m.temperature ?? t.inherited}</dd></div>
+		<div><dt>{t.maxTurns}</dt><dd>{m.maxTurns ?? t.na}</dd></div>
+	</dl>
+
+	<h4>{t.prompt}</h4>
+	<pre class="r-meth-pre">{m.benchmarkPrompt}</pre>
+
+	{tpl && (
+		<>
+			<h4>{t.template}</h4>
+			<dl class="r-meth-grid">
+				{tpl.controller?.type && <div><dt>Order types</dt><dd>{tpl.controller.type.join(", ")}</dd></div>}
+				{tpl.capital && <div><dt>Max per order / per bot</dt><dd>{tpl.capital.maxByOrderPct}% / {tpl.capital.maxOrderCapitalPct}%</dd></div>}
+				{tpl.preference?.allowedAssets?.length > 0 && <div><dt>Assets</dt><dd>{tpl.preference.allowedAssets.join(", ")}</dd></div>}
+				{tpl.preference?.markets?.length > 0 && <div><dt>Markets</dt><dd>{tpl.preference.markets.join(", ")}</dd></div>}
+				{tpl.preference?.exchanges?.length > 0 && <div><dt>Exchanges</dt><dd>{tpl.preference.exchanges.join(", ")}</dd></div>}
+				{tpl.preference?.risk != null && <div><dt>Risk ceiling</dt><dd>{tpl.preference.risk} / 5</dd></div>}
+				{tpl.preference?.symbolWhiteList?.length > 0 && <div><dt>Symbols</dt><dd>{tpl.preference.symbolWhiteList.join(", ")}</dd></div>}
+				{tpl.preference?.sectors?.length > 0 && <div class="r-meth-wide"><dt>Sectors</dt><dd>{tpl.preference.sectors.join(" · ")}</dd></div>}
+			</dl>
+		</>
+	)}
+
+	<h4>{t.agents}</h4>
+	<div class="r-meth-agents">
+		{m.agents.map((a) => (
+			<details class="r-meth-agent">
+				<summary>
+					<span class="r-meth-agent-name">{a.name}</span>
+					<code>{a.model ?? t.na}</code>
+					<span class="r-meth-agent-meta">
+						{a.provider ?? t.na}{a.isFree ? ` · ${t.free}` : ""} · {t.temperature.toLowerCase()} {a.temperature ?? t.na} · {t.reasoning.toLowerCase()} {a.reasoningEffort ?? t.na}
+					</span>
+					<span class={`r-meth-agent-pnl ${(a.finalProfitPct ?? 0) >= 0 ? "r-win" : "r-loss"}`}>{pct(a.finalProfitPct)}</span>
+				</summary>
+				<dl class="r-meth-grid">
+					<div><dt>{t.cost}</dt><dd>{a.isFree ? `${t.free} (${usd(a.cost?.costTotal, 4)})` : usd(a.cost?.costTotal, a.cost && a.cost.costTotal < 1 ? 4 : 2)}</dd></div>
+					<div><dt>{t.tokens}</dt><dd>{((a.cost?.tokenInput ?? 0) / 1e6).toFixed(2)}M in · {((a.cost?.tokenOutput ?? 0) / 1e6).toFixed(2)}M out</dd></div>
+					<div><dt>{t.runs}</dt><dd>{a.cost?.runs ?? t.na}{a.cost?.avgDurationMs != null ? ` · ${t.latency} ${(a.cost.avgDurationMs / 1000).toFixed(1)} s` : ""}</dd></div>
+					<div><dt>W / L · max DD</dt><dd>{a.wins} / {a.losses} · {pct(a.maxDrawdownPct)}</dd></div>
+				</dl>
+				{a.systemPrompt && (
+					<details class="r-meth-prompt">
+						<summary>{t.show}</summary>
+						<pre class="r-meth-pre">{a.systemPrompt}</pre>
+					</details>
+				)}
+			</details>
+		))}
+	</div>
+</div>
+
+<style>
+	.r-meth { margin: 1.25rem 0; display: grid; gap: 0.75rem; }
+	.r-meth h4 { margin: 0.75rem 0 0; font-size: 1rem; }
+	.r-meth-paper { margin: 0; padding: 0.625rem 0.875rem; border-radius: 0.6rem; background: var(--sl-color-gray-6); border: 1px solid var(--sl-color-gray-5); color: var(--sl-color-gray-2); font-size: 0.875rem; }
+	.r-meth-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(14rem, 1fr)); gap: 0.5rem 1rem; margin: 0; }
+	.r-meth-grid div { display: grid; gap: 0.15rem; padding: 0.5rem 0.75rem; border-radius: 0.5rem; background: var(--sl-color-gray-6); border: 1px solid var(--sl-color-gray-5); }
+	.r-meth-grid .r-meth-wide { grid-column: 1 / -1; }
+	.r-meth-grid dt { font-size: 0.72rem; text-transform: uppercase; letter-spacing: 0.04em; color: var(--sl-color-gray-3); }
+	.r-meth-grid dd { margin: 0; font-size: 0.9rem; font-variant-numeric: tabular-nums; }
+	.r-meth-pre { margin: 0; white-space: pre-wrap; font-size: 0.8rem; line-height: 1.5; max-height: 28rem; overflow: auto; }
+	.r-meth-agents { display: grid; gap: 0.5rem; }
+	.r-meth-agent { border: 1px solid var(--sl-color-gray-5); border-radius: 0.6rem; background: var(--sl-color-gray-6); padding: 0.5rem 0.875rem; }
+	.r-meth-agent > summary { display: grid; grid-template-columns: minmax(8rem, 1fr) auto; gap: 0.15rem 1rem; align-items: center; cursor: pointer; list-style: none; }
+	.r-meth-agent > summary::-webkit-details-marker { display: none; }
+	.r-meth-agent-name { font-weight: 600; }
+	.r-meth-agent code { font-size: 0.75rem; grid-column: 1; }
+	.r-meth-agent-meta { grid-column: 1; font-size: 0.78rem; color: var(--sl-color-gray-3); }
+	.r-meth-agent-pnl { grid-column: 2; grid-row: 1 / span 3; font-weight: 700; font-size: 1.05rem; font-variant-numeric: tabular-nums; }
+	.r-win { color: #059669; } .r-loss { color: #dc2626; }
+	:root[data-theme='dark'] .r-win { color: #34d399; } :root[data-theme='dark'] .r-loss { color: #f87171; }
+	.r-meth-agent .r-meth-grid { margin-top: 0.75rem; }
+	.r-meth-prompt { margin-top: 0.75rem; }
+	.r-meth-prompt summary { cursor: pointer; font-size: 0.85rem; color: var(--sl-color-accent); }
+	.r-meth-prompt .r-meth-pre { margin-top: 0.5rem; }
+</style>

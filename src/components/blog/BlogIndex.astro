@@ -1,0 +1,72 @@
+---
+// Índice del blog de un idioma: tarjetas con fecha, etiquetas y, en los
+// experimentos, la ficha (ventana · agentes · capital · ganador).
+import StarlightPage from "@astrojs/starlight/components/StarlightPage.astro";
+import { listPosts, postHref, T, type Lang } from "./blog";
+
+interface Props {
+	lang: Lang;
+}
+
+const { lang } = Astro.props;
+const t = T[lang];
+const posts = await listPosts(lang);
+const base = import.meta.env.BASE_URL;
+const rss = `${base.endsWith("/") ? base : `${base}/`}${lang === "es" ? "es/" : ""}blog/rss.xml`;
+const fmt = new Intl.DateTimeFormat(t.locale, { year: "numeric", month: "short", day: "numeric" });
+---
+
+<StarlightPage frontmatter={{ title: t.title, description: t.description, head: [{ tag: "link", attrs: { rel: "alternate", type: "application/rss+xml", title: t.rssTitle, href: rss } }] }}>
+	<p>{t.intro} <a href={rss}>RSS</a></p>
+	<div class="post-list">
+		{posts.map((post) => (
+			<a class="post-card" href={postHref(post, base)}>
+				{post.data.ogImage && <img class="post-card-img" src={`${base.endsWith("/") ? base.slice(0, -1) : base}${post.data.ogImage}`} alt="" loading="lazy" />}
+				<span class="post-card-body">
+					<span class="post-card-meta">
+						<span class="post-card-date">{fmt.format(post.data.pubDate)}</span>
+						{post.data.tags.map((tag) => <span class="post-card-tag">{tag}</span>)}
+					</span>
+					<span class="post-card-title">{post.data.title}</span>
+					<span class="post-card-desc">{post.data.description}</span>
+					{post.data.research && (
+						<span class="post-card-research">
+							{post.data.research.window && <span>{t.research.window}: {post.data.research.window}</span>}
+							{post.data.research.agents && <span>{post.data.research.agents} {t.research.agents}</span>}
+							{post.data.research.capital && <span>{t.research.capital}: ${post.data.research.capital.toLocaleString("en-US")}</span>}
+							{post.data.research.winner && <span>{t.research.winner}: {post.data.research.winner}</span>}
+						</span>
+					)}
+				</span>
+			</a>
+		))}
+	</div>
+</StarlightPage>
+
+<style>
+	.post-list { display: grid; gap: 1rem; margin-top: 1.5rem; }
+	.post-card {
+		display: grid;
+		grid-template-columns: minmax(0, 1fr);
+		gap: 0;
+		overflow: hidden;
+		border-radius: 0.75rem;
+		border: 1px solid var(--sl-color-gray-5);
+		background: var(--sl-color-gray-6);
+		text-decoration: none;
+		transition: border-color 0.15s ease;
+	}
+	.post-card:hover { border-color: var(--sl-color-accent); }
+	.post-card-img { display: block; width: 100%; aspect-ratio: 1200 / 630; object-fit: cover; }
+	.post-card-body { display: flex; flex-direction: column; gap: 0.35rem; padding: 1rem 1.25rem; }
+	.post-card-meta { display: flex; flex-wrap: wrap; align-items: center; gap: 0.4rem; }
+	.post-card-date { font-size: 0.75rem; letter-spacing: 0.08em; color: var(--sl-color-accent); }
+	.post-card-tag { font-size: 0.7rem; padding: 0.1rem 0.5rem; border-radius: 999px; background: var(--sl-color-gray-5); color: var(--sl-color-gray-2); }
+	.post-card-title { font-weight: 600; font-size: 1.05rem; color: var(--sl-color-white); }
+	.post-card-desc { font-size: 0.9rem; color: var(--sl-color-gray-3); }
+	.post-card-research { display: flex; flex-wrap: wrap; gap: 0.35rem 1rem; margin-top: 0.25rem; font-size: 0.78rem; color: var(--sl-color-gray-2); font-variant-numeric: tabular-nums; }
+	@media (min-width: 720px) {
+		.post-card:has(.post-card-img) { grid-template-columns: 16rem minmax(0, 1fr); }
+		.post-card:has(.post-card-img) .post-card-img { height: 100%; aspect-ratio: auto; }
+	}
+</style>
