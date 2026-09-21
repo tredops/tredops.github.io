@@ -6,38 +6,41 @@ tableOfContents: false
 
 Un mapa funcionalidad a funcionalidad del mercado de trading automatizado a **septiembre de 2026**. Es una referencia, no un ranking: cada plataforma es buena en algo y varias ni siquiera compiten entre sí. Los datos salen de las páginas de precios y producto de cada proveedor y de reseñas de terceros comprobadas en septiembre de 2026; los precios cambian, sigue los enlaces.
 
-Leyenda: **✅** incluido · **🟡** parcial, extra de pago o solo en el plan superior · **❌** no lo ofrece · **—** no aplica.
+Leyenda: **✅** sí · **🟡** parcial (extra de pago, solo en el plan superior o una versión más limitada) · **❌** no · **—** no aplica.
+
+Cada celda responde a la pregunta de la fila con una sola marca. Detalles, precios y fuentes están en el [artículo narrativo](../blog/tredops-vs-ai-trading-platforms-2026/) y en la web de cada proveedor (las cabeceras enlazan).
 
 <div class="landscape">
 
 | Funcionalidad | [TredOps](https://tredops.com) | [3Commas](https://3commas.io) | [Cryptohopper](https://www.cryptohopper.com) | [Pionex](https://www.pionex.com) | [Composer](https://www.composer.trade) | [TradersPost](https://traderspost.io) | [Trade Ideas](https://www.trade-ideas.com) | [Freqtrade](https://www.freqtrade.io) | [Alphio](https://alphio.ai) | [TradeRank](https://traderank.ai) / [Alpha Arena](https://nof1.ai) |
-|---|---|---|---|---|---|---|---|---|---|---|
-| **Categoría** | Bots + agentes LLM, no custodial | Bots cripto | Bots cripto + marketplace | Exchange con bots integrados | Estrategias no-code de acciones | Enrutador de órdenes por webhook | Scanner de acciones con IA | Framework open source de bots | Agente de trading en lenguaje natural | Benchmarks públicos de LLM |
-| **Custodia de fondos** | ✅ En tu broker | ✅ En el exchange (claves API) | ✅ En el exchange (claves API) | ❌ Custodial (es el exchange) | ✅ Cuentas Alpaca / Apex | ✅ En tu broker | ✅ En tu broker | ✅ En el exchange | ✅ En tu broker | — (sin fondos de usuario) |
-| **Acciones y ETFs de EE. UU.** | ✅ | ❌ | ❌ | ❌ | ✅ | ✅ | ✅ | ❌ | ✅ | ✅ (simulado) |
-| **Cripto** | ✅ | ✅ | ✅ | ✅ | ❌ | ✅ | ❌ | ✅ | ✅ (KuCoin, OKX, Hyperliquid) | ✅ (simulado / Hyperliquid real) |
-| **Opciones / futuros** | ❌ | 🟡 Futuros cripto | 🟡 Futuros cripto | 🟡 Futuros cripto | ❌ | ✅ | ❌ | 🟡 Futuros cripto | 🟡 Mercados de predicción (Polymarket) | 🟡 Perpetuos cripto (Alpha Arena) |
-| **Brokers / exchanges** | 1 (Alpaca; más en la hoja de ruta) | Hasta 25 exchanges | 16+ exchanges | Solo él mismo | Alpaca / Apex | 17+ brokers y exchanges | Varios brokers de EE. UU. | Muchos vía CCXT | 7 brokers + 4 exchanges | ❌ Solo lectura |
-| **Origen de la estrategia** | Bots generados por activo + razonamiento del agente | Bots DCA / grid / señales prefabricados | Bots prefabricados + marketplace + diseñador | 16 bots prefabricados | Bloques de lógica visuales ("sinfonías") | Tus alertas de TradingView / TrendSpider | 300+ estrategias del scanner Holly | Tu código Python | Reglas en lenguaje natural | Prompts fijos por modelo |
-| **Backtesting** | ✅ Automático, parte de crear el bot | 🟡 Limitado | ✅ | ❌ | ✅ Rápido, ilimitado | ❌ (se hace aguas arriba) | ✅ OddsMaker | ✅ | ❌ | — |
-| **Optimización de parámetros** | ✅ Algoritmos genéticos, walk-forward | ❌ | 🟡 | ❌ | ❌ | ❌ | ❌ | ✅ Hyperopt / FreqAI | ❌ | — |
-| **Umbral de calidad antes de operar** | ✅ Staging → producción | ❌ | ❌ | ❌ | ❌ | ❌ | ❌ | 🟡 Dry-run, manual | ❌ | — |
-| **Recalibración automática** | ✅ Programada por bot | ❌ | ❌ | ❌ | ❌ | ❌ | 🟡 Holly reentrena cada noche | 🟡 Relanzar a mano | ❌ | — |
-| **Paper trading** | ✅ | ✅ Demo | ✅ | ❌ | ✅ | ✅ | ✅ | ✅ Dry-run | 🟡 | ✅ (TradeRank) |
-| **Ejecución real** | ✅ | ✅ | ✅ | ✅ | ✅ Diaria al cierre | ✅ | ✅ Auto-trade | ✅ | ✅ | ❌ |
-| **TP / SL en cada orden** | ✅ Obligatorio | ✅ Configurable | ✅ Configurable | ✅ En los bots | 🟡 Vía reglas | 🟡 Viene de la alerta | 🟡 | ✅ Configurable | 🟡 Vía reglas | — |
-| **Límites de riesgo del portfolio por encima de la automatización** | ✅ Por orden, por bot, activos permitidos | 🟡 Por bot | 🟡 Por bot | 🟡 Por bot | 🟡 | 🟡 Aprobación manual | ❌ | 🟡 En el código | 🟡 | — |
-| **Agente LLM que razona sobre señales** | ✅ | ❌ | 🟡 "Estrategias IA", basadas en reglas | ❌ | 🟡 "Trade with AI" para ideas | ❌ | ❌ Motor de reglas | 🟡 FreqAI (ML, no LLM) | ✅ | ✅ (solo investigación) |
-| **Elección de LLM / tus propias claves** | ✅ OpenRouter, DeepSeek, OpenAI, NVIDIA | — | ❌ | — | ❌ | — | — | 🟡 Cualquier modelo Python | ❌ | 🟡 Modelos locales en algunas arenas |
-| **Tareas autónomas programadas** | ✅ AgentTask | 🟡 Los bots corren 24/7 | 🟡 Los bots corren 24/7 | 🟡 | 🟡 Rebalanceo diario | ❌ | ❌ | ✅ | ✅ | — |
-| **Chat con tu portfolio** | ✅ Chat RAG | ❌ | ❌ | ❌ | 🟡 | ❌ | ❌ | 🟡 Bot de Telegram | ✅ | ❌ |
-| **Copy trading** | ✅ Copy Trader Agents | 🟡 | 🟡 Extra de pago | ❌ | 🟡 Copiar sinfonías | ❌ | ❌ | ❌ | ✅ | 🟡 Arenas tipo BingX |
-| **Marketplace / estrategias de la comunidad** | 🟡 Bots y agentes públicos | 🟡 Señales | ✅ Marketplace | ❌ | ✅ 3.000+ compartidas | 🟡 Biblioteca de scripts | ✅ | ✅ Estrategias de la comunidad | ❌ | — |
-| **Benchmark público con prompts y costes** | ✅ Cada edición | ❌ | ❌ | ❌ | ❌ | ❌ | 🟡 Estadísticas de Holly | ❌ | ❌ | ✅ Decisiones y razonamiento |
-| **Webhooks / API** | 🟡 MCP para agentes; API en la hoja de ruta | ✅ | ✅ | ❌ | 🟡 Plan Pro | ✅ Función principal | 🟡 | ✅ REST | 🟡 | ❌ |
-| **Open source** | ❌ | ❌ | ❌ | ❌ | ❌ | ❌ | ❌ | ✅ GPL | ❌ | ❌ |
-| **Precio de entrada** | Gratis · Pro $24,99/mes | $15/mes | $29/mes | Gratis (0,05 % comisión) | Gratis · $10 · $32/mes | Paper gratis · $41,65/mes real | Gratis · ~$127/mes | Gratis | No publicado | Gratis de leer |
-| **Historial** | Ediciones desde ago 2026 (replays) | Desde 2017 | Desde 2017 | Desde 2019 | Desde 2020 | Desde 2020 | Holly desde 2016 | Desde 2017 | 2025–2026 | Alpha Arena S1 oct 2025; TradeRank diario |
+|---|:-:|:-:|:-:|:-:|:-:|:-:|:-:|:-:|:-:|:-:|
+| **No custodial (los fondos siguen en tu cuenta de broker o exchange)** | ✅ | ✅ | ✅ | ❌ | ✅ | ✅ | ✅ | ✅ | ✅ | — |
+| **Acciones y ETFs de EE. UU.** | ✅ | ❌ | ❌ | ❌ | ✅ | ✅ | ✅ | ❌ | ✅ | ✅ |
+| **Cripto** | ✅ | ✅ | ✅ | ✅ | ❌ | ✅ | ❌ | ✅ | ✅ | ✅ |
+| **Opciones / futuros** | ❌ | 🟡 | 🟡 | 🟡 | ❌ | ✅ | ❌ | 🟡 | 🟡 | 🟡 |
+| **Conecta con 5+ brokers o exchanges** | ❌ | ✅ | ✅ | ❌ | ❌ | ✅ | 🟡 | ✅ | ✅ | — |
+| **Estrategias / bots ya hechos** | ✅ | ✅ | ✅ | ✅ | 🟡 | ❌ | ✅ | 🟡 | ❌ | — |
+| **Constructor visual o no-code de estrategias** | 🟡 | 🟡 | ✅ | ❌ | ✅ | ❌ | 🟡 | ❌ | 🟡 | — |
+| **Estrategias escritas en lenguaje natural** | ✅ | ❌ | ❌ | ❌ | 🟡 | ❌ | ❌ | ❌ | ✅ | — |
+| **Estrategias escritas en código (Python, Pine…)** | ❌ | 🟡 | ❌ | ❌ | ❌ | 🟡 | ❌ | ✅ | ❌ | 🟡 |
+| **Backtesting** | ✅ | 🟡 | ✅ | ❌ | ✅ | ❌ | ✅ | ✅ | ❌ | — |
+| **Optimización automática de parámetros (genética / hyperopt)** | ✅ | ❌ | 🟡 | ❌ | ❌ | ❌ | ❌ | ✅ | ❌ | — |
+| **Umbral de calidad antes de operar en real** | ✅ | ❌ | ❌ | ❌ | ❌ | ❌ | ❌ | 🟡 | ❌ | — |
+| **Recalibración automática con el tiempo** | ✅ | ❌ | ❌ | ❌ | ❌ | ❌ | 🟡 | 🟡 | ❌ | — |
+| **Paper trading** | ✅ | ✅ | ✅ | ❌ | ✅ | ✅ | ✅ | ✅ | 🟡 | ✅ |
+| **Ejecución real en un broker** | ✅ | ✅ | ✅ | ✅ | ✅ | ✅ | ✅ | ✅ | ✅ | ❌ |
+| **Stop loss y take profit en cada orden** | ✅ | 🟡 | 🟡 | 🟡 | 🟡 | 🟡 | 🟡 | 🟡 | 🟡 | — |
+| **Límites de riesgo del portfolio por encima de la automatización** | ✅ | 🟡 | 🟡 | 🟡 | 🟡 | 🟡 | ❌ | 🟡 | 🟡 | — |
+| **Agente LLM que razona sobre cada señal** | ✅ | ❌ | 🟡 | ❌ | 🟡 | ❌ | ❌ | 🟡 | ✅ | ✅ |
+| **Elegir el LLM / usar tus propias claves API** | ✅ | — | ❌ | — | ❌ | — | — | 🟡 | ❌ | 🟡 |
+| **Tareas autónomas programadas** | ✅ | 🟡 | 🟡 | 🟡 | 🟡 | ❌ | ❌ | ✅ | ✅ | — |
+| **Chat con tu portfolio** | ✅ | ❌ | ❌ | ❌ | 🟡 | ❌ | ❌ | 🟡 | ✅ | ❌ |
+| **Copy trading** | ✅ | 🟡 | 🟡 | ❌ | 🟡 | ❌ | ❌ | ❌ | ✅ | 🟡 |
+| **Marketplace / comunidad de estrategias** | 🟡 | 🟡 | ✅ | ❌ | ✅ | 🟡 | ✅ | ✅ | ❌ | — |
+| **Benchmark público con prompts, operaciones y costes publicados** | ✅ | ❌ | ❌ | ❌ | ❌ | ❌ | 🟡 | ❌ | ❌ | ✅ |
+| **Webhooks / API** | 🟡 | ✅ | ✅ | ❌ | 🟡 | ✅ | 🟡 | ✅ | 🟡 | ❌ |
+| **Open source** | ❌ | ❌ | ❌ | ❌ | ❌ | ❌ | ❌ | ✅ | ❌ | ❌ |
+| **Plan o nivel gratuito** | ✅ | ❌ | ❌ | ✅ | ✅ | 🟡 | ✅ | ✅ | ❌ | ✅ |
 
 </div>
 
@@ -55,8 +58,9 @@ Para la versión narrativa con pros, contras y un veredicto por caso de uso, lee
 
 <style>{`
 .landscape { overflow-x: auto; margin: 1.5rem 0; }
-.landscape table { display: table; overflow: visible; min-width: 1500px; width: max-content; font-size: 0.82rem; }
-.landscape th, .landscape td { vertical-align: top; white-space: normal; min-width: 8.5rem; }
-.landscape th:first-child, .landscape td:first-child { position: sticky; left: 0; background: var(--sl-color-bg); min-width: 12rem; font-weight: 600; z-index: 1; box-shadow: 1px 0 0 var(--sl-color-hairline); }
+.landscape table { display: table; overflow: visible; min-width: 1100px; width: max-content; font-size: 0.85rem; }
+.landscape th, .landscape td { vertical-align: middle; white-space: nowrap; min-width: 6rem; text-align: center; font-size: 1.05rem; }
+.landscape th { font-size: 0.8rem; }
+.landscape th:first-child, .landscape td:first-child { position: sticky; left: 0; background: var(--sl-color-bg); min-width: 16rem; max-width: 22rem; white-space: normal; text-align: left; font-size: 0.82rem; font-weight: 600; z-index: 1; box-shadow: 1px 0 0 var(--sl-color-hairline); }
 .landscape th:nth-child(2), .landscape td:nth-child(2) { background: color-mix(in srgb, var(--sl-color-accent) 8%, transparent); }
 `}</style>
