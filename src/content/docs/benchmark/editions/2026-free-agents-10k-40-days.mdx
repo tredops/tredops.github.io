@@ -12,6 +12,7 @@ benchmark:
 
 import BenchmarkRace from '../../../../components/benchmark/BenchmarkRace.astro';
 import BenchmarkSummary from '../../../../components/benchmark/BenchmarkSummary.astro';
+import BenchmarkEquityRace from '../../../../components/benchmark/BenchmarkEquityRace.astro';
 import BenchmarkAgentDetails from '../../../../components/benchmark/BenchmarkAgentDetails.astro';
 import BenchmarkEditions from '../../../../components/benchmark/BenchmarkEditions.astro';
 import ResearchMethodology from '../../../../components/research/ResearchMethodology.astro';
@@ -36,6 +37,8 @@ Two more free models entered and were dropped, and we count that as a result: `m
 
 <BenchmarkRace edition="2026-free-agents-10k-40-days" lang="en" />
 
+<BenchmarkEquityRace edition="2026-free-agents-10k-40-days" lang="en" />
+
 <BenchmarkSummary edition="2026-free-agents-10k-40-days" lang="en" />
 
 ## Results
@@ -47,8 +50,6 @@ Two more free models entered and were dropped, and we count that as a result: `m
 | 3 | Muse Glimmer | `meta/muse-glimmer-30b` (NVIDIA) | $10,572.79 | +5.73% | −1.61% | 5 (2 / 3) | 40% |
 | 4 | OpenRouter free | `openrouter/free` (a router: the model changes per call) | $10,379.45 | +3.79% | −0.55% | 10 (4 / 6) | 40% |
 | 5 | Dots 3 | `dots-studio/dots-3-note-preview:free` (OpenRouter) | $10,230.33 | +2.30% | −1.04% | 7 (3 / 4) | 43% |
-
-![Profit per agent over the 20 cycles](/research/2026-free-agents-10k-40-days/equity.png)
 
 Three things stand out:
 
