@@ -9,18 +9,20 @@
 // La escena se descarga de `public/benchmark/<edición>.json` cuando el gráfico
 // entra en pantalla, así la página no carga el JSON (>1 MB) si el lector nunca
 // baja hasta aquí.
-import { DEFAULT_EDITION, loadScene, sceneUrl } from "./scene";
+import { DEFAULT_EDITION, loadScene, sceneUrl, type SceneDir } from "./scene";
 import { initialsOf } from "./format";
 
 interface Props {
 	edition?: string;
 	lang?: "es" | "en";
+	/** `research` para las escenas de los experimentos del blog (public/research/). */
+	dir?: SceneDir;
 }
 
-const { edition = DEFAULT_EDITION, lang = "en" } = Astro.props;
-const scene = loadScene(edition);
+const { edition = DEFAULT_EDITION, lang = "en", dir = "benchmark" } = Astro.props;
+const scene = loadScene(edition, dir);
 const { chart, portfolios } = scene;
-const src = sceneUrl(edition, import.meta.env.BASE_URL);
+const src = sceneUrl(edition, import.meta.env.BASE_URL, dir);
 
 const t = {
 	es: { play: "Reproducir", pause: "Pausar", toggle: "Reproducir / pausar", timeline: "Línea de tiempo del benchmark", replay: "Repetir", loading: "Cargando la carrera…" },

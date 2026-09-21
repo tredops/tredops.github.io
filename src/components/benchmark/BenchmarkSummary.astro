@@ -1,15 +1,17 @@
 ---
 // Resumen del benchmark: tabla final por agente + tarjetas de contexto.
 // Se calcula en build a partir del mismo fichero exportado de TredOps.
-import { DEFAULT_EDITION, loadScene } from "./scene";
+import { DEFAULT_EDITION, loadScene, type SceneDir } from "./scene";
 import { money, capitalPercent, initialsOf } from "./format";
 
 interface Props {
 	edition?: string;
 	lang?: "es" | "en";
+	/** `research` para las escenas de los experimentos del blog (public/research/). */
+	dir?: SceneDir;
 }
 
-const { edition = DEFAULT_EDITION, lang = "en" } = Astro.props;
+const { edition = DEFAULT_EDITION, lang = "en", dir = "benchmark" } = Astro.props;
 
 const t = {
 	es: {
@@ -29,7 +31,7 @@ const t = {
 		barsLabel: "Final equity per agent", locale: "en-US",
 	},
 }[lang];
-const scene = loadScene(edition);
+const scene = loadScene(edition, dir);
 const { portfolios, frames, range } = scene;
 const last = frames[frames.length - 1];
 const byId = new Map(portfolios.map((p) => [p.portfolioId, p]));

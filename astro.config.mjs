@@ -143,6 +143,13 @@ export default defineConfig({
 					],
 				},
 				{
+					label: 'Blog',
+					translations: { es: 'Blog' },
+					items: [
+						{ label: 'Experiments & updates', translations: { es: 'Experimentos y novedades' }, link: '/blog/' },
+					],
+				},
+				{
 					label: 'Reference',
 					translations: { es: 'Referencia' },
 					items: [

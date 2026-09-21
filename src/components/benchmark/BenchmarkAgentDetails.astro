@@ -2,16 +2,18 @@
 // Detalle por agente del Benchmark: pestañas con las posiciones abiertas
 // (último frame) y cerradas (acumuladas de todos los frames, con motivo).
 // Datos calculados en build a partir de src/data/benchmark-full.json.
-import { DEFAULT_EDITION, loadScene } from "./scene";
+import { DEFAULT_EDITION, loadScene, type SceneDir } from "./scene";
 import { money, capitalPercent, initialsOf, formatDay } from "./format";
 
 interface Props {
 	edition?: string;
 	lang?: "es" | "en";
+	/** `research` para las escenas de los experimentos del blog (public/research/). */
+	dir?: SceneDir;
 }
 
-const { edition = DEFAULT_EDITION, lang = "en" } = Astro.props;
-const scene = loadScene(edition);
+const { edition = DEFAULT_EDITION, lang = "en", dir = "benchmark" } = Astro.props;
+const scene = loadScene(edition, dir);
 
 const t = {
 	es: {

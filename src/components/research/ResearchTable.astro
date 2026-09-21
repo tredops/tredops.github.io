@@ -1,0 +1,18 @@
+---
+// Tabla final + detalle por agente de un experimento del blog, sobre la escena
+// de `public/research/<slug>.json` (mismos componentes que el Benchmark).
+import BenchmarkSummary from "../benchmark/BenchmarkSummary.astro";
+import BenchmarkAgentDetails from "../benchmark/BenchmarkAgentDetails.astro";
+
+interface Props {
+	slug: string;
+	lang?: "es" | "en";
+	/** Incluir las pestañas de posiciones abiertas / cerradas por agente. */
+	details?: boolean;
+}
+
+const { slug, lang = "en", details = true } = Astro.props;
+---
+
+<BenchmarkSummary edition={slug} lang={lang} dir="research" />
+{details && <BenchmarkAgentDetails edition={slug} lang={lang} dir="research" />}

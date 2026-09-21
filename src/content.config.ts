@@ -33,14 +33,44 @@ const benchmarkEdition = z.object({
 
 export type BenchmarkEdition = z.infer<typeof benchmarkEdition>;
 
+/**
+ * Bloque `research:` de un post del blog que publica un experimento: la
+ * tarjeta del índice muestra la ventana, el ganador y el capital, y el post
+ * incrusta la escena de `public/research/<slug>.json` y la metodología de
+ * `public/research/<slug>/methodology.json` (ambos generados por
+ * tredops-research).
+ */
+const researchExperiment = z.object({
+	slug: z.string(),
+	benchmarkName: z.string().optional(),
+	window: z.string().optional(),
+	agents: z.number().int().positive().optional(),
+	capital: z.number().positive().optional(),
+	winner: z.string().optional(),
+});
+
+/**
+ * Blog: `src/content/blog/<slug>.mdx` (inglés) y `src/content/blog/es/<slug>.mdx`
+ * (español). El idioma lo decide la carpeta; `lang` en el frontmatter queda
+ * como redundancia legible. Las rutas viven en `src/pages/blog` y
+ * `src/pages/es/blog`.
+ */
 const blog = defineCollection({
 	loader: glob({ pattern: '**/*.mdx', base: './src/content/blog' }),
 	schema: z.object({
 		title: z.string(),
 		description: z.string(),
 		pubDate: z.coerce.date(),
-		lang: z.enum(['es', 'en']).default('es'),
+		updatedDate: z.coerce.date().optional(),
+		lang: z.enum(['es', 'en']).default('en'),
+		author: z.string().default('TredOps'),
+		tags: z.array(z.string()).default([]),
+		/** Imagen de cabecera y tarjeta social, ruta pública absoluta (p. ej. `/research/<slug>/og.png`). */
+		ogImage: z.string().optional(),
 		heroImage: z.string().optional(),
+		/** Borrador: se construye pero no aparece en el índice ni en el RSS. */
+		draft: z.boolean().default(false),
+		research: researchExperiment.optional(),
 	}),
 });
 
