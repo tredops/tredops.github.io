@@ -26,6 +26,28 @@ const t = {
 // Serie compacta por competidor: un punto por frame. `null` cuando el
 // competidor no aparece en ese frame (una escena recortada), así la línea se
 // corta en vez de inventar un valor.
+// Los colores del compare están pensados como fondo de barra (a menudo
+// oscuros); para una línea sobre fondo oscuro subimos luminosidad y saturación
+// manteniendo el tono, así la línea sigue "siendo" el mismo agente que su avatar.
+function vivid(hex: string): string {
+	const m = /^#?([0-9a-f]{6})$/i.exec(hex.trim());
+	if (!m) return hex;
+	const n = parseInt(m[1], 16);
+	const r = ((n >> 16) & 255) / 255, g = ((n >> 8) & 255) / 255, b = (n & 255) / 255;
+	const max = Math.max(r, g, b), min = Math.min(r, g, b);
+	let h = 0, sat = 0;
+	const l = (max + min) / 2;
+	if (max !== min) {
+		const d = max - min;
+		sat = l > 0.5 ? d / (2 - max - min) : d / (max + min);
+		h = max === r ? ((g - b) / d + (g < b ? 6 : 0)) : max === g ? (b - r) / d + 2 : (r - g) / d + 4;
+		h *= 60;
+	}
+	return `hsl(${h.toFixed(0)} ${Math.round(Math.max(sat, 0.6) * 100)}% ${Math.round(Math.min(Math.max(l, 0.6), 0.72) * 100)}%)`;
+}
+const initialsOf = (label: string) => label.split(/\s+/).map((w) => w[0] ?? "").join("").slice(0, 2).toUpperCase();
+const avatarRadius = scene.chart.avatarRadius ?? 50;
+
 const dates = scene.frames.map((f) => f.tradeDate);
 const series = scene.portfolios.map((p) => {
 	const pnl: Array<number | null> = [];
@@ -35,9 +57,10 @@ const series = scene.portfolios.map((p) => {
 		pnl.push(r ? r.profitPctFromStart ?? r.profitPct : null);
 		equity.push(r ? r.equity : null);
 	}
-	return { id: p.portfolioId, label: p.label, subtitle: p.subtitle ?? p.model ?? null, color: p.color ?? "#6b7280", pnl, equity };
+	const base = p.color ?? "#6b7280";
+	return { id: p.portfolioId, label: p.label, subtitle: p.subtitle ?? p.model ?? null, color: vivid(base), bg: base, avatarUrl: p.avatarUrl ?? null, initials: initialsOf(p.label), pnl, equity };
 });
-const payload = JSON.stringify({ dates, series, intervalHours: scene.range.intervalHours });
+const payload = JSON.stringify({ dates, series, intervalHours: scene.range.intervalHours, avatarRadius });
 ---
 
 <div class="b-eq" data-payload={payload} data-height={height} data-lang={lang}>
@@ -58,7 +81,9 @@ const payload = JSON.stringify({ dates, series, intervalHours: scene.range.inter
 	<div class="b-eq-legend" data-legend>
 		{series.map((s, i) => (
 			<button type="button" class="b-eq-li" data-id={s.id} data-index={i} aria-pressed="true">
-				<span class="b-eq-sw" style={`background:${s.color}`}></span>
+				<span class="b-eq-av" style={`border-radius:${avatarRadius}%;border-color:${s.color};${s.avatarUrl ? "" : `background:${s.bg}`}`}>
+					{s.avatarUrl ? <img src={s.avatarUrl} alt="" loading="lazy" /> : <span>{s.initials}</span>}
+				</span>
 				<span class="b-eq-ln">{s.label}</span>
 				{s.subtitle && <span class="b-eq-ls">{s.subtitle}</span>}
 				<span class="b-eq-lv" data-last></span>
@@ -100,9 +125,12 @@ const payload = JSON.stringify({ dates, series, intervalHours: scene.range.inter
 	.b-eq-tip-r .b-eq-ln { flex: 1; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; color: var(--sl-color-gray-2); }
 	.b-eq-tip-r .b-eq-tv { font-variant-numeric: tabular-nums; font-weight: 600; }
 	.b-eq-legend { display: flex; flex-wrap: wrap; gap: 0.35rem 0.5rem; padding: 0 0.25rem; }
-	.b-eq-li { display: inline-flex; align-items: center; gap: 0.4rem; cursor: pointer; border: 1px solid var(--sl-color-gray-5); border-radius: 999px; background: var(--sl-color-gray-6); padding: 0.2rem 0.6rem 0.2rem 0.45rem; font: inherit; font-size: 0.75rem; color: var(--sl-color-white); }
+	.b-eq-li { display: inline-flex; align-items: center; gap: 0.4rem; cursor: pointer; border: 1px solid var(--sl-color-gray-5); border-radius: 999px; background: var(--sl-color-gray-6); padding: 0.2rem 0.6rem 0.2rem 0.25rem; font: inherit; font-size: 0.75rem; color: var(--sl-color-white); }
 	.b-eq-li[aria-pressed="false"] { opacity: 0.4; text-decoration: line-through; }
 	.b-eq-sw { display: inline-block; width: 10px; height: 10px; border-radius: 3px; flex-shrink: 0; }
+	.b-eq-av { display: inline-flex; align-items: center; justify-content: center; width: 1.5rem; height: 1.5rem; flex-shrink: 0; overflow: hidden; border: 2px solid; background: var(--sl-color-gray-6); font-size: 9px; font-weight: 700; color: #fff; }
+	.b-eq-av img { width: 100%; height: 100%; object-fit: contain; }
+	.b-eq-tip-r .b-eq-av { width: 1.1rem; height: 1.1rem; border-width: 1.5px; font-size: 7px; }
 	.b-eq-ls { color: var(--sl-color-gray-3); font-size: 0.68rem; }
 	.b-eq-lv { font-variant-numeric: tabular-nums; font-weight: 600; }
 	.b-eq-lv.b-win { color: #059669; } .b-eq-lv.b-loss { color: #dc2626; }
@@ -131,7 +159,8 @@ const payload = JSON.stringify({ dates, series, intervalHours: scene.range.inter
 	}
 
 	function mount(host) {
-		const { dates, series, intervalHours } = JSON.parse(host.dataset.payload || "{}");
+		const { dates, series, intervalHours, avatarRadius } = JSON.parse(host.dataset.payload || "{}");
+		const avatarHtml = (s) => `<span class="b-eq-av" style="border-radius:${avatarRadius ?? 50}%;border-color:${s.color};${s.avatarUrl ? "" : `background:${s.bg}`}">${s.avatarUrl ? `<img src="${s.avatarUrl}" alt="">` : `<span>${s.initials}</span>`}</span>`;
 		if (!dates || !dates.length) return;
 		const lang = host.dataset.lang || "en";
 		const H = Number(host.dataset.height) || 260;
@@ -207,7 +236,7 @@ const payload = JSON.stringify({ dates, series, intervalHours: scene.range.inter
 				rows.sort((a, b) => b.v - a.v);
 				const d = new Date(dates[i]);
 				const when = intervalHours < 24 ? d.toLocaleString(lang === "es" ? "es-ES" : "en-US", { day: "numeric", month: "short", hour: "2-digit", minute: "2-digit" }) : d.toLocaleDateString(lang === "es" ? "es-ES" : "en-US", { day: "numeric", month: "short", year: "numeric" });
-				tip.innerHTML = `<p class="b-eq-tip-d">${when}</p>` + rows.map(({ s, v }) => `<p class="b-eq-tip-r"><span class="b-eq-sw" style="background:${s.color}"></span><span class="b-eq-ln">${s.label}</span><span class="b-eq-tv" style="color:${metric === "pnl" ? (v > 0 ? "#34d399" : v < 0 ? "#f87171" : "inherit") : "inherit"}">${fmt(v)}</span></p>`).join("");
+				tip.innerHTML = `<p class="b-eq-tip-d">${when}</p>` + rows.map(({ s, v }) => `<p class="b-eq-tip-r">${avatarHtml(s)}<span class="b-eq-ln">${s.label}</span><span class="b-eq-tv" style="color:${metric === "pnl" ? (v > 0 ? "#34d399" : v < 0 ? "#f87171" : "inherit") : "inherit"}">${fmt(v)}</span></p>`).join("");
 				tip.hidden = false;
 				const rect = card.getBoundingClientRect();
 				const left = clientX - rect.left;

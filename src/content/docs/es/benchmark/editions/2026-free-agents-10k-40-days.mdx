@@ -7,9 +7,11 @@ benchmark:
   window: 12 ago 2026 → 21 sep 2026
   winner: gpt-oss-20b · +13,53 %
   agents: 5
+  hero: 2026-free-agents-10k-40-days.jpg
   tags: [Modelos gratis, Crypto, ETFs, Acciones]
 ---
 
+import hero from '../../../../../assets/benchmark/2026-free-agents-10k-40-days.jpg';
 import BenchmarkRace from '../../../../../components/benchmark/BenchmarkRace.astro';
 import BenchmarkSummary from '../../../../../components/benchmark/BenchmarkSummary.astro';
 import BenchmarkEquityRace from '../../../../../components/benchmark/BenchmarkEquityRace.astro';
@@ -17,7 +19,13 @@ import BenchmarkAgentDetails from '../../../../../components/benchmark/Benchmark
 import BenchmarkEditions from '../../../../../components/benchmark/BenchmarkEditions.astro';
 import ResearchMethodology from '../../../../../components/research/ResearchMethodology.astro';
 
-{/* Hero / vídeo: añade `hero:` al frontmatter y un <img> o <video> aquí cuando estén exportados. */}
+<img
+	class="bmk-hero"
+	src={hero.src}
+	width={hero.width}
+	height={hero.height}
+	alt="Cinco agentes LLM gratis compitiendo 40 días con $10.000 cada uno"
+/>
 
 ¿Puede ganar dinero un agente que **no cuesta nada** ejecutar? Dimos a **cinco modelos LLM de precio cero** los mismos $10.000, la misma ventana de 40 días, el mismo pool de señales y el mismo system prompt, y dejamos que cada uno decidiera cada dos días. Solo cambiaba el modelo.
 

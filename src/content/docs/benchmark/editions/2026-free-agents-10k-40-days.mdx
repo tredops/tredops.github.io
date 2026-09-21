@@ -7,9 +7,11 @@ benchmark:
   window: Aug 12 2026 → Sep 21 2026
   winner: gpt-oss-20b · +13.53%
   agents: 5
+  hero: 2026-free-agents-10k-40-days.jpg
   tags: [Free models, Crypto, ETFs, Stocks]
 ---
 
+import hero from '../../../../assets/benchmark/2026-free-agents-10k-40-days.jpg';
 import BenchmarkRace from '../../../../components/benchmark/BenchmarkRace.astro';
 import BenchmarkSummary from '../../../../components/benchmark/BenchmarkSummary.astro';
 import BenchmarkEquityRace from '../../../../components/benchmark/BenchmarkEquityRace.astro';
@@ -17,7 +19,13 @@ import BenchmarkAgentDetails from '../../../../components/benchmark/BenchmarkAge
 import BenchmarkEditions from '../../../../components/benchmark/BenchmarkEditions.astro';
 import ResearchMethodology from '../../../../components/research/ResearchMethodology.astro';
 
-{/* Hero / video: add `hero:` to the frontmatter and an <img> or <video> here once exported. */}
+<img
+	class="bmk-hero"
+	src={hero.src}
+	width={hero.width}
+	height={hero.height}
+	alt="Five free LLM agents racing for 40 days with $10,000 each"
+/>
 
 Can an agent that costs **nothing** to run make money? We gave **five zero-price LLM models** the same $10,000, the same 40-day window, the same signal pool and the same system prompt, and let each one decide every two days. Only the model changed.
 
