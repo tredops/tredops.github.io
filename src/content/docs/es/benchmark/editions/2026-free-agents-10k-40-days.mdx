@@ -1,0 +1,98 @@
+---
+title: "Agentes gratis vs $10k — 40 días"
+description: "Cinco modelos LLM de precio cero supervisan $10.000 cada uno durante 40 días con las mismas señales y las mismas instrucciones. gpt-oss-20b gana con +13,53 %; el router que elige un modelo gratis por llamada acaba cuarto."
+benchmark:
+  edition: 2026-free-agents-10k-40-days
+  pubDate: 2026-09-21
+  window: 12 ago 2026 → 21 sep 2026
+  winner: gpt-oss-20b · +13,53 %
+  agents: 5
+  tags: [Modelos gratis, Crypto, ETFs, Acciones]
+---
+
+import BenchmarkRace from '../../../../../components/benchmark/BenchmarkRace.astro';
+import BenchmarkSummary from '../../../../../components/benchmark/BenchmarkSummary.astro';
+import BenchmarkAgentDetails from '../../../../../components/benchmark/BenchmarkAgentDetails.astro';
+import BenchmarkEditions from '../../../../../components/benchmark/BenchmarkEditions.astro';
+import ResearchMethodology from '../../../../../components/research/ResearchMethodology.astro';
+
+{/* Hero / vídeo: añade `hero:` al frontmatter y un <img> o <video> aquí cuando estén exportados. */}
+
+¿Puede ganar dinero un agente que **no cuesta nada** ejecutar? Dimos a **cinco modelos LLM de precio cero** los mismos $10.000, la misma ventana de 40 días, el mismo pool de señales y el mismo system prompt, y dejamos que cada uno decidiera cada dos días. Solo cambiaba el modelo.
+
+**Respuesta corta: sí, los cinco acabaron en positivo — pero entre el mejor (+13,53 %) y el peor (+2,30 %) hay 11 puntos, y el ganador pasó los primeros 16 días sin hacer nada.**
+
+## El montaje
+
+- **Capital:** $10.000 por agente, paper trading, máximo 10 % del balance por orden y 20 % por bot.
+- **Ventana:** 12 ago → 21 sep 2026, un ciclo de decisión cada 2 días, sin fines de semana → 20 ciclos por agente, replicados sobre datos históricos (el agente solo ve lo que existía en cada `tradeDate`).
+- **Señales:** todos los bots públicos en producción de la plataforma, crypto + ETFs + acciones, largo y corto.
+- **Mismo cerebro, distinto modelo:** todos corren el mismo system prompt (publicado íntegro abajo), reasoning *medium*, hasta 10 turnos por ciclo. Las temperaturas difieren marginalmente entre prompts (0,25 vs 0,30): las listamos por agente.
+- **Coste:** los cinco son tiers gratuitos (NVIDIA y OpenRouter). Mostramos igualmente lo que *habrían* costado a precio de lista.
+
+Otros dos modelos gratis entraron y quedaron fuera, y lo contamos como resultado: `minimaxai/minimax-m3` devolvió **410 Gone** (fin de vida el 9 de septiembre) y su gemelo de OpenRouter `minimax/minimax-m3:free` **404 — ya no es gratis**; `moonshotai/kimi-k3` agotó dos veces los 240 s de espera y salió en el ciclo 4.
+
+## La carrera
+
+<BenchmarkRace edition="2026-free-agents-10k-40-days" lang="es" />
+
+<BenchmarkSummary edition="2026-free-agents-10k-40-days" lang="es" />
+
+## Resultados
+
+| # | Agente | Modelo | Equity final | P&L | Máx. drawdown | Operaciones (G / P) | Win rate |
+|---|---|---|---|---|---|---|---|
+| 1 | gpt-oss-20b | `openai/gpt-oss-20b` (NVIDIA) | $11.352,84 | **+13,53 %** | −0,32 % | 7 (5 / 2) | 71 % |
+| 2 | Nemotron 3 Super | `nvidia/nemotron-3-super-120b-a12b` | $10.668,45 | +6,68 % | −0,69 % | 12 (7 / 5) | 58 % |
+| 3 | Muse Glimmer | `meta/muse-glimmer-30b` (NVIDIA) | $10.572,79 | +5,73 % | −1,61 % | 5 (2 / 3) | 40 % |
+| 4 | OpenRouter free | `openrouter/free` (un router: el modelo cambia en cada llamada) | $10.379,45 | +3,79 % | −0,55 % | 10 (4 / 6) | 40 % |
+| 5 | Dots 3 | `dots-studio/dots-3-note-preview:free` (OpenRouter) | $10.230,33 | +2,30 % | −1,04 % | 7 (3 / 4) | 43 % |
+
+![Beneficio por agente a lo largo de los 20 ciclos](/research/2026-free-agents-10k-40-days/equity.png)
+
+Tres cosas llaman la atención:
+
+1. **La paciencia ganó a la actividad.** gpt-oss-20b descartó sus 9 primeras oportunidades (ciclos "idle": nada convincente en el pool), abrió su primera posición el 18 de agosto — AAVE/USDC en largo, cerrada por take profit con **+$653** — y se sentó sobre esa ganancia diez días. Nemotron fue el que más operó (12 cierres) y acabó segundo con la mitad de retorno.
+2. **Drawdowns minúsculos.** El peor pico-valle de toda la carrera es −1,61 % (Muse Glimmer). El stop loss / take profit del broker en cada orden hizo la gestión del riesgo; los modelos decidieron sobre todo *si* tomar una señal.
+3. **El router perdió contra los modelos a los que enruta.** `openrouter/free` elige un modelo gratis por llamada, así que su portfolio lo gestionó un "cerebro" distinto cada dos días. Cerró más operaciones perdedoras que nadie (6) y acabó cuarto: la consistencia vale dinero.
+
+## Lo que costó cada modelo
+
+![Coste LLM frente a beneficio final](/research/2026-free-agents-10k-40-days/cost.png)
+
+Todos corrieron en tier gratuito, así que la factura real fue **$0,00**. A precio de lista, la carrera entera habría costado unos **$2,25** en 62 ejecuciones LLM: de 4,3 M de tokens de entrada para Nemotron (el más hablador, 219 llamadas a tools) a 0,9 M para gpt-oss-20b (82 llamadas). El ganador fue también el que menos pensó.
+
+## Decisiones que merece la pena leer
+
+Los agentes justifican cada señal que analizan. Literal, de los transcripts:
+
+> **OpenRouter free · 18 ago · AAVE/USDC largo → SKIP** — "trend is bullish (EMA12 88.24 > EMA26 87.56) and MACDh positive (+0.1918), so direction aligns. However, bot win rate is 0/2 (0%), backtest return +0.29% severely underperforms Buy & Hold +15.57%, risk level is high (4/5), RSI14 at 69.5 is near overbought limiting upside room, OBV negative (−0.65) shows weak volume confirmation, and no news catalyst found. Risk/reward does not justify entry."
+
+Esa misma señal de AAVE/USDC, tomada por gpt-oss-20b el mismo día, fue la mejor operación de la carrera (+$653). Las dos lecturas eran defendibles; solo una cobró.
+
+> **Dots 3 · 30 ago · SOXX corto → OPEN** — "bearish trend confirmed, RSI 39.6 (not oversold, room to fall), price declining from 532 to 508 over recent bars, bot win rate 67% (2/3), backtest +4.87% vs B&H +4.22%, highest score 371.87, positive alpha +4.97, low beta −0.02. Strong short signal with momentum."
+
+> **Dots 3 · 19 sep · UDOW corto → SKIP** — "Short signal contradicts strongly bullish trend. RSI 100.0 extreme overbought but trend still up (EMA12>EMA26). Bot 0/1 win rate, profit already −3.15%. Risk 5. While overbought suggests pullback, trend is still up. Skip to avoid fighting trend."
+
+## Lo que aprendimos
+
+- **Gratis es viable.** Cinco modelos gratis, cinco resultados positivos, cero dólares. La distancia con los modelos frontera de pago es la pregunta de la próxima edición, no una conclusión.
+- **El modelo importa más que el prompt.** Mismas instrucciones, mismas señales: 11 puntos de diferencia salen de cómo pesa cada modelo la misma evidencia (win rate del bot, tendencia, riesgo) y de cuánto está dispuesto a esperar.
+- **Los tiers gratuitos son infraestructura inestable.** Dos de siete modelos desaparecieron a mitad de experimento (uno por fin de vida, otro por pasar a ser de pago) y un tercero no contestó en cuatro minutos. Quien use modelos gratis en producción necesita un fallback.
+- **Seis semanas es poco.** 20 decisiones por agente, 5–12 cierres cada uno. El ranking es evidencia, no veredicto.
+
+## Detalle por agente
+
+<BenchmarkAgentDetails edition="2026-free-agents-10k-40-days" lang="es" />
+
+## Metodología completa
+
+Todo lo de abajo es exactamente con lo que corrieron los agentes: el prompt de cada ciclo, la plantilla del portfolio y, por agente, modelo, temperatura y system prompt íntegro (tal y como está escrito para los sub-agentes "Surviving" de la plataforma).
+
+<ResearchMethodology slug="2026-free-agents-10k-40-days" lang="es" />
+
+> Paper trading sobre datos históricos. Los resultados pasados no garantizan resultados futuros. TredOps es una herramienta de software; nada de esto es asesoramiento financiero.
+
+## Otras ediciones
+
+<BenchmarkEditions lang="es" exclude="es/benchmark/editions/2026-free-agents-10k-40-days" />

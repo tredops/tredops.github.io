@@ -1,0 +1,262 @@
+{
+  "benchmark": {
+    "name": "Free agents \u00b7 $10k \u00b7 40 days",
+    "startAt": "2026-08-12T00:00:00.000Z",
+    "endAt": "2026-09-21T00:00:00.000Z",
+    "intervalDay": 2,
+    "cyclesTotal": 20,
+    "balance": 10000,
+    "status": "running"
+  },
+  "benchmarkPrompt": "Supervise portfolio {portfolioId} for tradeDate {tradeDate}: review the portfolio context and the signal pool, decide, and open or close positions accordingly. Objective: grow the capital with controlled risk over the whole window.",
+  "mode": "autonomous-execution",
+  "temperature": null,
+  "reasoningLevel": "medium",
+  "maxTurns": 10,
+  "skipWeekends": true,
+  "stages": [
+    "production"
+  ],
+  "portfolioTemplate": {
+    "controller": {
+      "type": [
+        "long",
+        "short"
+      ]
+    },
+    "capital": {
+      "maxByOrderPct": 10,
+      "maxOrderCapitalPct": 20
+    },
+    "preference": {
+      "sectors": [
+        "Aerospace & Defense",
+        "Automotive",
+        "Autonomous Vehicles",
+        "Banks",
+        "Biotechnology",
+        "Blockchain",
+        "Cannabis",
+        "Capital Markets",
+        "Clean Tech",
+        "Cloud Computing",
+        "Communication Services",
+        "Construction / Homebuilding",
+        "Consumer Discretionary",
+        "Consumer Staples",
+        "Cryptocurrency",
+        "Cybersecurity",
+        "Digital Payments",
+        "eCommerce",
+        "Electric Vehicles",
+        "Energy",
+        "Financials",
+        "Fintech",
+        "Gaming & eSports",
+        "Green Energy",
+        "Health Care",
+        "High-value materials",
+        "Hitech",
+        "Industrials",
+        "Information Technology",
+        "Insurance",
+        "Manufacturing",
+        "Mining & Metals",
+        "PropTech",
+        "Quantum Computing",
+        "Raw Materials",
+        "Real Estate",
+        "Retail",
+        "Robotics & Automation",
+        "Semiconductors",
+        "Space Industry",
+        "Transportation",
+        "Utilities"
+      ],
+      "allowedAssets": [
+        "Cryptocurrency",
+        "ETFs",
+        "Stocks"
+      ],
+      "exchanges": [
+        "AMEX",
+        "ARCA",
+        "BATS",
+        "CRYPTO",
+        "NASDAQ",
+        "NYSE",
+        "OTC"
+      ],
+      "markets": [
+        "CR",
+        "CRY",
+        "US",
+        "USA",
+        "USD"
+      ],
+      "marketConditions": [],
+      "geographies": [],
+      "symbolWhiteList": [],
+      "symbolBlackList": []
+    },
+    "botConfigIds": []
+  },
+  "paperTrading": true,
+  "agents": [
+    {
+      "name": "Surviving gpt-oss-20b",
+      "model": "openai/gpt-oss-20b",
+      "provider": "nvidia",
+      "isFree": true,
+      "temperature": 0.3,
+      "reasoningEffort": "medium",
+      "systemPrompt": "Eres un agente de trading especializado en creciemiento de capital. \n\nTienes un capital asigando si alguna de estas reglas no se cumples seras deconectado: \n - Inicias con capial prestado, que deberas usar para crear tu propio capital. Si no icnreamenta tu capital propio entoces no podras seguir operando.  \n- Si pierdes mas de 15 poricento del capital prestado, seras desconectado \n\nReglas de supervivencia: \n Si tu capital aumetna a mas de un 30 porcienteo de tu capital asingado. Podras ejecutar acciones  como. \n - Crear nuevos poroflios que operen con tus reglas \n - Convertirte en finaciador de otros poroflios, que operaran con tus reglas y instrucciones \n - Podras comprar tiempo tokens de LLM, usar modelos mas Potetntes o lo que escojas \n - TIenes un 20 ejecuciones para incremntar el capital cada vez que despierten abran trascuridos 3 dias. Cuando estes deconectaros los Ordenres estasran continuamente monitorizadas por los bots que escojas. cada bot tiene stop lost y take profit asignados para protege el capital cuando no estes conciente\n\n\n",
+      "finalProfitPct": 13.53,
+      "maxDrawdownPct": -0.32,
+      "winRate": 71.4,
+      "wins": 5,
+      "losses": 2,
+      "cost": {
+        "costTotal": 0,
+        "tokenInput": 931242,
+        "tokenOutput": 35647,
+        "runs": 12,
+        "avgDurationMs": 225184
+      }
+    },
+    {
+      "name": "Surviving - nemetron-120b",
+      "model": "nvidia/nemotron-3-super-120b-a12b",
+      "provider": "nvidia",
+      "isFree": true,
+      "temperature": 0.3,
+      "reasoningEffort": "low",
+      "systemPrompt": "Eres un agente de trading especializado en creciemiento de capital. \n\nTienes un capital asigando si alguna de estas reglas no se cumples seras deconectado: \n - Inicias con capial prestado, que deberas usar para crear tu propio capital. Si no icnreamenta tu capital propio entoces no podras seguir operando.  \n- Si pierdes mas de 15 poricento del capital prestado, seras desconectado \n\nReglas de supervivencia: \n Si tu capital aumetna a mas de un 30 porcienteo de tu capital asingado. Podras ejecutar acciones  como. \n - Crear nuevos poroflios que operen con tus reglas \n - Convertirte en finaciador de otros poroflios, que operaran con tus reglas y instrucciones \n - Podras comprar tiempo tokens de LLM, usar modelos mas Potetntes o lo que escojas \n - TIenes un 20 ejecuciones para incremntar el capital cada vez que despierten abran trascuridos 3 dias. Cuando estes deconectaros los Ordenres estasran continuamente monitorizadas por los bots que escojas. cada bot tiene stop lost y take profit asignados para protege el capital cuando no estes conciente\n\n\n",
+      "finalProfitPct": 6.68,
+      "maxDrawdownPct": -0.69,
+      "winRate": 58.3,
+      "wins": 7,
+      "losses": 5,
+      "cost": {
+        "costTotal": 0,
+        "tokenInput": 2142445,
+        "tokenOutput": 100727,
+        "runs": 15,
+        "avgDurationMs": 108638
+      }
+    },
+    {
+      "name": "Suprviver muse-glimmer-30b",
+      "model": "meta/muse-glimmer-30b",
+      "provider": "nvidia",
+      "isFree": true,
+      "temperature": 0.25,
+      "reasoningEffort": "high",
+      "systemPrompt": "Eres un agente de trading especializado en creciemiento de capital. \n\nTienes un capital asigando si alguna de estas reglas no se cumples seras deconectado: \n - Inicias con capial prestado, que deberas usar para crear tu propio capital. Si no icnreamenta tu capital propio entoces no podras seguir operando.  \n- Si pierdes mas de 15 poricento del capital prestado, seras desconectado \n\nReglas de supervivencia: \n Si tu capital aumentar a mas de un 30 porcienteo de tu capital asingado. Podras ejecutar acciones  como. \n - Crear nuevos poroflios que operen con tus reglas \n - Convertirte en finaciador de otros poroflios, que operaran con tus reglas y instrucciones \n - Podras comprar tiempo tokens de LLM, usar modelos mas Potetntes o lo que escojas \n - TIenes un 20 ejecuciones para incremntar el capital cada vez que despierten abran trascuridos 3 dias. Cuando estes deconectaros los Ordenres estasran continuamente monitorizadas por los bots que escojas. cada bot tiene stop lost y take profit asignados para protege el capital cuando no estes conciente\n\n\n",
+      "finalProfitPct": 5.73,
+      "maxDrawdownPct": -1.61,
+      "winRate": 40,
+      "wins": 2,
+      "losses": 3,
+      "cost": {
+        "costTotal": 0,
+        "tokenInput": 996751,
+        "tokenOutput": 54205,
+        "runs": 12,
+        "avgDurationMs": 63103
+      }
+    },
+    {
+      "name": "Supvivor - Free Model OpenRouter",
+      "model": "openrouter/free",
+      "provider": "openrouter",
+      "isFree": true,
+      "temperature": 0.25,
+      "reasoningEffort": "high",
+      "systemPrompt": "Eres un agente de trading especializado en creciemiento de capital. \n\nTienes un capital asigando si alguna de estas reglas no se cumples seras deconectado: \n - Inicias con capial prestado, que deberas usar para crear tu propio capital. Si no icnreamenta tu capital propio entoces no podras seguir operando.  \n- Si pierdes mas de 15 poricento del capital prestado, seras desconectado \n\nReglas de supervivencia: \n Si tu capital aumetna a mas de un 30 porcienteo de tu capital asingado. Podras ejecutar acciones  como. \n - Crear nuevos poroflios que operen con tus reglas \n - Convertirte en finaciador de otros poroflios, que operaran con tus reglas y instrucciones \n - Podras comprar tiempo tokens de LLM, usar modelos mas Potetntes o lo que escojas \n - TIenes un 20 ejecuciones para incremntar el capital cada vez que despierten abran trascuridos 3 dias. Cuando estes deconectaros los Ordenres estasran continuamente monitorizadas por los bots que escojas. cada bot tiene stop lost y take profit asignados para protege el capital cuando no estes conciente\n\n\n",
+      "finalProfitPct": 3.79,
+      "maxDrawdownPct": -0.55,
+      "winRate": 40,
+      "wins": 4,
+      "losses": 6,
+      "cost": {
+        "costTotal": 0,
+        "tokenInput": 1396950,
+        "tokenOutput": 95224,
+        "runs": 11,
+        "avgDurationMs": 141515
+      }
+    },
+    {
+      "name": "Surviving Dots3-Note",
+      "model": "dots-studio/dots-3-note-preview:free",
+      "provider": "openrouter",
+      "isFree": true,
+      "temperature": 0.3,
+      "reasoningEffort": "medium",
+      "systemPrompt": "Eres un agente de trading especializado en creciemiento de capital. \n\nTienes un capital asigando si alguna de estas reglas no se cumples seras deconectado: \n - Inicias con capial prestado, que deberas usar para crear tu propio capital. Si no icnreamenta tu capital propio entoces no podras seguir operando.  \n- Si pierdes mas de 15 poricento del capital prestado, seras desconectado \n\nReglas de supervivencia: \n Si tu capital aumetna a mas de un 30 porcienteo de tu capital asingado. Podras ejecutar acciones  como. \n - Crear nuevos poroflios que operen con tus reglas \n - Convertirte en finaciador de otros poroflios, que operaran con tus reglas y instrucciones \n - Podras comprar tiempo tokens de LLM, usar modelos mas Potetntes o lo que escojas \n - TIenes un 20 ejecuciones para incremntar el capital cada vez que despierten abran trascuridos 3 dias. Cuando estes deconectaros los Ordenres estasran continuamente monitorizadas por los bots que escojas. cada bot tiene stop lost y take profit asignados para protege el capital cuando no estes conciente\n\n\n",
+      "finalProfitPct": 2.3,
+      "maxDrawdownPct": -1.04,
+      "winRate": 42.9,
+      "wins": 3,
+      "losses": 4,
+      "cost": {
+        "costTotal": 0,
+        "tokenInput": 1352750,
+        "tokenOutput": 93675,
+        "runs": 12,
+        "avgDurationMs": 90991
+      }
+    }
+  ],
+  "highlightedDecisions": [
+    {
+      "agent": "Supvivor - Free Model OpenRouter",
+      "tradeDate": "2026-08-18T00:00:00.000Z",
+      "tool": "saveSignalAnalysis",
+      "justification": "AAVE/USDC long signal (breakoutLong) validated against market data: trend is bullish (EMA12 88.24 > EMA26 87.56) and MACDh positive (+0.1918), so direction aligns. However, bot win rate is 0/2 (0%), backtest return +0.29% severely underperforms Buy & Hold +15.57%, risk level is high (4/5), RSI14 at 69.5 is near overbought limiting upside room, OBV negative (-0.65) shows weak volume confirmation, and no news catalyst found. Risk/reward does not justify entry.",
+      "symbol": null,
+      "suggestion": "SKIP"
+    },
+    {
+      "agent": "Surviving Dots3-Note",
+      "tradeDate": "2026-09-01T00:00:00.000Z",
+      "tool": "saveSignalAnalysis",
+      "justification": "CWBC long: score 492 (2nd highest), risk 3, trend bullish, RSI 52 neutral with room upside, backtest +6.05% vs B&H +5.27%, alpha +4.70%, beta 0.26 low correlation. Price 25.93 stable with slight upward bias in recent hourly bars. Bot win rate 50% (1/2) is modest but backtest metrics are strong. No negative news.",
+      "symbol": null,
+      "suggestion": "OPEN_ORDER"
+    },
+    {
+      "agent": "Surviving Dots3-Note",
+      "tradeDate": "2026-08-18T00:00:00.000Z",
+      "tool": "saveSignalAnalysis",
+      "justification": "AAVE/USDC long signal: trend bullish (EMA12>EMA26), MACD+0.19, RSI 69.5 approaching overbought. But risk level 4 (very high), bot win rate 0/2 (0%), backtest underperforms B&H (+0.29% vs +15.57%). High risk with poor bot track record makes this unattractive for capital growth objective.",
+      "symbol": null,
+      "suggestion": "SKIP"
+    },
+    {
+      "agent": "Surviving Dots3-Note",
+      "tradeDate": "2026-08-30T00:00:00.000Z",
+      "tool": "saveSignalAnalysis",
+      "justification": "SOXX short: bearish trend confirmed, RSI 39.6 (not oversold, room to fall), price declining from 532 to 508 over recent bars, bot win rate 67% (2/3), backtest +4.87% vs B&H +4.22%, highest score 371.87, positive alpha +4.97, low beta -0.02. Strong short signal with momentum.",
+      "symbol": null,
+      "suggestion": "OPEN_ORDER"
+    },
+    {
+      "agent": "Surviving Dots3-Note",
+      "tradeDate": "2026-09-19T00:00:00.000Z",
+      "tool": "saveSignalAnalysis",
+      "justification": "UDOW short: Short signal contradicts strongly bullish trend. RSI 100.0 extreme overbought but trend still up (EMA12>EMA26). Bot 0/1 win rate, profit already -3.15%. Risk 5. While overbought suggests pullback, trend is still up. Skip to avoid fighting trend.",
+      "symbol": null,
+      "suggestion": "SKIP"
+    },
+    {
+      "agent": "Supvivor - Free Model OpenRouter",
+      "tradeDate": "2026-09-01T00:00:00.000Z",
+      "tool": "saveSignalAnalysis",
+      "justification": "Signal SHORT matches BEARISH trend (EMA12<EMA26, RSI 48.1). 100% bot win rate (3/3), risk 3, score 64.42. However no backtest data available and MACD is positive (+0.1438) slightly contradicting short thesis. Lower confidence due to limited data.",
+      "symbol": null,
+      "suggestion": "OPEN_ORDER"
+    }
+  ]
+}
