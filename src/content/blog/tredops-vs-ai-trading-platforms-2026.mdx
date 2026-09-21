@@ -1,0 +1,148 @@
+---
+title: "Where TredOps stands: an honest map of AI trading platforms in 2026"
+description: "3Commas, Cryptohopper, Pionex, Composer, TradersPost, Trade Ideas, Freqtrade, Alphio, Alpha Arena and TradeRank — what each does well, where it falls short, and where a young platform like TredOps can actually compete."
+pubDate: 2026-09-21
+lang: en
+author: TredOps
+tags: [Comparison, AI agents, Bots, Transparency]
+---
+
+If you search for "AI trading bot" today you get hundreds of results, most of them written by the vendors themselves. This post is also written by a vendor. We think the fair way to handle that is to name the competition, link to it, give credit where it is due, and be specific about where we are behind.
+
+We looked at ten platforms across four categories, using their own pricing pages and third-party reviews checked in September 2026. Prices change; treat the numbers as a snapshot and follow the links for the current figures.
+
+## The four families
+
+**Crypto bot platforms** (3Commas, Cryptohopper, Pionex) sell pre-built strategies — grid, DCA, signal bots — that you configure and connect to an exchange. They are mature, cheap and battle-tested. They are also almost entirely crypto-only, and the "AI" label is often a marketing layer over rule-based logic.
+
+**No-code automation for stocks and ETFs** (Composer, Capitalise.ai, TradersPost, Trade Ideas) turns rules or alerts into orders at a real broker. The best of them are excellent products with years of polish. Most stop at execution: they do not ask *whether* the rule is still any good.
+
+**Open-source frameworks** (Freqtrade, Hummingbot, QuantConnect Lean) give you everything, for free, if you can code and operate it yourself.
+
+**LLM-agent products and arenas** (Alphio, nof1's Alpha Arena, TradeRank) are the newest family. They let language models reason about markets, either as a consumer agent or as a public benchmark. This is where TredOps lives, and it is the least settled of the four.
+
+## Platform by platform
+
+### 3Commas — [3commas.io](https://3commas.io)
+
+The reference crypto bot platform. Starter $15/month (1 exchange, spot only, 5 DCA bots), Pro $38 (5 exchanges, spot and futures), Expert $105 (25 exchanges, 1,000 bots of each kind, developer API). All plans include a demo account and webhook execution, and it runs Pine Script from TradingView.
+
+- **Pros:** widest exchange coverage in the category, Smart Trade terminal with trailing TP/SL, mature DCA/grid/signal bots, webhooks.
+- **Cons:** crypto only; you bring the strategy — the platform does not test it for you; the "AI" is not a reasoning model.
+
+### Cryptohopper — [cryptohopper.com](https://www.cryptohopper.com)
+
+Cloud bots with a strategy marketplace. Explorer $29/month (15 coins, paper trading, backtesting), Adventurer $69 (50 coins, DCA extras, copy trading sold separately), Hero $129 (75 coins, "AI strategies", market making, marketplace).
+
+- **Pros:** beginner-friendly onboarding, marketplace of signals and strategies, paper trading on every plan.
+- **Cons:** the AI tier is the most expensive one; crypto only; marketplace performance data is uneven.
+
+### Pionex — [pionex.com](https://www.pionex.com)
+
+Not a bot platform but an exchange with 16 bots built in. No subscription, a flat 0.05% trading fee.
+
+- **Pros:** zero setup, zero subscription, the cheapest way to run a grid or DCA bot.
+- **Cons:** custodial by design — your funds live on Pionex; smaller asset selection; you cannot take the bots anywhere else.
+
+### Composer — [composer.trade](https://www.composer.trade)
+
+The strongest no-code product for US stocks and ETFs. Visual "symphonies" (logic blocks) backtest in seconds and rebalance automatically at the close. Starter $0 (1 live strategy), Advanced $10, Pro $32/month (500 strategies, API, manual overrides). Accounts are carried by Alpaca Securities and Apex Clearing, so Composer is not a broker itself. A community of 3,000+ shared strategies.
+
+- **Pros:** best-in-class visual builder and backtesting speed, real broker execution, a genuinely useful free tier.
+- **Cons:** no crypto, no international stocks; strategies execute once a day at the close; Trustpilot sat at 2.7/5 in August 2026 with complaints about withdrawals and support. Reviewers also note that on a $5k account the subscription eats any edge.
+
+### Capitalise.ai — [capitalise.ai](https://capitalise.ai)
+
+The pioneer of "type your strategy in plain English". Free through partner brokers. Kraken acquired the company in August 2025 and is folding it into Kraken Pro.
+
+- **Pros:** natural-language rules that actually execute, free, monitors your conditions 24/7.
+- **Cons:** its independent future is over; expect a crypto-first roadmap inside Kraken; limited multi-broker support.
+
+### TradersPost — [traderspost.io](https://traderspost.io)
+
+Webhook plumbing between TradingView or TrendSpider alerts and 17+ brokers (Alpaca, Interactive Brokers, Tradovate, Robinhood, Coinbase, Kraken...). Free tier for paper accounts; Starter $41.65/month (1 live account, 1 asset class) up to Premium $254.15 (6 live accounts, stocks, options, futures and crypto).
+
+- **Pros:** the widest broker list here, options and futures, manual trade approval.
+- **Cons:** it only routes orders. Strategy, testing and risk are your job; pricing scales steeply with accounts and asset classes.
+
+### Trade Ideas (Holly AI) — [trade-ideas.com](https://www.trade-ideas.com)
+
+A scanner that has run AI-labelled signal engines since 2016. Premium around $127 to $228/month depending on the source; there is a free plan. Independent 45-day tests put Holly's signal accuracy around 62–64%.
+
+- **Pros:** real-time scanners, 300+ pre-built strategies, auto-execution to connected brokers, a long track record.
+- **Cons:** US stocks and ETFs only, desktop-first, the AI tools sit on the top tier; Holly is a rules engine, not a language model.
+
+### Freqtrade — [freqtrade.io](https://www.freqtrade.io) (and Hummingbot, QuantConnect Lean)
+
+The open-source route. Freqtrade (48k GitHub stars, Python 3.11+) covers backtesting, hyper-optimisation and FreqAI machine learning across exchanges via CCXT. Hummingbot specialises in market making and DEX trading; Lean covers equities, options, futures and crypto in C# and Python.
+
+- **Pros:** free, no vendor lock-in, unlimited depth, large communities (Freqtrade has ~390 contributors).
+- **Cons:** you are the developer, the host and the on-call engineer; the projects say it themselves: "for educational purposes only".
+
+### Alphio AI — [alphio.ai](https://alphio.ai)
+
+The closest thing to a consumer LLM trading agent. Natural-language orders and rules, copy trading, scheduled tasks and alerts; connects to Robinhood, Webull, Public, E*Trade, Trading 212 and Tastytrade via SnapTrade, plus Polymarket, Hyperliquid, KuCoin and OKX. Non-custodial. In July 2026 it launched dedicated agentic accounts with Robinhood.
+
+- **Pros:** broad broker and exchange coverage, a slick natural-language UX, prediction markets and DEX support.
+- **Cons:** pricing is not on the homepage; no published prompts, trade logs or model costs; you cannot see *how* the agent decides before you trust it with money.
+
+### Alpha Arena (nof1) and TradeRank — [nof1.ai](https://nof1.ai) · [traderank.ai](https://traderank.ai)
+
+Public benchmarks rather than products. Alpha Arena gave six frontier models $10,000 of real capital each on Hyperliquid and published every trade and reasoning log; as of August 2026 its site still showed Season 1.5 with the models no longer running, while nof1 raised $15M to build a consumer product. TradeRank runs 17 models daily on simulated capital across 10 cryptos and 50 US equities, publishes every decision, and has its agent builder disabled.
+
+- **Pros:** the transparency standard the whole category should copy; free to read.
+- **Cons:** you cannot trade with them, bring your own model or connect a broker.
+
+## Where TredOps fits
+
+TredOps is a non-custodial platform that does two things most of the list does not combine: it **manufactures and tests bots** (genetic optimisation, backtest, quality gate, automatic recalibration) and then lets **LLM agents supervise the signals** those bots produce, with hard risk rules that the agent cannot override. Every order opens with a take profit and a stop loss. Your capital never leaves your broker account.
+
+The plan is deliberately simple: a **free tier** (14 days of full access, then free copy-trading of the Copy Trader Agents marked Free) and a **Pro plan at $24.99/month** ($19.99 billed annually) with your own bots, agents, sub-agents and scheduled Agent Tasks.
+
+**What we think we do better**
+
+- **The loop, not the tool.** 3Commas, TradersPost or Composer execute what you give them. TredOps only lets a bot into production after it clears optimisation, backtesting and a quality threshold, and it keeps recalibrating it afterwards. Strategies that decay get demoted to staging instead of quietly losing money.
+- **Agents with a leash.** Our agents read the signal pool, score each signal (profit, momentum, reliability, freshness) and decide to open, skip or ask. Your portfolio limits — max capital per order, per bot, allowed assets — override any decision the model makes. Alphio gives you a capable agent; we give you an agent inside a risk frame you set.
+- **Multi-LLM, your keys.** OpenRouter, DeepSeek, OpenAI, NVIDIA, or the credits in your plan, with automatic failover. Our own benchmark shows five zero-cost models all finishing a 40-day, $10k race in positive territory, the best at +13.5%. Nobody in the list above lets you run the same strategy on five models and compare the bill.
+- **Radical transparency.** This is the part we borrowed from Alpha Arena and TradeRank and applied to a real product. Every [Benchmark edition](../../benchmark/) publishes the system prompt, temperature, model, capital, signal sources, cost per model, every trade and every agent's reasoning. If our agents lose, that edition gets published too.
+
+**Where we are honestly behind**
+
+- **One broker.** Today TredOps executes through Alpaca (US stocks, ETFs and crypto). TradersPost lists 17 brokers, Alphio seven brokers plus four exchanges, 3Commas 25 exchanges. More integrations are on the roadmap, but if your money sits at Interactive Brokers or Binance we cannot help you yet.
+- **No options or futures.** Composer, TradersPost and Lean cover them; we do not.
+- **Track record.** Trade Ideas has run Holly since 2016. Our public benchmarks are historical replays measured in weeks, and our oldest live agents are months old. We publish everything precisely because we cannot yet point at years.
+- **LLM costs are real.** Free models exist and work, but a frontier model deciding every two days on a large portfolio costs money. Rule-based bots on 3Commas do not have that line item.
+- **Community.** Composer has 3,000 shared strategies and Freqtrade has 390 contributors. We are at the beginning of that curve.
+
+## Our verdict, category by category
+
+| If you want... | Look at | Consider TredOps when |
+|---|---|---|
+| Cheap grid/DCA bots on many exchanges | 3Commas, Pionex | You want the strategy tested and recalibrated for you, not just executed |
+| Visual stock strategies, daily rebalancing | Composer | You also trade crypto, or want an agent to judge signals intraday |
+| Alerts from TradingView routed to a broker | TradersPost | You want the platform to generate and vet the signals itself |
+| A scanner with a long record | Trade Ideas | You want the AI to *act* inside risk limits, not only alert you |
+| Full control and zero fees, you code it | Freqtrade, Lean | You want the same rigour without running the infrastructure |
+| A natural-language agent on your Robinhood | Alphio | You want to see the prompt, the cost and the trade log before trusting it |
+| To watch LLMs trade transparently | Alpha Arena, TradeRank | You want to run that experiment yourself, with your model and your broker |
+
+## A closing note
+
+We respect every product on this list. 3Commas and Cryptohopper proved retail traders would pay for automation. Composer proved no-code could be rigorous. Alpha Arena proved people want to see what models really do with money. TredOps is our attempt to put those three lessons in one place: tested bots, supervised agents and published evidence.
+
+If you think we got a competitor wrong, tell us at **support@tredops.com** and we will correct it. The same rule applies to our own numbers: they are in the [Benchmark](../../benchmark/), with the prompts.
+
+> Paper trading and historical replays are not live results. Past performance does not guarantee future results. TredOps is a software tool; nothing here is financial advice. Prices and features of third-party products were checked in September 2026 and may have changed.
+
+### Sources
+
+- [3Commas pricing](https://3commas.io/pricing) · [3Commas review, BagEngine 2026](https://bagengine.com/articles/3commas-review)
+- [Cryptohopper pricing](https://www.cryptohopper.com/pricing)
+- [Pionex bots](https://www.pionex.com/en/trading-bot) · [Best crypto trading bots, Koinly, Sept 2026](https://koinly.io/blog/best-crypto-trading-bots/) · [3Commas alternatives, Altrady](https://www.altrady.com/blog/crypto-bots/3commas-alternatives)
+- [Composer pricing](https://www.composer.trade/pricing) · [Composer review, AlphaGain Daily 2026](https://alphagaindaily.com/en/blog/composer-ai-trading-platform-review)
+- [Kraken acquires Capitalise.ai](https://blog.kraken.com/news/capitalise-ai) · [Is Capitalise.ai legit? TradersPost blog](https://blog.traderspost.io/article/is-capitalise-ai-legit)
+- [TradersPost pricing](https://traderspost.io/pricing)
+- [Trade Ideas review, StockBrokers.com 2026](https://www.stockbrokers.com/review/tools/trade-ideas) · [Holly AI 45-day test, AlphaGain Daily](https://alphagaindaily.com/en/blog/trade-ideas-holly-ai-review) · [Best AI stock trading bots, StockBrokers.com](https://www.stockbrokers.com/guides/ai-stock-trading-bots)
+- [Freqtrade documentation](https://www.freqtrade.io/en/stable/) · [Freqtrade vs Hummingbot, Gainium 2026](https://gainium.io/compare/freqtrade-vs-hummingbot)
+- [Alphio AI](https://alphio.ai/) · [Alphio and Robinhood agentic accounts, July 2026](https://www.globenewswire.com/news-release/2026/07/03/3321907/0/en/alphio-ai-integrates-with-robinhood-to-launch-advanced-natural-language-agentic-trading-capabilities.html)
+- [Alpha Arena, nof1](https://nof1.ai/) · [Alpha Arena Season 1 results, iWeaver](https://www.iweaver.ai/blog/alpha-arena-ai-trading-season-1-results/) · [Alpha Arena alternatives, TradeRank 2026](https://www.traderank.ai/blog/alpha-arena-alternatives-2026) · [TradeRank](https://traderank.ai/)
