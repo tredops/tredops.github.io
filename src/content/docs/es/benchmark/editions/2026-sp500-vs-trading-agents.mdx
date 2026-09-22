@@ -1,0 +1,91 @@
+---
+title: "S&P 500 vs Trading Agents"
+description: "Buy & Keep sobre el S&P 500 contra cinco agentes de trading LLM con $10.000 cada uno durante 40 días. El índice cierra en −1,04 %; todos los agentes acaban en positivo, de +1,96 % a +13,59 %."
+benchmark:
+  edition: 2026-sp500-vs-trading-agents
+  pubDate: 2026-09-22
+  window: 12 ago 2026 → 21 sep 2026
+  winner: gpt-oss-20b · +13,59 % (S&P 500 −1,04 %)
+  agents: 5
+  hero: 2026-sp500-vs-trading-agents.jpg
+  tags: [S&P 500, Buy & Keep, ETFs, Acciones, Crypto]
+---
+
+import hero from '../../../../../assets/benchmark/2026-sp500-vs-trading-agents.jpg';
+import BenchmarkRace from '../../../../../components/benchmark/BenchmarkRace.astro';
+import BenchmarkSummary from '../../../../../components/benchmark/BenchmarkSummary.astro';
+import BenchmarkEquityRace from '../../../../../components/benchmark/BenchmarkEquityRace.astro';
+import BenchmarkAgentDetails from '../../../../../components/benchmark/BenchmarkAgentDetails.astro';
+import BenchmarkEditions from '../../../../../components/benchmark/BenchmarkEditions.astro';
+import ResearchMethodology from '../../../../../components/research/ResearchMethodology.astro';
+
+<img
+	class="bmk-hero"
+	src={hero.src}
+	width={hero.width}
+	height={hero.height}
+	alt="El S&P 500 compitiendo contra cinco agentes de trading LLM durante 40 días"
+/>
+
+Batir al mercado es difícil. Por eso los ETF indexados son la respuesta por defecto de la mayoría de inversores: compra el S&P 500, guárdalo y deja que el tiempo trabaje. Es la apuesta más segura que existe y, en cualquier tramo de seis semanas, una apuesta que también puede perder.
+
+La nueva tecnología cambia lo que "seguro" puede significar. Un agente de trading no tiene por qué ser un jugador más arriesgado que un índice; puede ser uno **más disciplinado**: cada orden que abre lleva stop loss y take profit desde el primer segundo, nunca pone más que una pequeña parte del capital en una posición y puede decidir no hacer nada cuando nada le convence. Esta edición pone esa idea a prueba.
+
+**Dimos al S&P 500 y a cinco agentes de trading LLM los mismos $10.000 y los mismos 40 días. El índice perdió un 1,04 %. Los cinco agentes acabaron en positivo, entre +1,96 % y +13,59 %, con un drawdown máximo de −2,41 %, menor que el del propio índice.**
+
+## El montaje
+
+- **El rival a batir:** una barra *Buy & Keep* que mete los $10.000 completos en `SPY` el primer día y no los toca. Se valora cada día al último cierre horario, exactamente igual que una posición abierta de cualquier agente.
+- **Los aspirantes:** los cinco agentes LLM de precio cero de la [edición Agentes gratis](../2026-free-agents-10k-40-days/): `openai/gpt-oss-20b`, `nvidia/nemotron-3-super-120b-a12b`, `meta/muse-glimmer-30b`, `openrouter/free` y `dots-studio/dots-3-note-preview:free`. Mismo system prompt, mismo pool de señales, una decisión cada dos días.
+- **Capital y riesgo:** $10.000 cada uno, paper trading, máximo 10 % del balance por orden y 20 % por bot, stop loss y take profit en todas las órdenes.
+- **Ventana:** 12 ago → 21 sep 2026. La carrera de abajo empieza el 17 de agosto, el primer día en que algo se movió; todas las líneas se miden contra el equity inicial del 12 de agosto.
+
+El índice es el único competidor que no puede perder contra sí mismo: sin comisiones, sin slippage, sin decisiones. Lo único que necesita para ganar es un mercado que suba.
+
+## La carrera
+
+<BenchmarkRace edition="2026-sp500-vs-trading-agents" lang="es" />
+
+<BenchmarkEquityRace edition="2026-sp500-vs-trading-agents" lang="es" />
+
+<BenchmarkSummary edition="2026-sp500-vs-trading-agents" lang="es" />
+
+## Resultados
+
+| # | Competidor | Modelo | Equity final | P&L | Drawdown máx. | Operaciones cerradas (G / P) |
+|---|---|---|---|---|---|---|
+| 1 | gpt-oss-20b | `openai/gpt-oss-20b` (NVIDIA) | $11.358,77 | **+13,59 %** | −0,60 % | 7 (5 / 2) |
+| 2 | Nemotron 3 Super | `nvidia/nemotron-3-super-120b-a12b` | $10.657,91 | +6,58 % | −2,41 % | 12 (7 / 5) |
+| 3 | Muse Glimmer | `meta/muse-glimmer-30b` (NVIDIA) | $10.590,37 | +5,90 % | −1,88 % | 5 (2 / 3) |
+| 4 | OpenRouter free | `openrouter/free` (un router: el modelo cambia en cada llamada) | $10.343,53 | +3,44 % | −1,17 % | 10 (4 / 6) |
+| 5 | Dots 3 | `dots-studio/dots-3-note-preview:free` (OpenRouter) | $10.196,49 | +1,96 % | −1,86 % | 7 (3 / 4) |
+| 6 | **S&P 500** | Buy & Keep sobre `SPY` | $9.896,24 | **−1,04 %** | −2,40 % | — |
+
+El resultado es aplastante, y cómo se produjo importa más que la cifra final:
+
+1. **El índice lideró dos días.** SPY subía un +0,65 % el 17 de agosto mientras todos los agentes seguían en 0 %. Desde el 19 de agosto gpt-oss-20b se puso en cabeza y no la soltó; el S&P 500 estuvo por delante de *cualquier* agente solo 2 de los 36 días dibujados.
+2. **El mercado se deslizó hacia abajo y los agentes no lo siguieron.** SPY pasó toda la ventana entre −0,2 % y −1,8 %. Los agentes no estaban cortos de mercado: estaban sobre todo en caja y en un puñado de posiciones protegidas por el stop loss del broker. Dos de ellos (OpenRouter free y Dots 3) se quedaron exactamente en 0 % durante tres semanas antes de su primera operación.
+3. **El riesgo controlado se vio en los drawdowns.** La mayor caída pico-valle de un agente fue −2,41 % (Nemotron, el más activo); la del ganador, −0,60 %. El índice, sin hacer nada, cayó un −2,40 %. No hacer nada no es lo mismo que no arriesgar nada.
+4. **El ganador operó poco.** gpt-oss-20b cerró 7 operaciones en 40 días y terminó con 6 posiciones abiertas; Nemotron cerró 12 y mantiene 20. La selectividad pagó más que la actividad, la misma lección de la edición anterior.
+
+## Por qué esto no significa que "los agentes siempre baten al índice"
+
+Cuarenta días es una ventana corta y esta fue ligeramente negativa para las grandes capitalizaciones de EE. UU. En un tramo alcista limpio, un índice totalmente invertido capitaliza cada día mientras un agente selectivo espera en caja una señal, y el ranking podría darse la vuelta. Lo que el experimento sí muestra es más estrecho y, creemos, más útil: **con el mismo capital y el mismo reloj, agentes con stop loss / take profit obligatorios y topes por posición produjeron rentabilidad positiva con un drawdown menor que mantener el índice pasivamente.** Ese es el perfil de riesgo sobre el que está construido TredOps: no una apuesta mayor que el mercado, sino una mejor gestionada.
+
+Seguiremos repitiendo esta comparación como serie recurrente. La próxima edición añade modelos frontera de pago a la misma carrera y una ventana más larga, para que el caso alcista tenga su turno.
+
+## Detalle por agente
+
+<BenchmarkAgentDetails edition="2026-sp500-vs-trading-agents" lang="es" />
+
+## Metodología completa
+
+Los cinco agentes son los de la edición Agentes gratis, sobre la misma ejecución; abajo está exactamente con lo que corrieron: el prompt de ciclo, la plantilla de portfolio y el modelo, la temperatura y el system prompt completo de cada agente.
+
+<ResearchMethodology slug="2026-free-agents-10k-40-days" lang="es" />
+
+> Paper trading sobre datos históricos de mercado. La línea del S&P 500 es una simulación Buy & Keep sobre `SPY` a cierres horarios, sin comisiones ni dividendos. Los resultados pasados no garantizan resultados futuros. TredOps es una herramienta de software; nada de esto es asesoramiento financiero.
+
+## Otras ediciones
+
+<BenchmarkEditions lang="es" exclude="es/benchmark/editions/2026-sp500-vs-trading-agents" />
