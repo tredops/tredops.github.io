@@ -17,6 +17,22 @@ import mdx from '@astrojs/mdx';
 const site = 'https://docs.tredops.com';
 const base = '/';
 
+// Miniatura que se ve al compartir un enlace (Open Graph / Twitter Card). Es la
+// MISMA imagen que usa la landing (`public/seo.jpg` allí), para que un enlace a
+// la doc y uno a tredops.com se vean igual en WhatsApp, Slack, X y LinkedIn.
+//
+// Starlight emite `og:title`, `og:url`, `og:description` y
+// `twitter:card: summary_large_image` por su cuenta, pero NO `og:image`: sin
+// esta entrada los scrapers no tienen nada que pintar y el enlace sale sin
+// miniatura. La URL tiene que ser ABSOLUTA: una ruta relativa la descartan
+// todos los scrapers.
+//
+// La imagen es cuadrada (1254x1254) y la tarjeta grande recorta a 1.91:1 por el
+// centro, igual que ya le pasa a la landing. Si algún día se hace una versión
+// 1200x630, basta con reemplazar el archivo y ajustar estas dos medidas.
+const ogImage = `${site}/seo.jpg`;
+const ogImageAlt = 'TredOps — Trading + DevOps. Automate Every Step of Your Trading';
+
 // El sitio nació con el español en la raíz y el inglés bajo `/en/`. Al pasar el
 // inglés a idioma por defecto, esas URL dejaron de existir: estas redirecciones
 // mandan cada una a su equivalente en la raíz para no dejar enlaces muertos.
@@ -73,6 +89,16 @@ export default defineConfig({
 			],
 			editLink: { enabled: false },
 			head: [
+				// Miniatura al compartir. Un post del blog añade su propia
+				// `og:image` en su frontmatter (BlogPost.astro) y Starlight
+				// deduplica por `property`/`name`, así que la suya gana y esta
+				// queda como respaldo del resto del sitio.
+				{ tag: 'meta', attrs: { property: 'og:image', content: ogImage } },
+				{ tag: 'meta', attrs: { property: 'og:image:alt', content: ogImageAlt } },
+				{ tag: 'meta', attrs: { property: 'og:image:width', content: '1254' } },
+				{ tag: 'meta', attrs: { property: 'og:image:height', content: '1254' } },
+				{ tag: 'meta', attrs: { name: 'twitter:image', content: ogImage } },
+				{ tag: 'meta', attrs: { name: 'twitter:image:alt', content: ogImageAlt } },
 				{
 					tag: 'link',
 					attrs: {
