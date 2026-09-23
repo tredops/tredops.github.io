@@ -96,6 +96,23 @@ Public benchmarks rather than products. Alpha Arena gave six frontier models $10
 
 ## Where TredOps fits
 
+Three capabilities decide most of this market. Almost every product has one or
+two; the combination is what is rare:
+
+| | TredOps | Crypto bot platforms | No-code for stocks | Open source | Alphio | LLM arenas |
+|---|:-:|:-:|:-:|:-:|:-:|:-:|
+| **Manufactures and tests the bots for you** — optimisation, out-of-sample backtest, quality gate, automatic recalibration | ✅ | | | 🟡 you build and run it | | — |
+| **LLM agents that judge each signal** before it becomes an order | ✅ | | 🟡 | 🟡 | ✅ | ✅ |
+| **Risk limits the agent cannot override** — mandatory TP/SL, per-position and cash rules | ✅ | 🟡 | 🟡 | 🟡 | 🟡 | — |
+
+**✅** yes · **🟡** partial · empty = not offered · **—** not applicable. The full
+24-row version, platform by platform, is in
+[TredOps vs Other](../../landscape/).
+
+The first row is where the category mostly stops: platforms execute the strategy
+you bring them. The third is the one that matters when the second is present —
+an agent without a leash is a liability, not a feature.
+
 TredOps is a non-custodial platform that does two things most of the list does not combine: it **manufactures and tests bots** (genetic optimisation, backtest, quality gate, automatic recalibration) and then lets **LLM agents supervise the signals** those bots produce, with hard risk rules that the agent cannot override. Every order opens with a take profit and a stop loss. Your capital never leaves your broker account.
 
 The plan is deliberately simple: a **free tier** (14 days of full access, then free copy-trading of the Copy Trader Agents marked Free) and a **Pro plan at $24.99/month** ($19.99 billed annually) with your own bots, agents, sub-agents and scheduled Agent Tasks.
@@ -107,10 +124,44 @@ The plan is deliberately simple: a **free tier** (14 days of full access, then f
 - **Multi-LLM, your keys.** OpenRouter, DeepSeek, OpenAI, NVIDIA, or the credits in your plan, with automatic failover. Our own benchmark shows five zero-cost models all finishing a 40-day, $10k race in positive territory, the best at +13.5%. Nobody in the list above lets you run the same strategy on five models and compare the bill.
 - **Radical transparency.** This is the part we borrowed from Alpha Arena and TradeRank and applied to a real product. Every [Benchmark edition](../../benchmark/) publishes the system prompt, temperature, model, capital, signal sources, cost per model, every trade and every agent's reasoning. If our agents lose, that edition gets published too.
 
+**The evidence, not the claim**
+
+Rather than ask you to take the previous paragraph on faith, here is the edition
+it refers to: five zero-cost models, $10,000 each, the same signal pool and the
+same prompt, deciding every two days for 40 days.
+
+![Equity curve of five free LLM agents over 40 days, all finishing positive, the best at +13.53%](/research/2026-free-agents-10k-40-days/equity.png)
+
+| # | Agent | Model | P&L | Max drawdown | Win rate |
+|---|---|---|---|---|---|
+| 1 | gpt-oss-20b | `openai/gpt-oss-20b` | **+13.53%** | −0.32% | 71% |
+| 2 | Nemotron 3 Super | `nvidia/nemotron-3-super-120b-a12b` | +6.68% | −0.69% | 58% |
+| 3 | Muse Glimmer | `meta/muse-glimmer-30b` | +5.73% | −1.61% | 40% |
+| 4 | OpenRouter free | `openrouter/free` | +3.79% | −0.55% | 40% |
+| 5 | Dots 3 | `dots-studio/dots-3-note-preview:free` | +2.30% | −1.04% | 43% |
+
+All five ended positive, and the winner spent its first 16 days doing nothing —
+it skipped every early opportunity, opened one position on 18 August and sat on
+the gain. The spread between best and worst is 11 points on identical inputs,
+which is the whole argument for letting you swap the model.
+
+This is the prompt all five ran, copied from the published methodology:
+
+```text
+Supervise portfolio {portfolioId} for tradeDate {tradeDate}: review the
+portfolio context and the signal pool, decide, and open or close positions
+accordingly. Objective: grow the capital with controlled risk over the whole
+window.
+```
+
+Paper trading, six weeks, 20 decisions per agent. Evidence, not a verdict — the
+[full edition](../../benchmark/editions/2026-free-agents-10k-40-days/) has every
+trade, every cost and each agent's reasoning.
+
 **Where we are honestly behind**
 
-- **One broker.** Today TredOps executes through Alpaca (US stocks, ETFs and crypto). TradersPost lists 17 brokers, Alphio seven brokers plus four exchanges, 3Commas 25 exchanges. More integrations are on the roadmap, but if your money sits at Interactive Brokers or Binance we cannot help you yet.
-- **No options or futures.** Composer, TradersPost and Lean cover them; we do not.
+- **One broker.** Today TredOps executes through Alpaca (US stocks, ETFs and crypto). TradersPost lists 17 brokers, Alphio seven brokers plus four exchanges, 3Commas 25 exchanges. This one is a deliberate trade-off rather than an oversight: an automation-first broker with a single, well-documented API is what let us make take profit and stop loss mandatory on every order, reconcile fills against what the strategy expected, and measure slippage per trade. Supporting fifteen brokers shallowly would have cost us that. It is still a real limitation — if your money sits at Interactive Brokers or Binance we cannot help you yet, and breadth is what we owe you next.
+- **No options or futures.** Composer, TradersPost and Lean cover them; we do not. Also on purpose, for now: unleveraged stocks, ETFs and crypto are where a model's reasoning can be wrong without the position being wiped out while it is wrong. We would rather publish a few hundred agent decisions on spot instruments before handing the same agents leverage and expiries. If you trade derivatives today, this list has better options than us.
 - **Track record.** Trade Ideas has run Holly since 2016. Our public benchmarks are historical replays measured in weeks, and our oldest live agents are months old. We publish everything precisely because we cannot yet point at years.
 - **LLM costs are real.** Free models exist and work, but a frontier model deciding every two days on a large portfolio costs money. Rule-based bots on 3Commas do not have that line item.
 - **Community.** Composer has 3,000 shared strategies and Freqtrade has 390 contributors. We are at the beginning of that curve.
@@ -126,6 +177,22 @@ The plan is deliberately simple: a **free tier** (14 days of full access, then f
 | Full control and zero fees, you code it | Freqtrade, Lean | You want the same rigour without running the infrastructure |
 | A natural-language agent on your Robinhood | Alphio | You want to see the prompt, the cost and the trade log before trusting it |
 | To watch LLMs trade transparently | Alpha Arena, TradeRank | You want to run that experiment yourself, with your model and your broker |
+
+## Try the loop instead of reading about it
+
+The honest way to end a vendor's comparison post is to make it cheap to check
+whether we are right.
+
+**[Start free at tredops.com](https://tredops.com)** — 14 days of full access,
+no card. After that your account settles into **Freemium**, which does not
+expire: you keep the dashboard, your portfolios, manual trading with take profit
+and stop loss, and you can follow the **Copy Trader Agents marked Free** on one
+portfolio with no copy fee. If you want your own bots, agents and scheduled
+tasks, Premium is **$24.99/month** ($19.99 billed annually).
+
+And if you would rather not sign up at all, the [Benchmark](../../benchmark/) is
+public: the prompts, the trades, the costs and the editions where our agents did
+worse than Buy & Hold.
 
 ## A closing note
 

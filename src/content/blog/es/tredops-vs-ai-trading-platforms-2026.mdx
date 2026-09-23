@@ -96,6 +96,23 @@ Benchmarks públicos, no productos. Alpha Arena dio a seis modelos frontera $10.
 
 ## Dónde encaja TredOps
 
+Tres capacidades deciden buena parte de este mercado. Casi todos los productos
+tienen una o dos; lo raro es la combinación:
+
+| | TredOps | Bots cripto | No-code para acciones | Código abierto | Alphio | Arenas LLM |
+|---|:-:|:-:|:-:|:-:|:-:|:-:|
+| **Fabrica y prueba los bots por ti** — optimización, backtest fuera de muestra, umbral de calidad, recalibración automática | ✅ | | | 🟡 lo montas y lo operas tú | | — |
+| **Agentes LLM que juzgan cada señal** antes de que se convierta en orden | ✅ | | 🟡 | 🟡 | ✅ | ✅ |
+| **Límites de riesgo que el agente no puede saltarse** — TP/SL obligatorios, reglas por posición y de caja | ✅ | 🟡 | 🟡 | 🟡 | 🟡 | — |
+
+**✅** sí · **🟡** parcial · vacío = no lo ofrece · **—** no aplica. La versión
+completa, de 24 filas y plataforma por plataforma, está en
+[TredOps vs Other](../../../es/landscape/).
+
+La primera fila es donde se queda casi toda la categoría: las plataformas
+ejecutan la estrategia que tú les traes. La tercera es la que importa cuando
+existe la segunda: un agente sin correa es un pasivo, no una función.
+
 TredOps es una plataforma no custodial que hace dos cosas que casi nadie de la lista combina: **fabrica y prueba bots** (optimización genética, backtest, umbral de calidad, recalibración automática) y después deja que **agentes LLM supervisen las señales** que esos bots producen, con reglas de riesgo duras que el agente no puede saltarse. Cada orden se abre con take profit y stop loss. Tu capital nunca sale de tu cuenta del broker.
 
 El plan es deliberadamente simple: un **plan gratuito** (14 días de acceso completo y después copy trading gratis de los Copy Trader Agents marcados como Free) y un **plan Pro a $24,99/mes** ($19,99 en pago anual) con tus propios bots, agentes, sub-agentes y Agent Tasks programadas.
@@ -107,10 +124,45 @@ El plan es deliberadamente simple: un **plan gratuito** (14 días de acceso comp
 - **Multi-LLM, con tus claves.** OpenRouter, DeepSeek, OpenAI, NVIDIA o los créditos de tu plan, con failover automático. Nuestro propio benchmark muestra cinco modelos de coste cero acabando en positivo una carrera de 40 días con $10k, el mejor con +13,5 %. Nadie de la lista te deja correr la misma estrategia en cinco modelos y comparar la factura.
 - **Transparencia radical.** Esto lo tomamos prestado de Alpha Arena y TradeRank y lo aplicamos a un producto real. Cada [edición del Benchmark](../../../es/benchmark/) publica el system prompt, la temperatura, el modelo, el capital, las fuentes de señal, el coste por modelo, cada operación y el razonamiento de cada agente. Si nuestros agentes pierden, esa edición también se publica.
 
+**La evidencia, no la afirmación**
+
+En vez de pedirte que te creas el párrafo anterior, aquí está la edición a la
+que se refiere: cinco modelos de coste cero, $10.000 cada uno, el mismo pool de
+señales y el mismo prompt, decidiendo cada dos días durante 40 días.
+
+![Curva de capital de cinco agentes LLM gratuitos durante 40 días, todos acabando en positivo, el mejor con +13,53 %](/research/2026-free-agents-10k-40-days/equity.png)
+
+| # | Agente | Modelo | P&L | Drawdown máximo | Acierto |
+|---|---|---|---|---|---|
+| 1 | gpt-oss-20b | `openai/gpt-oss-20b` | **+13,53 %** | −0,32 % | 71 % |
+| 2 | Nemotron 3 Super | `nvidia/nemotron-3-super-120b-a12b` | +6,68 % | −0,69 % | 58 % |
+| 3 | Muse Glimmer | `meta/muse-glimmer-30b` | +5,73 % | −1,61 % | 40 % |
+| 4 | OpenRouter free | `openrouter/free` | +3,79 % | −0,55 % | 40 % |
+| 5 | Dots 3 | `dots-studio/dots-3-note-preview:free` | +2,30 % | −1,04 % | 43 % |
+
+Los cinco acabaron en positivo, y el ganador se pasó sus primeros 16 días sin
+hacer nada: descartó todas las oportunidades iniciales, abrió una posición el 18
+de agosto y se sentó sobre la ganancia. La diferencia entre el mejor y el peor
+es de 11 puntos con entradas idénticas, que es justamente el argumento para
+dejarte cambiar de modelo.
+
+Este es el prompt que corrieron los cinco, copiado de la metodología publicada:
+
+```text
+Supervise portfolio {portfolioId} for tradeDate {tradeDate}: review the
+portfolio context and the signal pool, decide, and open or close positions
+accordingly. Objective: grow the capital with controlled risk over the whole
+window.
+```
+
+Paper trading, seis semanas, 20 decisiones por agente. Evidencia, no veredicto:
+la [edición completa](../../../es/benchmark/editions/2026-free-agents-10k-40-days/)
+tiene cada operación, cada coste y el razonamiento de cada agente.
+
 **En qué vamos honestamente por detrás**
 
-- **Un solo broker.** Hoy TredOps ejecuta a través de Alpaca (acciones, ETFs y cripto de EE. UU.). TradersPost lista 17 brokers, Alphio siete brokers y cuatro exchanges, 3Commas 25 exchanges. Hay más integraciones en la hoja de ruta, pero si tu dinero está en Interactive Brokers o Binance todavía no podemos ayudarte.
-- **Sin opciones ni futuros.** Composer, TradersPost y Lean los cubren; nosotros no.
+- **Un solo broker.** Hoy TredOps ejecuta a través de Alpaca (acciones, ETFs y cripto de EE. UU.). TradersPost lista 17 brokers, Alphio siete brokers y cuatro exchanges, 3Commas 25 exchanges. Esto es una decisión consciente más que un olvido: un broker pensado para automatizar, con una sola API bien documentada, es lo que nos permitió hacer obligatorios el take profit y el stop loss en toda orden, reconciliar cada ejecución contra lo que la estrategia esperaba y medir el slippage operación a operación. Soportar quince brokers de forma superficial nos habría costado eso. Sigue siendo una limitación real: si tu dinero está en Interactive Brokers o Binance todavía no podemos ayudarte, y la amplitud es lo siguiente que te debemos.
+- **Sin opciones ni futuros.** Composer, TradersPost y Lean los cubren; nosotros no. También a propósito, de momento: las acciones, los ETFs y el cripto sin apalancamiento son el terreno donde el razonamiento de un modelo puede equivocarse sin que la posición desaparezca mientras se equivoca. Preferimos publicar unos cuantos cientos de decisiones de agente sobre instrumentos al contado antes de darles apalancamiento y vencimientos. Si hoy operas derivados, en esta lista hay mejores opciones que nosotros.
 - **Historial.** Trade Ideas lleva Holly desde 2016. Nuestros benchmarks públicos son replays históricos medidos en semanas y nuestros agentes en vivo más antiguos tienen meses. Publicamos todo precisamente porque aún no podemos señalar años.
 - **El coste de los LLM es real.** Existen modelos gratis y funcionan, pero un modelo frontera decidiendo cada dos días sobre un portfolio grande cuesta dinero. Los bots de reglas de 3Commas no tienen esa partida.
 - **Comunidad.** Composer tiene 3.000 estrategias compartidas y Freqtrade 390 contribuidores. Nosotros estamos al principio de esa curva.
@@ -126,6 +178,23 @@ El plan es deliberadamente simple: un **plan gratuito** (14 días de acceso comp
 | Control total y cero comisiones, programando tú | Freqtrade, Lean | Quieres el mismo rigor sin operar la infraestructura |
 | Un agente en lenguaje natural sobre tu Robinhood | Alphio | Quieres ver el prompt, el coste y el registro de operaciones antes de confiar |
 | Ver a los LLM operar con transparencia | Alpha Arena, TradeRank | Quieres hacer ese experimento tú, con tu modelo y tu broker |
+
+## Pruébalo en vez de leer sobre ello
+
+La forma honesta de cerrar la comparativa de un fabricante es ponerte fácil
+comprobar si tenemos razón.
+
+**[Empieza gratis en tredops.com](https://tredops.com)** — 14 días de acceso
+completo, sin tarjeta. Después tu cuenta se queda en **Freemium**, que no
+caduca: conservas el dashboard, tus portfolios, el trading manual con take
+profit y stop loss, y puedes seguir a los **Copy Trader Agents marcados como
+Free** en un portfolio, sin comisión de copia. Si quieres tus propios bots,
+agentes y tareas programadas, Premium cuesta **$24,99/mes** ($19,99 en pago
+anual).
+
+Y si prefieres no registrarte, el [Benchmark](../../../es/benchmark/) es
+público: los prompts, las operaciones, los costes y también las ediciones en las
+que nuestros agentes lo hicieron peor que Buy & Hold.
 
 ## Una nota final
 
