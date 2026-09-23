@@ -19,6 +19,12 @@ const { title, description, pubDate, updatedDate, author, tags, ogImage } = post
 const fmt = new Intl.DateTimeFormat(t.locale, { year: "numeric", month: "long", day: "numeric" });
 const other = await counterpart(post);
 const imageUrl = ogImage ? `${site}${ogImage}` : null;
+// La misma imagen, pero en ruta del sitio: la cabecera del post. El schema
+// describe `ogImage` como «imagen de cabecera y tarjeta social» y el índice
+// (BlogIndex.astro) ya la pinta como miniatura; faltaba mostrarla dentro del
+// post. Sin `ogImage` no se renderiza nada, así que los posts sin imagen
+// quedan igual que antes.
+const heroSrc = ogImage ? `${base.endsWith("/") ? base.slice(0, -1) : base}${ogImage}` : null;
 const canonical = `${site}${postHref(post, base)}`;
 
 const head: Array<{ tag: "meta" | "link"; attrs: Record<string, string> }> = [
@@ -38,6 +44,7 @@ const head: Array<{ tag: "meta" | "link"; attrs: Record<string, string> }> = [
 ---
 
 <StarlightPage frontmatter={{ title, description, head }}>
+	{heroSrc && <img class="post-hero" src={heroSrc} alt={title} loading="eager" decoding="async" />}
 	<p class="post-meta">
 		<time datetime={pubDate.toISOString()}>{fmt.format(pubDate)}</time>
 		{updatedDate && <span> · {fmt.format(updatedDate)}</span>}
@@ -51,6 +58,7 @@ const head: Array<{ tag: "meta" | "link"; attrs: Record<string, string> }> = [
 </StarlightPage>
 
 <style>
+	.post-hero { display: block; width: 100%; height: auto; margin-bottom: 1.5rem; border-radius: 0.6rem; border: 1px solid var(--sl-color-gray-5); }
 	.post-meta { display: flex; flex-wrap: wrap; align-items: center; gap: 0.25rem 0.35rem; margin-bottom: 1.5rem; color: var(--sl-color-gray-3); font-size: 0.9rem; }
 	.post-tags { display: inline-flex; flex-wrap: wrap; gap: 0.3rem; margin-left: 0.35rem; }
 	.post-tag { font-size: 0.7rem; padding: 0.1rem 0.5rem; border-radius: 999px; background: var(--sl-color-gray-5); color: var(--sl-color-gray-2); }
