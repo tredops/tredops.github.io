@@ -10,6 +10,7 @@ se llama `tredops.github.io` porque es el **sitio de organización** de GitHub
 Pages: ese nombre exacto es lo que hace que se sirva en la raíz del dominio y no
 bajo un subpath.
 
+
 > **Repositorio público.** Todo lo que entre en `dist/` es visible para
 > cualquiera. No hay secretos, ni credenciales, ni detalles de infraestructura
 > interna: ver [Qué no se publica](#qué-no-se-publica).
