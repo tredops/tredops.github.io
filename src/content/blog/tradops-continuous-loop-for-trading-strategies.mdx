@@ -1,0 +1,305 @@
+---
+title: "TradOps: running a trading strategy like software (and where that analogy breaks)"
+description: "DevOps and MLOps applied to algorithmic trading: the CI/CD pipeline for strategies, why a green backtest is not a passing test, what alpha decay does to a model in production, and the $460M deploy that took down Knight Capital in 45 minutes."
+pubDate: 2026-09-23
+lang: en
+author: TredOps
+tags: [TradOps, DevOps, MLOps, Automation, Risk]
+---
+
+import LifecycleLoop from '../../components/LifecycleLoop.astro';
+
+Most trading strategies are written the way scripts were written in 2005: one
+person, one file, a backtest that looked good, and then production forever. No
+version control on the parameters, no staging, no test that runs on its own, no
+alarm when the thing that worked in March stops working in June.
+
+Software went through this and came out the other side. The name for the way
+out was **DevOps**, and applying it to algorithmic trading is what people have
+started calling **TradOps** — or TradingOps. This post is about what that
+pipeline actually contains, and about the three places where the analogy with
+software stops working. Those three places are the interesting part.
+
+## Where the name comes from
+
+DevOps was not invented by a vendor. The term is the name of a conference:
+Patrick Debois ran the first **DevOpsDays** in Ghent in **October 2009**, took
+the first three letters of Development and Operations, added "days", and the
+movement kept the abbreviation. The frustration behind it was ordinary — he had
+been working between application teams and operations teams on a government data
+centre migration, and the wall between them was where releases went to die.
+
+The fix was not a tool. It was deleting the wall: one loop, automated, where
+integrating, testing, deploying and observing are the same continuous job.
+**MLOps** later did the same for machine learning, which needed it more —
+a model is code plus data plus a world that will not sit still.
+
+TradOps is that idea pointed at a trading strategy. The strategy is the
+artefact. The market is production. And, as we will see, production here is
+considerably more hostile than any server.
+
+## The pipeline, phase by phase
+
+The mapping is almost one to one, which is why the analogy caught on:
+
+| DevOps phase | What it becomes in TradOps |
+|---|---|
+| **Plan & Code** | Quantitative research: the hypothesis, the strategy's logic, the model's architecture. |
+| **Build & Test** | Parameter search (genetic algorithms, grid) plus backtesting **on data the search never saw**. |
+| **Release & Deploy** | Promotion to staging — paper trading or shadow execution — and only then to real capital. |
+| **Monitor & Operate** | Live risk management, automatic Stop Loss, execution telemetry, and recalibration when the regime changes. |
+
+Three properties make it a pipeline rather than a checklist:
+
+**It is automated.** A change to an algorithm triggers its own evaluation. If a
+human has to remember to re-run the backtest, it will not get re-run.
+
+**It has a gate.** A strategy that does not clear the minimum bar does not reach
+production. Not "let's watch it for a week with a small size" — it does not
+reach production. The bar is decided before the result is known, which is the
+only moment at which you can decide it honestly.
+
+**It closes.** The last phase feeds the first. Recalibration is not maintenance
+work, it is the loop's return edge.
+
+<LifecycleLoop lang="en" caption="The loop a strategy travels: Trading on the left, Ops on the right, and no end to either." />
+
+## Where the analogy breaks
+
+If TradOps were only DevOps with different nouns it would not be worth a post.
+It is not. Three things invert.
+
+### 1. A green test proves your code is right. A green backtest can prove you fooled yourself
+
+This is the big one, and it has no equivalent in software engineering.
+
+In software, a passing test is evidence. Run it a thousand times and it passes a
+thousand times, because the test is deterministic and the answer exists
+independently of your search for it.
+
+In trading, **the more strategies you try, the better the best one looks — even
+if none of them has any edge at all.** Try enough parameter combinations against
+the same history and you will find one that fits the noise beautifully. The
+backtest is glowing. The strategy has learned nothing.
+
+Marcos López de Prado has written the most-cited work on this, under the name
+**backtest overfitting**. His argument is uncomfortable and worth stating
+plainly: a Sharpe ratio reported without saying how many configurations were
+tried to find it is not a result, because the number of trials is precisely what
+determines how impressive that Sharpe had to be to mean anything. Hence the
+*deflated Sharpe ratio* — the same number, discounted by how hard you looked.
+
+The practical consequences for the pipeline:
+
+- **Out-of-sample is not optional, and it is not one split.** Walk-forward
+  analysis and purged cross-validation exist because financial data is ordered
+  and autocorrelated, so the naive shuffle of standard machine learning leaks
+  the future into the training set.
+- **Count your trials.** A pipeline that does not record how many combinations
+  were evaluated cannot tell a discovery from a coincidence.
+- **Compare against doing nothing.** Buy & Hold on the same asset over the same
+  window is the honest baseline. A strategy that cannot beat buying and waiting
+  has not earned its complexity or its fees.
+
+In DevOps, more testing is strictly better. In TradOps, **more searching is a
+liability you have to pay for statistically.** That single sentence is most of
+what separates the two disciplines.
+
+### 2. Production changes under you, and it is adversarial
+
+A web server does not rewrite its own semantics because you deployed. Markets
+do. The distribution the model learned from stops being the distribution it
+trades in — **data drift** and **concept drift** in MLOps vocabulary, *regime
+change* in a trader's.
+
+Worse, the change is not random noise. Other participants are looking for the
+same inefficiency, and finding it is what removes it. This is **alpha decay**:
+an edge has a half-life, and the half-life shortens as the edge gets crowded.
+
+So the MLOps answers apply directly, with higher stakes:
+
+- **Scheduled retraining.** Not "when someone notices", on a calendar.
+- **Model supervision.** Something watches whether live results still resemble
+  the tested ones, and acts on the answer.
+- **Automatic demotion.** A model losing accuracy goes back to simulation
+  *before* it burns capital, not after a review meeting.
+
+The demotion path matters more than it sounds. The expensive failure mode is not
+a bot that breaks loudly, it is a bot that keeps working correctly on a market
+that has moved.
+
+### 3. There is no rollback for a filled order
+
+`git revert` is the quiet superpower of DevOps. A bad deploy costs you minutes
+and some embarrassment; you roll back and the system is as it was.
+
+An order that reached the exchange is not revertible. You can close the
+position, and that close is a *new* trade at a *new* price, with its own
+slippage and its own fees. The state you are trying to return to no longer
+exists.
+
+Everything strict about a trading pipeline follows from this asymmetry:
+pre-trade limits instead of post-hoc alerts, mandatory Stop Loss instead of
+optional, blocking instead of warning. In software you can afford to be
+permissive because you can undo. Here you cannot undo, so the gate has to be in
+front.
+
+## What it costs to skip this
+
+The canonical example is not hypothetical, and it is a deployment failure — not
+a bad model.
+
+Starting **27 July 2012**, **Knight Capital** rolled out new code to its order
+router, SMARS, in stages across successive days. One technician **did not copy
+the new code to one of the eight servers**. In the SEC's words, Knight "did not
+have a second technician review this deployment and no one at Knight realized"
+the old code was still there — because Knight **had no written procedure
+requiring such a review**.
+
+The old code was **Power Peg**, a function Knight had **stopped using in 2003**
+and left sitting on production servers. In **2005** it moved the
+cumulative-quantity check — the part that told the router to stop once the order
+was filled — to an earlier point in the sequence, and **never retested Power Peg
+to see whether it would still behave if something called it**. The new release
+then **reused the very flag** that used to switch Power Peg on.
+
+Two details make this a monitoring story as well as a deployment one. From
+**8:01 a.m. ET**, more than an hour before the open, Knight's systems sent
+**97 automated emails** naming SMARS and the error "Power Peg disabled". The SEC
+notes they "were sent in real time, were caused by the code deployment failure,
+and provided Knight with a potential opportunity to identify and fix the coding
+issue prior to the market open". They were not designed to be alerts, and nobody
+generally read them.
+
+At 9:30 the eighth server started answering **212 incoming retail orders** with
+millions of its own. Over **45 minutes** it got **more than 4 million executions
+in 154 stocks, over 397 million shares**, leaving Knight long about $3.5 billion
+and short about $3.15 billion. It **lost over $460 million** and was acquired
+soon after.
+
+The SEC's own counterfactual is the part worth memorising: "a written procedure
+requiring a simple double-check of the deployment of the RLP code could have
+identified that a server had been missed and averted the events of August 1."
+
+Every item on that list is a TradOps control. Not one of them is about
+predicting the market.
+
+## In the US, part of this is not optional
+
+Here is the thing most write-ups on the subject leave out: for American
+broker-dealers, pre-trade controls are **law**, and have been since before
+Knight.
+
+The SEC adopted **Rule 15c3-5**, the Market Access Rule, in **November 2010**,
+on the reasoning that firms with market access are "gatekeepers to the financial
+markets" and that failing to control that access "can have potentially
+catastrophic consequences for the firm, its customers, their counterparties,
+investors and the marketplace". The rule requires a broker-dealer to:
+
+- **establish, document and maintain** risk management controls and supervisory
+  procedures for the risks of market access;
+- have controls "reasonably designed to **prevent the entry of erroneous
+  orders**" and orders beyond pre-set credit and capital thresholds;
+- maintain a system for **regularly reviewing how well those controls work**,
+  with an annual CEO certification.
+
+Read that middle bullet again: **prevent the entry**, not detect after the fact.
+That is inversion three written into securities law. Knight's $460 million was
+charged as a violation of this rule — not of any rule about being wrong on the
+market.
+
+You are probably not a registered broker-dealer, and none of this obliges you
+personally. It is still the most concise specification of a trading pipeline
+anyone has written down: gate in front, documented, reviewed on a schedule,
+signed by someone accountable.
+
+If you want to see the shape of it in software you can actually read,
+**QuantConnect** and **Freqtrade** put the whole loop in the open: versioned
+strategies, a shared backtesting engine, paper trading before live. The pattern
+they share with every serious desk is the same — **the strategy is not the
+deliverable; the system that keeps evaluating the strategy is.**
+
+## The telemetry that actually matters
+
+"Monitoring" in TradOps is not a P&L chart. P&L tells you the outcome; it does
+not tell you whether the machine is doing what you designed. Four things do:
+
+| Signal | What it catches |
+|---|---|
+| **Slippage** — fill price vs decision price | Your backtest assumed a price you do not actually get |
+| **Latency** — decision to acknowledgement | The edge that existed on paper may not exist at your speed |
+| **Fill rate and rejections** | Orders the venue is not accepting, for reasons you should know |
+| **Live vs backtest divergence** | The live strategy is no longer doing what the tested one did |
+
+The fourth is the one people skip and the one that matters most. It is the
+difference between "am I making money?" and "am I running the thing I tested?".
+You can be profitable and broken — a regime that flatters a bug — and you will
+find out at the worst moment.
+
+## How this loop looks in TredOps
+
+We did not choose the name by accident. The [TredOps loop](../../lifecycle/) is
+this pipeline with the phases named for what they rule out:
+
+1. **Optimization** — rules out parameters picked by eye.
+2. **Backtesting** — rules out overfitting, on data the search never saw.
+3. **Quality** — the gate. Clears the bar → production. Does not → it stays in
+   **staging**, still running, still measured, but its signals never reach your
+   book.
+4. **Trading** — every order opens with Take Profit and Stop Loss, with no
+   checkbox to remove them, and your portfolio's limits override any agent.
+5. **Calibration** — each bot re-tunes to recent conditions on its own
+   schedule. This is the return edge.
+6. **AI supervision** — open positions get re-evaluated with the same strategy
+   that opened them, and closed when the reason for the trade is gone.
+
+The first three are [Bots (CI)](../../pillars/bots-ci/); the last three are
+[Monitoring](../../pillars/monitoring/). And because the honest version of all
+this is the version you can check, the loop runs in public in the
+[Benchmark](../../benchmark/), prompts included.
+
+## Curiosities
+
+- **DevOps is younger than most of the strategies it is applied to.** The term
+  dates from October 2009. Moving averages date from considerably earlier.
+- **The term TradOps is not standardised.** There is no committee and no
+  canonical definition; "TradingOps" and "QuantOps" appear too. What is
+  standardised is the underlying practice, borrowed wholesale from MLOps.
+- **In machine learning, the model is the small part.** The Google paper
+  *Hidden Technical Debt in Machine Learning Systems* (NeurIPS 2015) made the
+  point with a diagram everyone has since redrawn: the box labelled "ML code" is
+  a tiny fraction of a real system. Configuration, data collection, monitoring
+  and serving infrastructure are the rest. Trading strategies obey the same
+  proportion, and the same surprise.
+- **The most expensive bug in trading history was dead code.** Power Peg had not
+  been used since 2003, and its safety check had been moved in 2005 without
+  anyone retesting what would happen if the old path ran. It was still on the
+  production servers in 2012, still callable, still wired to a flag someone
+  then reused.
+
+## The uncomfortable conclusion
+
+TradOps does not make a strategy profitable. Nothing in this post improves
+anyone's hit rate, and any pipeline can industrialise a bad idea faster.
+
+What it does is narrower: it removes the failures that had nothing to do with
+the market. Deploying to seven of eight servers. Believing a backtest that was
+fitted to noise. Running in June the parameters that worked in March. Finding
+out about a problem in a mailbox nobody reads.
+
+That is not the glamorous half of trading. It is the half that decides whether
+you are still there next year.
+
+> Paper trading and historical replays are not live results. Past performance
+> does not guarantee future results. TredOps is a software tool; nothing here is
+> financial advice. Third-party facts were checked in September 2026.
+
+### Sources
+
+- [SEC administrative proceeding against Knight Capital Americas LLC, Release 34-70694, 16 October 2013](https://www.sec.gov/litigation/admin/2013/34-70694.pdf) — every Knight figure and quotation in this post comes from this order.
+- [SEC Rule 15c3-5, Risk Management Controls for Brokers or Dealers with Market Access](https://www.sec.gov/rules/final/2010/34-63241.pdf) (adopted November 2010)
+- [Bailey & López de Prado, *The Deflated Sharpe Ratio: Correcting for Selection Bias, Backtest Overfitting and Non-Normality*](https://papers.ssrn.com/sol3/papers.cfm?abstract_id=2460551), Journal of Portfolio Management, 2014
+- [Bailey, Borwein, López de Prado & Zhu, *The Probability of Backtest Overfitting*](https://papers.ssrn.com/sol3/papers.cfm?abstract_id=2326253), Journal of Computational Finance, 2015
+- [Sculley et al., *Hidden Technical Debt in Machine Learning Systems*](https://papers.nips.cc/paper/5656-hidden-technical-debt-in-machine-learning-systems), NeurIPS 2015
+- [devopsdays — the conference Patrick Debois started in Ghent in 2009](https://devopsdays.org/events/2009-ghent/)
+- [QuantConnect](https://www.quantconnect.com/) · [Freqtrade documentation](https://www.freqtrade.io/en/stable/)
