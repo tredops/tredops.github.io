@@ -126,7 +126,14 @@ export default defineConfig({
 					translations: { es: 'Introducción' },
 					items: [
 						{ label: 'What is TredOps', translations: { es: 'Qué es TredOps' }, slug: 'introduction' },
-						{ label: 'Key concepts', translations: { es: 'Conceptos clave' }, slug: 'concepts' },
+						{
+							label: 'Key concepts',
+							translations: { es: 'Conceptos clave' },
+							items: [
+								{ label: 'Key concepts', translations: { es: 'Conceptos clave' }, slug: 'concepts' },
+								{ label: 'Signal Pool', translations: { es: 'Signal Pool' }, slug: 'signal-pool' },
+							],
+						},
 						{ label: 'The TredOps loop', translations: { es: 'El ciclo de TredOps' }, slug: 'lifecycle' },
 					],
 				},

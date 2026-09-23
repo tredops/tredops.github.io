@@ -37,7 +37,7 @@ este precio, con este stop y este objetivo".
 
 Todas las señales van a un **Signal Pool** compartido. Los agentes leen ese pool,
 lo filtran con los criterios de tu portfolio y deciden cuáles merece la pena
-ejecutar. Una señal, por sí sola, nunca mueve dinero.
+ejecutar. Una señal, por sí sola, nunca abre órdenes en tu cuenta.
 
 ## Agente y sub-agente
 

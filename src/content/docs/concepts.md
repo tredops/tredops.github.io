@@ -37,7 +37,7 @@ stop and this target."
 
 Every signal lands in a shared **Signal Pool**. Agents read that pool, filter it
 with your portfolio's criteria and decide which ones are worth executing. A
-signal on its own never moves money.
+signal on its own never opens orders in your account.
 
 ## Agent and sub-agent
 
