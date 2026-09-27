@@ -39,11 +39,20 @@ Eso es todo. La primera alerta que llegue crea sola el bot de ese símbolo.
 | `action` | Qué hacer: `open-long`, `close-long`, `open-short`, `close-short`. |
 | `asset` | El ticker. `{{ticker}}` lo rellena; un prefijo de mercado como `NASDAQ:` se ignora. |
 | `price` | El precio de la alerta. `{{close}}` lo rellena y la posición se abre a ese precio. |
-| `quantity` | Unidades. Junto con el precio fija el capital de la posición. Sin él se usa el capital por señal de la integración. |
+| `capital` | Dólares que poner en la posición. Opcional, y manda sobre todo lo demás. |
+| `quantity` | Unidades. Junto con el precio fija el tamaño cuando no hay `capital`. |
 | `time` | Cuándo se disparó la alerta. `{{timenow}}` lo rellena y esa es la fecha de la operación. |
 | `strategy` | Una etiqueta libre que viaja con la posición, para distinguir tus estrategias. |
 
 Los campos que queden como marcador sin sustituir se ignoran, que es lo que pasa con las alertas de precio no asociadas a una estrategia.
+
+### Cuánto invierte cada señal
+
+Tres vías, en este orden:
+
+1. `capital` en la alerta, en dólares. `"capital": "300"` pone 300 dólares en esa posición.
+2. `quantity` por `price`, que es lo que produce una estrategia de Pine cuando manda sus propios contratos.
+3. El **capital por señal** de la integración, junto a Leverage en sus ajustes. Es lo que recibe una alerta que no dice ninguno de los dos, y es la configuración más simple: lo fijas una vez en 500 y te olvidas del tamaño.
 
 ## Las cuatro acciones
 
@@ -64,7 +73,7 @@ Alerta de entrada:
 
 ```json
 { "passphrase": "<tu passphrase>", "action": "open-long", "asset": "BTCUSD",
-  "price": "{{close}}", "quantity": "0.01", "time": "{{timenow}}", "strategy": "My_Strategy" }
+  "price": "{{close}}", "capital": "300", "time": "{{timenow}}", "strategy": "My_Strategy" }
 ```
 
 Alerta de salida:
@@ -82,7 +91,7 @@ Alerta de entrada:
 
 ```json
 { "passphrase": "<tu passphrase>", "action": "open-short", "asset": "GLD",
-  "price": "{{close}}", "quantity": "10", "time": "{{timenow}}", "strategy": "My_Strategy" }
+  "price": "{{close}}", "capital": "500", "time": "{{timenow}}", "strategy": "My_Strategy" }
 ```
 
 Alerta de salida:
