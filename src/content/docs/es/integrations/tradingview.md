@@ -140,4 +140,14 @@ Ese registro es la forma más rápida de distinguir los tres casos típicos: la 
 
 Tu passphrase es la única credencial del webhook y viaja en el cuerpo de la alerta, no en la URL, así que nunca llega a los logs de proxies ni de servidores. Autentica solo en este webhook: usada en cualquier otro sitio de TredOps se rechaza sin ni siquiera consultar la base de datos.
 
-Se muestra al conectar la integración y al rotarla, y nunca más. Rotar revoca la anterior de inmediato, así que actualiza el mensaje de tus alertas justo después. Si desconectas la integración, el token se revoca y los bots quedan en pausa, conservando el historial.
+Se muestra al conectar la integración y al rotarla, y nunca más. Rotar revoca la anterior de inmediato, así que actualiza el mensaje de tus alertas justo después.
+
+## Desconectar
+
+Desconectar borra todo lo que creó esta integración, y no se puede deshacer:
+
+1. Las posiciones que sigan abiertas se **cierran a mercado** primero.
+2. Se borran sus órdenes, el bot de cada símbolo, su historial de alertas, sus notificaciones, su portfolio y su configuración.
+3. La passphrase se revoca, así que el webhook deja de aceptar alertas.
+
+Las posiciones que otros portfolios abrieron siguiendo sus señales son tuyas y se conservan. El portfolio también se conserva si había algo más operando en él. Si una de las posiciones abiertas no se puede cerrar, no se borra nada y el dashboard te lo dice, para que la cierres desde tus posiciones y lo vuelvas a intentar.

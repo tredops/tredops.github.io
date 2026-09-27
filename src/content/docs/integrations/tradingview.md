@@ -140,4 +140,14 @@ That log is the fastest way to tell the three usual cases apart: the alert never
 
 Your passphrase is the only credential of the webhook, and it lives in the alert body, not in the URL, so it never reaches proxy or server logs. It authenticates on this webhook alone: used anywhere else in TredOps it is rejected without even a lookup.
 
-It is shown when you connect the integration and when you rotate it, and never again. Rotating revokes the previous one immediately, so update the message in your alerts right after. If you disconnect the integration, the token is revoked and the bots are paused, keeping the history.
+It is shown when you connect the integration and when you rotate it, and never again. Rotating revokes the previous one immediately, so update the message in your alerts right after.
+
+## Disconnecting
+
+Disconnecting deletes everything this integration created, and it cannot be undone:
+
+1. Any position still open is **closed at market** first.
+2. Its orders, the bot of each symbol, its alert history, its notifications, its portfolio and its configuration are deleted.
+3. The passphrase is revoked, so the webhook stops accepting alerts.
+
+Positions other portfolios opened by following its signals are yours, and they are kept. The portfolio is kept too if anything else was trading in it. If one of the open positions cannot be closed, nothing is deleted and the dashboard tells you, so close it from your positions and try again.
