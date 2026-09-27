@@ -176,6 +176,14 @@ export default defineConfig({
 					],
 				},
 				{
+					label: 'Integrations',
+					translations: { es: 'Integraciones' },
+					items: [
+						{ label: 'Overview', translations: { es: 'Visión general' }, slug: 'integrations' },
+						{ label: 'TradingView', translations: { es: 'TradingView' }, slug: 'integrations/tradingview' },
+					],
+				},
+				{
 					label: 'Blog',
 					translations: { es: 'Blog' },
 					items: [
