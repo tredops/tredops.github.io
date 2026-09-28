@@ -152,6 +152,13 @@ export default defineConfig({
 					],
 				},
 				{
+					label: 'Features',
+					translations: { es: 'Funcionalidades' },
+					items: [
+						{ label: 'Wait before to Open Orders', translations: { es: 'Wait before to Open Orders' }, slug: 'features/wait-to-open' },
+					],
+				},
+				{
 					label: 'Benchmark',
 					translations: { es: 'Benchmark' },
 					items: [

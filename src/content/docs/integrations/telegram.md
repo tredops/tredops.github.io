@@ -34,7 +34,7 @@ The dashboard keeps showing everything regardless of these settings; they only d
 
 ## Approve a position from your phone
 
-If a portfolio has **Wait before to Open Orders** on, every new position starts as *awaiting approval* and the notification you receive says so:
+If a portfolio has [**Wait before to Open Orders**](/features/wait-to-open/) on, every new position starts as *awaiting approval* and the notification you receive says so:
 
 - the symbol, the portfolio, the direction and the price,
 - how long is left before the automatic decision, and what that decision is (**Open** or **Skip**),

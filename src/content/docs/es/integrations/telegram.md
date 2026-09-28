@@ -34,7 +34,7 @@ El dashboard sigue mostrándolo todo independientemente de estos ajustes; solo d
 
 ## Aprobar una posición desde el móvil
 
-Si un portfolio tiene activado **Wait before to Open Orders**, cada posición nueva nace *pendiente de aprobación* y la notificación que recibes lo dice:
+Si un portfolio tiene activado [**Wait before to Open Orders**](/es/features/wait-to-open/), cada posición nueva nace *pendiente de aprobación* y la notificación que recibes lo dice:
 
 - el símbolo, el portfolio, la dirección y el precio,
 - cuánto falta para la decisión automática y cuál es esa decisión (**Open** o **Skip**),
