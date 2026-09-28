@@ -128,6 +128,16 @@ Expande la fila de la integración. El panel muestra:
 
 Ese registro es la forma más rápida de distinguir los tres casos típicos: la alerta nunca llegó, la alerta llegó y fue rechazada, o la alerta se aceptó y la posición está en otra parte del dashboard.
 
+La propia respuesta del webhook dice lo mismo. Siempre que la alerta se resuelva en unos dos segundos, que es casi siempre, la respuesta lleva el resultado con las mismas palabras que usa el panel, así que una prueba desde un terminal se explica sola:
+
+```json
+{ "accepted": true, "status": "processed", "result": "sizing_limit_reached",
+  "message": "SIZING_LIMIT_REACHED: Maximum 1 positions allowed based on sizing_pct 1. Currently open: 1",
+  "symbol": "BTC/USD", "orderId": "…", "closedOrderIds": [] }
+```
+
+`status` es `processed`, `rejected` o `failed`; `result` es la decisión (`open_long`, `close_long`, `sizing_limit_reached`, `blocked`, `market_closed`…) y `message` el motivo. Si el worker no ha resuelto la alerta a tiempo, `status` es `queued` y el panel muestra el resultado un momento después.
+
 **Verify connection**, en el menú de la fila y en la cabecera, ejecuta una prueba de humo que comprueba la passphrase, el bot, el portfolio y la cola de ejecución sin crear ninguna orden.
 
 ## Rechazos habituales
