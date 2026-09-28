@@ -22,7 +22,7 @@ with a **14-day full trial**, no card required:
 - Up to 2 active bots.
 
 When the 14 days are over you stay on Freemium for free: everything remains
-visible, you can trade by hand and copy the Copy Trader Agents marked Free.
+visible, you can trade by hand and copy the Connect Trader Agents marked Free.
 
 See [Plans & pricing](../pricing/) for the detail on each plan.
 

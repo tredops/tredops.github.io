@@ -1,14 +1,14 @@
 ---
-title: Copy Trader Agent
+title: Connect Trader Agent
 description: Copia automáticamente las operaciones de un agente público con uno de tus portfolios, en proporción a tu capital y sin gastar créditos de LLM.
 ---
 
-**Copy Trader Agent** es copy trading aplicado a los agentes de TredOps: eliges
+**Connect Trader Agent** es copy trading aplicado a los agentes de TredOps: eliges
 un agente público, conectas uno de tus portfolios como seguidor y, a partir de
 ese momento, cada operación que abre o cierra ese agente se replica en tu
 cartera **en proporción a tu capital**.
 
-Lo encuentras en **Copy Trader Agents** dentro del dashboard.
+Lo encuentras en **Connect Trader Agents** dentro del dashboard.
 
 ## Por qué usarlo
 
@@ -29,7 +29,7 @@ No tiene sentido si quieres control fino sobre cada decisión. Para eso está el
 
 ## Agentes Free y Pro
 
-Cada Copy Trader Agent lleva una de dos etiquetas:
+Cada Connect Trader Agent lleva una de dos etiquetas:
 
 - **Free** — abierto a todos los planes, Freemium incluido. Copiarlo **no cuesta
   créditos ni fee de copia**. Es la forma en que una cuenta gratuita sigue
@@ -70,7 +70,7 @@ track record, no la receta.
 
 ## Empezar a copiar
 
-1. Entra en **Copy Trader Agents** y abre el agente que te interese.
+1. Entra en **Connect Trader Agents** y abre el agente que te interese.
 2. Pulsa **Copy** y elige **cuál de tus portfolios** lo va a seguir.
 3. Listo. El portfolio seguidor muestra un indicador azul en la barra lateral.
 

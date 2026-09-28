@@ -33,7 +33,7 @@ Yes. Every account starts on **Freemium**: a **14-day free trial** without a car
 
 ## What happens when my trial ends?
 
-You stay in. Freemium keeps everything visible — portfolios, orders, positions, Benchmark — lets you trade by hand with Take Profit and Stop Loss, and lets one of your portfolios copy a **Copy Trader Agent marked Free** at no cost. The chat keeps working while you have credits. The Playground, your own bots, new Agent Tasks and the *Pro* Copy Trader Agents are Premium. See [Plans & pricing](../pricing/).
+You stay in. Freemium keeps everything visible — portfolios, orders, positions, Benchmark — lets you trade by hand with Take Profit and Stop Loss, and lets one of your portfolios copy a **Connect Trader Agent marked Free** at no cost. The chat keeps working while you have credits. The Playground, your own bots, new Agent Tasks and the *Pro* Connect Trader Agents are Premium. See [Plans & pricing](../pricing/).
 
 ## Can I use TredOps for free forever?
 

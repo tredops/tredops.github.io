@@ -21,8 +21,8 @@ takes precedence in case of any discrepancy, and launch offers may change.
 | Dashboard, portfolios, orders and positions | ✅ | ✅ view everything | ✅ | ✅ |
 | Manual trading with Take Profit / Stop Loss | ✅ | ✅ | ✅ | ✅ |
 | Monitoring (Take Profit / Stop Loss) | Basic | Basic | Basic | Advanced |
-| Copy Trader Agents marked **Free** | ✅ (1 portfolio) | ✅ (1 portfolio), no copy fee | ✅ | ✅ unlimited |
-| Copy Trader Agents marked **Pro** | ✅ (1 portfolio) | ❌ | ✅ | ✅ unlimited |
+| Connect Trader Agents marked **Free** | ✅ (1 portfolio) | ✅ (1 portfolio), no copy fee | ✅ | ✅ unlimited |
+| Connect Trader Agents marked **Pro** | ✅ (1 portfolio) | ❌ | ✅ | ✅ unlimited |
 | Chat with the agent | While credits last | While credits last | ✅ | ✅ |
 | Active bots | 2 | — | 2 + 1 of your own | 10 |
 | Assets per bot | — | — | — | 30 |
@@ -57,14 +57,14 @@ long as you like:
   Signal Pool and the Benchmark.
 - **Manual trading**: open and close positions yourself; every order still
   carries Take Profit and Stop Loss and Monitoring keeps watching them.
-- **Copy Trader Agents marked Free**: one of your portfolios can copy one of
+- **Connect Trader Agents marked Free**: one of your portfolios can copy one of
   them, with no credits and **no copy fee** — that is the heart of the plan.
-  See [Copy Trader Agent](../guides/copy-trader/).
+  See [Connect Trader Agent](../guides/copy-trader/).
 - **The chat**, if you still have credits: it stops by itself when they run
   out, it never becomes a bill.
 
 What moves to Premium: the Playground, creating your own bots, new scheduled
-AgentTasks, and the Copy Trader Agents marked **Pro**. Wherever one of those
+AgentTasks, and the Connect Trader Agents marked **Pro**. Wherever one of those
 shows up you will see a *Pro* badge and a one-click upgrade — never an error.
 
 ## Premium trial ($4.99 · 7 days)
@@ -131,7 +131,7 @@ Additional packs you buy do stay until you spend them.
 
 **What exactly happens when my 14 days are over?**
 You move to Freemium automatically: no card, no lock screen. You keep seeing
-everything, you can trade by hand and copy the free Copy Trader Agents. The
+everything, you can trade by hand and copy the free Connect Trader Agents. The
 chat keeps working while you have credits left. Upgrade whenever you want the
 Playground, your own bots or Agent Tasks back.
 

@@ -1,14 +1,14 @@
 ---
-title: Copy Trader Agent
+title: Connect Trader Agent
 description: Automatically mirror a public agent's trades with one of your portfolios, sized to your capital and without spending LLM credits.
 ---
 
-**Copy Trader Agent** is copy trading applied to TredOps agents: you pick a
+**Connect Trader Agent** is copy trading applied to TredOps agents: you pick a
 public agent, connect one of your portfolios as a follower, and from then on
 every trade that agent opens or closes is mirrored in your book **in proportion
 to your capital**.
 
-You will find it under **Copy Trader Agents** in the dashboard.
+You will find it under **Connect Trader Agents** in the dashboard.
 
 ## Why use it
 
@@ -28,7 +28,7 @@ the [Playground](../playground/) is for.
 
 ## Free and Pro agents
 
-Every Copy Trader Agent carries one of two badges:
+Every Connect Trader Agent carries one of two badges:
 
 - **Free** — open to every plan, the Freemium one included. Copying it costs
   **no credits and no copy fee**. It is the way a free account keeps trading
@@ -69,7 +69,7 @@ record, not the recipe.
 
 ## Start copying
 
-1. Go to **Copy Trader Agents** and open the agent you want.
+1. Go to **Connect Trader Agents** and open the agent you want.
 2. Hit **Copy** and choose **which of your portfolios** will follow it.
 3. That is it. The follower portfolio gets a blue indicator in the sidebar.
 

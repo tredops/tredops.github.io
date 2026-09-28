@@ -33,7 +33,7 @@ Sí. Toda cuenta empieza en **Freemium**: un **Free Trial de 14 días** sin tarj
 
 ## ¿Qué pasa cuando termina mi prueba?
 
-Te quedas dentro. Freemium mantiene todo visible —portfolios, órdenes, posiciones, Benchmark—, te deja operar a mano con Take Profit y Stop Loss y permite que uno de tus portfolios copie un **Copy Trader Agent marcado Free** sin coste. El chat sigue funcionando mientras te queden créditos. El Playground, los bots propios, las Agent Tasks nuevas y los Copy Trader Agents *Pro* son Premium. Ver [Planes y precios](../pricing/).
+Te quedas dentro. Freemium mantiene todo visible —portfolios, órdenes, posiciones, Benchmark—, te deja operar a mano con Take Profit y Stop Loss y permite que uno de tus portfolios copie un **Connect Trader Agent marcado Free** sin coste. El chat sigue funcionando mientras te queden créditos. El Playground, los bots propios, las Agent Tasks nuevas y los Connect Trader Agents *Pro* son Premium. Ver [Planes y precios](../pricing/).
 
 ## ¿Puedo usar TredOps gratis para siempre?
 

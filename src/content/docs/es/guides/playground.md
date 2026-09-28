@@ -97,5 +97,5 @@ protecciones.
 
 - [Trabajar con agentes](../first-agent/) — los modos de operación en detalle.
 - [Programar tareas (AgentTask)](../agent-tasks/) — automatizar lo que ya funciona.
-- [Copy Trader Agent](../copy-trader/) — usar el agente de otro en vez de escribir
+- [Connect Trader Agent](../copy-trader/) — usar el agente de otro en vez de escribir
   el tuyo.

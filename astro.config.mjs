@@ -147,7 +147,7 @@ export default defineConfig({
 						{ label: 'Working with agents', translations: { es: 'Trabajar con agentes' }, slug: 'guides/first-agent' },
 						{ label: 'Scheduling tasks (AgentTask)', translations: { es: 'Programar tareas (AgentTask)' }, slug: 'guides/agent-tasks' },
 						{ label: 'Playground', translations: { es: 'Playground' }, slug: 'guides/playground' },
-						{ label: 'Copy Trader Agent', translations: { es: 'Copy Trader Agent' }, slug: 'guides/copy-trader' },
+						{ label: 'Connect Trader Agent', translations: { es: 'Connect Trader Agent' }, slug: 'guides/copy-trader' },
 						{ label: 'Managing risk', translations: { es: 'Gestionar el riesgo' }, slug: 'guides/risk' },
 					],
 				},

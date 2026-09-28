@@ -23,7 +23,7 @@ Entra en [tredops.com](https://tredops.com) y regístrate. Empiezas en
 - Hasta 2 bots activos.
 
 Al acabar los 14 días sigues en Freemium sin coste: todo sigue visible, puedes
-operar a mano y copiar los Copy Trader Agents marcados Free.
+operar a mano y copiar los Connect Trader Agents marcados Free.
 
 Ver [Planes y precios](../pricing/) para el detalle de cada plan.
 

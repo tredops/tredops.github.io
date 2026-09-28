@@ -96,5 +96,5 @@ protections.
 
 - [Working with agents](../first-agent/) — the operating modes in detail.
 - [Scheduling tasks (AgentTask)](../agent-tasks/) — automating what already works.
-- [Copy Trader Agent](../copy-trader/) — using someone else's agent instead of
+- [Connect Trader Agent](../copy-trader/) — using someone else's agent instead of
   writing your own.

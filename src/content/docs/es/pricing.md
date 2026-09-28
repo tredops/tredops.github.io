@@ -22,8 +22,8 @@ de lanzamiento pueden cambiar.
 | Dashboard, portfolios, órdenes y posiciones | ✅ | ✅ todo visible | ✅ | ✅ |
 | Trading manual con Take Profit / Stop Loss | ✅ | ✅ | ✅ | ✅ |
 | Monitoring (Take Profit / Stop Loss) | Básico | Básico | Básico | Avanzado |
-| Copy Trader Agents marcados **Free** | ✅ (1 portfolio) | ✅ (1 portfolio), sin fee | ✅ | ✅ ilimitados |
-| Copy Trader Agents marcados **Pro** | ✅ (1 portfolio) | ❌ | ✅ | ✅ ilimitados |
+| Connect Trader Agents marcados **Free** | ✅ (1 portfolio) | ✅ (1 portfolio), sin fee | ✅ | ✅ ilimitados |
+| Connect Trader Agents marcados **Pro** | ✅ (1 portfolio) | ❌ | ✅ | ✅ ilimitados |
 | Chat con el agente | Mientras queden créditos | Mientras queden créditos | ✅ | ✅ |
 | Bots activos | 2 | — | 2 + 1 propio | 10 |
 | Activos por bot | — | — | — | 30 |
@@ -58,14 +58,14 @@ abierto, el tiempo que quieras:
   y el Benchmark.
 - **Trading manual**: abres y cierras posiciones tú; toda orden sigue llevando
   Take Profit y Stop Loss y el Monitoring las sigue vigilando.
-- **Copy Trader Agents marcados Free**: uno de tus portfolios puede copiar uno
+- **Connect Trader Agents marcados Free**: uno de tus portfolios puede copiar uno
   de ellos, sin créditos y **sin fee de copia** — es el corazón del plan. Ver
-  [Copy Trader Agent](../guides/copy-trader/).
+  [Connect Trader Agent](../guides/copy-trader/).
 - **El chat**, mientras te queden créditos: se detiene solo al agotarse, nunca
   se convierte en una factura.
 
 Lo que pasa a Premium: el Playground, crear bots propios, programar AgentTasks
-nuevas y los Copy Trader Agents marcados **Pro**. Donde aparezca uno de ellos
+nuevas y los Connect Trader Agents marcados **Pro**. Donde aparezca uno de ellos
 verás una etiqueta *Pro* y el upgrade a un clic — nunca un error.
 
 ## Prueba Premium ($4,99 · 7 días)
@@ -137,7 +137,7 @@ siguiente. Los packs adicionales que compres sí permanecen hasta que los gastes
 
 **¿Qué pasa exactamente cuando se acaban mis 14 días?**
 Pasas a Freemium automáticamente: sin tarjeta y sin pantalla de bloqueo. Sigues
-viendo todo, puedes operar a mano y copiar los Copy Trader Agents gratuitos. El
+viendo todo, puedes operar a mano y copiar los Connect Trader Agents gratuitos. El
 chat sigue funcionando mientras te queden créditos. Sube de plan cuando quieras
 recuperar el Playground, tus bots propios o las Agent Tasks.
 

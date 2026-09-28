@@ -86,7 +86,7 @@ has to be.
 
 **Freemium** — The plan every account is on when it is not paying: a 14-day
 full trial, then free forever with everything visible, manual trading and the
-Copy Trader Agents marked Free. See [Plans & pricing](../pricing/).
+Connect Trader Agents marked Free. See [Plans & pricing](../pricing/).
 
 **Credits** — Unit of language-model consumption. Every message and every task
 run spends credits. See [Plans & pricing](../pricing/).
