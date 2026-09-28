@@ -60,10 +60,10 @@ Pida lo que pida la alerta, una orden nunca compromete más que el tope por orde
 
 | Acción | Qué hace TredOps |
 |--------|------------------|
-| `open-long` | Abre un largo. Si hay un corto abierto en ese símbolo, lo cierra primero y da la vuelta. |
-| `close-long` | Cierra el largo de ese símbolo. Si no hay ninguno, no hace nada. |
-| `open-short` | Abre un corto, dando la vuelta a un largo abierto. Requiere **Allow shorts**. |
-| `close-short` | Cierra el corto de ese símbolo. |
+| `open-long` | Abre un largo, o añade uno si el Sizing deja hueco. Si hay un corto abierto en ese símbolo, lo cierra primero y da la vuelta. |
+| `close-long` | Cierra todos los largos de ese símbolo. Si no hay ninguno, no hace nada. |
+| `open-short` | Abre un corto, o añade uno si el Sizing deja hueco, dando la vuelta a un largo abierto. Requiere **Allow shorts**. |
+| `close-short` | Cierra todos los cortos de ese símbolo. |
 
 Una alerta por acción. Como la acción dice el lado, una estrategia que invierte su posición se sigue correctamente con una sola alerta.
 
@@ -105,6 +105,10 @@ Alerta de salida:
 
 Los cortos necesitan **Allow shorts** activado en la integración y un activo que se pueda vender en corto. Las acciones y los ETF solo se aceptan con su mercado abierto; una alerta que llega fuera de sesión se rechaza y recibes un aviso.
 
+## Cuántas posiciones puede tener un símbolo
+
+Una alerta pasa por las mismas reglas que cualquier bot de TredOps. El **Sizing**, en los ajustes de la integración, decide cuántas posiciones puede tener el símbolo a la vez: 100 % es una, 50 % dos, 10 % diez. Una segunda alerta del mismo lado añade una posición mientras haya hueco; pasado el límite se registra y se ignora. Solo se añade otra mientras las abiertas estén en beneficio, y tras varias pérdidas seguidas el periodo de enfriamiento del bot frena las entradas un tiempo. Una alerta de cierre siempre cierra el lado entero.
+
 ## Qué añade TredOps a tus señales
 
 - **Protección.** El stop loss, el take profit y la salida por tiempo corren en cada posición desde que se abre, mande o no mande TradingView algo más. El stop sigue al mejor precio alcanzado.
@@ -135,7 +139,8 @@ Ese registro es la forma más rápida de distinguir los tres casos típicos: la 
 | `symbol_not_supported` | El ticker no corresponde a un activo que TredOps pueda operar. |
 | `shorts_disabled` | La alerta pedía un corto y la integración no los permite. |
 | `bots_limit_reached` | Se alcanzó el límite de símbolos de tu plan para esta integración. |
-| `duplicate` | La alerta pide la posición que ya tienes. No hay nada que hacer. |
+| `sizing_limit_reached` | El símbolo ya tiene tantas posiciones como permite el Sizing. No hay nada que hacer. |
+| `blocked` | Una regla del bot frenó la entrada: las posiciones abiertas no están en beneficio, o el enfriamiento tras pérdidas está activo. |
 | `wrong_side` | Llegó un `close-long` teniendo un corto, o al revés. |
 
 ## Seguridad

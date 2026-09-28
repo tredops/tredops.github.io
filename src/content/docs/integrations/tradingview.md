@@ -60,10 +60,10 @@ Whatever the alert asks, an order never commits more than the per-order ceiling 
 
 | Action | What TredOps does |
 |--------|-------------------|
-| `open-long` | Opens a long. If a short is open on that symbol, it closes it first and reverses. |
-| `close-long` | Closes the long of that symbol. Does nothing if there is none. |
-| `open-short` | Opens a short, reversing an open long. Requires **Allow shorts**. |
-| `close-short` | Closes the short of that symbol. |
+| `open-long` | Opens a long, or adds one if Sizing leaves room. If a short is open on that symbol, it closes it first and reverses. |
+| `close-long` | Closes every long of that symbol. Does nothing if there is none. |
+| `open-short` | Opens a short, or adds one if Sizing leaves room, reversing an open long. Requires **Allow shorts**. |
+| `close-short` | Closes every short of that symbol. |
 
 One alert per action. Because the action names the side, a strategy that reverses its position is followed correctly with a single alert.
 
@@ -135,7 +135,8 @@ That log is the fastest way to tell the three usual cases apart: the alert never
 | `symbol_not_supported` | The ticker does not match an asset TredOps can trade. |
 | `shorts_disabled` | The alert asked for a short and the integration does not allow them. |
 | `bots_limit_reached` | Your plan's limit of symbols for this integration is reached. |
-| `duplicate` | The alert asked for the position you already have. Nothing to do. |
+| `sizing_limit_reached` | The symbol already holds as many positions as Sizing allows. Nothing to do. |
+| `blocked` | A bot rule held the entry: the open positions are not in profit, or the cooldown after losses is active. |
 | `wrong_side` | A `close-long` arrived while holding a short, or the reverse. |
 
 ## Security
