@@ -39,7 +39,7 @@ Si un portfolio tiene activado **Wait before to Open Orders**, cada posición nu
 - el símbolo, el portfolio, la dirección y el precio,
 - cuánto falta para la decisión automática y cuál es esa decisión (**Open** o **Skip**),
 - dos botones, **✅ Approve** y **❌ Reject**,
-- **Open in Signal Pool**, que abre la señal en el dashboard con los filtros puestos en ella.
+- **Open in Signal Pool**, que abre esa señal sola en el dashboard, con su gráfico y sus botones Approve y Reject.
 
 Pulsa Approve para abrir la posición ya, o Reject para descartarla. El mensaje se actualiza solo con el resultado, y hace lo mismo si decides desde el dashboard o si el contador termina antes. Una posición ya decidida no se puede decidir dos veces: el bot te lo indica.
 

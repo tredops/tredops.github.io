@@ -39,7 +39,7 @@ If a portfolio has **Wait before to Open Orders** on, every new position starts 
 - the symbol, the portfolio, the direction and the price,
 - how long is left before the automatic decision, and what that decision is (**Open** or **Skip**),
 - two buttons, **✅ Approve** and **❌ Reject**,
-- **Open in Signal Pool**, which opens the signal in the dashboard with the filters set to it.
+- **Open in Signal Pool**, which opens that signal on its own in the dashboard, with its chart and its Approve and Reject buttons.
 
 Tap Approve to open the position now, or Reject to skip it. The message updates itself with the outcome, and it does the same if you decide from the dashboard or if the timer runs out first. A position that was already decided cannot be decided again: the bot tells you so.
 
