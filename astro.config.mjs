@@ -181,6 +181,7 @@ export default defineConfig({
 					items: [
 						{ label: 'Overview', translations: { es: 'Visión general' }, slug: 'integrations' },
 						{ label: 'TradingView', translations: { es: 'TradingView' }, slug: 'integrations/tradingview' },
+						{ label: 'Telegram', translations: { es: 'Telegram' }, slug: 'integrations/telegram' },
 					],
 				},
 				{

@@ -5,15 +5,16 @@ description: Conecta tu bróker, tus proveedores de IA y tus fuentes de señales
 
 Una integración es una conexión entre TredOps y un servicio que ya usas. Se añade una vez desde **Dashboard → Integraciones** y, a partir de ahí, la plataforma puede ejecutar, leer o recibir en tu nombre con las reglas que tú fijes.
 
-## Los tres tipos
+## Los cuatro tipos
 
 | Tipo | Qué aporta | Ejemplos |
 |------|------------|----------|
 | **Bróker** | Ejecución de órdenes y datos de mercado en una cuenta real | Alpaca (paper y real) |
 | **IA · LLM** | Los modelos con los que piensan tus agentes, facturados a tu cuenta | OpenRouter, DeepSeek, OpenAI, NVIDIA |
 | **Señales** | Entradas y salidas decididas fuera de TredOps | [TradingView](/es/integrations/tradingview/) |
+| **Notificaciones** | Tus notificaciones, aprobaciones y chat con el agente fuera del dashboard | [Telegram](/es/integrations/telegram/) |
 
-La integración de bróker es donde está tu dinero. La de IA es donde razonan tus agentes. La de señales es de donde vienen las decisiones. Se combinan: una alerta de TradingView puede abrir una posición que ejecuta el bróker y supervisa un agente.
+La integración de bróker es donde está tu dinero. La de IA es donde razonan tus agentes. La de señales es de donde vienen las decisiones. Se combinan: una alerta de TradingView puede abrir una posición que ejecuta el bróker, supervisa un agente y apruebas tú desde Telegram.
 
 ## Conectar, verificar, desconectar
 
