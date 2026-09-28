@@ -54,6 +54,8 @@ Tres vías, en este orden:
 2. `quantity` por `price`, que es lo que produce una estrategia de Pine cuando manda sus propios contratos.
 3. El **capital por señal** de la integración, junto a Leverage en sus ajustes. Es lo que recibe una alerta que no dice ninguno de los dos, y es la configuración más simple: lo fijas una vez en 500 y te olvidas del tamaño.
 
+Pida lo que pida la alerta, una orden nunca compromete más que el tope por orden del portfolio de la integración ni que su saldo disponible, así que una passphrase filtrada no puede dimensionar una operación por su cuenta. Un `price` que se aleje más de un 10 % del mercado se ignora en favor del precio de mercado, y un `time` a más de 15 minutos de la recepción también.
+
 ## Las cuatro acciones
 
 | Acción | Qué hace TredOps |

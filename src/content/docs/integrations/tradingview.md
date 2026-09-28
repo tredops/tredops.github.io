@@ -54,6 +54,8 @@ Three ways, in this order:
 2. `quantity` times `price`, which is what a Pine strategy produces when it sends its own contracts.
 3. The **capital per signal** of the integration, next to Leverage in its settings. This is what an alert that says neither gets, and it is the simplest setup: fix it once at 500 and never think about size again.
 
+Whatever the alert asks, an order never commits more than the per-order ceiling of the integration's portfolio or its available balance, so a leaked passphrase cannot size a trade on its own. A `price` more than 10% away from the market is ignored in favour of the market price, and a `time` more than 15 minutes from reception is ignored too.
+
 ## The four actions
 
 | Action | What TredOps does |
