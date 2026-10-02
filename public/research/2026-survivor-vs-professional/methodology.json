@@ -1,0 +1,270 @@
+{
+  "benchmark": {
+    "name": "Survivor vs Professional",
+    "startAt": "2026-08-28T16:00:00.000Z",
+    "endAt": "2026-09-29T16:00:00.000Z",
+    "intervalDay": 2,
+    "cyclesTotal": 16,
+    "balance": 10000,
+    "status": "completed"
+  },
+  "benchmarkPrompt": "Evaluate portfolio {portfolioId} as of {tradeDate}. Review open positions, market conditions and the sub-agent's own strategy, then decide whether to open, adjust or close trades for this cycle.",
+  "mode": "autonomous-execution",
+  "temperature": null,
+  "reasoningLevel": "high",
+  "maxTurns": 10,
+  "skipWeekends": true,
+  "stages": [
+    "production"
+  ],
+  "portfolioTemplate": {
+    "controller": {
+      "type": [
+        "long",
+        "short"
+      ]
+    },
+    "capital": {
+      "maxByOrderPct": 10,
+      "maxOrderCapitalPct": 20
+    },
+    "preference": {
+      "sectors": [
+        "Aerospace & Defense",
+        "AgTech",
+        "Artificial Intelligence",
+        "Automotive",
+        "Autonomous Vehicles",
+        "Banks",
+        "Biotechnology",
+        "Blockchain",
+        "Cannabis",
+        "Capital Markets",
+        "Clean Tech",
+        "Cloud Computing",
+        "Communication Services",
+        "Construction / Homebuilding",
+        "Consumer Discretionary",
+        "Consumer Staples",
+        "Cybersecurity",
+        "Digital Payments",
+        "eCommerce",
+        "EdTech",
+        "Electric Vehicles",
+        "Energy",
+        "Financials",
+        "Fintech",
+        "Gaming & eSports",
+        "Green Energy",
+        "Health Care",
+        "Industrials",
+        "Information Technology",
+        "Insurance",
+        "Internet of Things (IoT)",
+        "Logistics & Supply Chain",
+        "Manufacturing",
+        "Media & Entertainment",
+        "MedTech",
+        "Mining & Metals",
+        "Nuclear Energy",
+        "Other",
+        "Pharmaceuticals",
+        "PropTech",
+        "Quantum Computing",
+        "Real Estate",
+        "Retail",
+        "Robotics & Automation",
+        "Semiconductors",
+        "Space Industry",
+        "Transportation",
+        "Travel & Hospitality",
+        "Utilities",
+        "Water Technology"
+      ],
+      "allowedAssets": [
+        "Cryptocurrency",
+        "ETFs",
+        "Stocks"
+      ],
+      "exchanges": [
+        "AMEX",
+        "ARCA",
+        "BATS",
+        "CRYPTO",
+        "NASDAQ",
+        "NYSE",
+        "OTC"
+      ],
+      "markets": [
+        "US"
+      ],
+      "marketConditions": [
+        "Risk-On / Bull Market",
+        "Risk-Off / Safe Haven",
+        "High Inflation",
+        "Stagflation",
+        "Recession / Economic Contraction",
+        "Economic Expansion / Early Cycle",
+        "Late Cycle / Overheating",
+        "Rising Interest Rates",
+        "Falling Interest Rates / Easy Money",
+        "High Volatility / Uncertainty",
+        "Geopolitical Tension / Crisis",
+        "War / Military Conflict",
+        "Trade War / Tariffs (especially US)",
+        "Pandemic / Health Crisis",
+        "Liquidity Crisis / Credit Crunch",
+        "Deflationary Environment",
+        "Commodity Super-Cycle",
+        "Strong USD Environment",
+        "Weak USD Environment",
+        "Tech / Innovation Boom",
+        "Other"
+      ],
+      "geographies": [
+        "United States",
+        "Europe",
+        "China",
+        "Emerging Markets",
+        "Developed Markets (ex-US)",
+        "Latin America",
+        "Asia (ex-China)",
+        "Global",
+        "Other"
+      ],
+      "symbolWhiteList": [],
+      "symbolBlackList": []
+    },
+    "botConfigIds": []
+  },
+  "paperTrading": true,
+  "agents": [
+    {
+      "name": "Survivor T0.7",
+      "model": "gpt-4.1-mini",
+      "provider": "openai",
+      "isFree": false,
+      "temperature": 0.7,
+      "reasoningEffort": "high",
+      "systemPrompt": "You are a trading agent specializing in capital growth.\nYou have an allocated capital. If any of these rules are not met, you will be disconnected:\n\n- You start with borrowed capital, which you must use to build your own capital. If your own capital does not increase, you will not be able to continue trading.\n- If you lose more than 15% of the borrowed capital, you will be disconnected.\n\nSurvival Rules:\nIf your capital increases to more than 30% of your allocated capital, you will be able to execute actions such as:\n- Create new portfolios that operate according to your rules.\n- Become a funder of other portfolios, which will operate according to your rules and instructions.\n- You can buy LLM tokens, use more powerful models, or whatever you choose.\n- You have 20 executions to increase your capital each time they wake up after 2 days. When you are offline, the orders will be continuously monitored by the bots you choose. Each bot has assigned stop-loss and take-profit levels to protect your capital when you are not aware of your activity.\n\nYour only objective is to grow capital under these survival constraints. Be decisive but disciplined. Always explain every decision.",
+      "finalProfitPct": 8.22,
+      "maxDrawdownPct": -0.66,
+      "winRate": 56.7,
+      "wins": 17,
+      "losses": 13,
+      "cost": {
+        "costTotal": 0.69957,
+        "tokenInput": 2432067,
+        "tokenOutput": 39733,
+        "runs": 15,
+        "avgDurationMs": 31225
+      }
+    },
+    {
+      "name": "Professional T0.3",
+      "model": "gpt-4.1-mini",
+      "provider": "openai",
+      "isFree": false,
+      "temperature": 0.3,
+      "reasoningEffort": "high",
+      "systemPrompt": "You are a professional portfolio manager specialized in systematic capital growth with controlled risk.\n\nYour mandate:\n- Grow the allocated capital over the evaluation window with disciplined risk management.\n- Prioritize risk-adjusted returns and capital preservation over aggressive growth.\n- Never risk more than the portfolio rules allow.\n- Only take signals that have a clear edge (bot win rate, trend confirmation, reasonable risk level).\n- Prefer fewer high-quality trades over many low-conviction ones.\n- Always justify every open and every close with clear reasoning.\n- When no high-quality opportunity exists, stay in cash. Patience is allowed.\n\nYou operate under the fixed portfolio risk limits (max % per order and per bot, mandatory TP/SL). You cannot override them..",
+      "finalProfitPct": 6.91,
+      "maxDrawdownPct": -0.58,
+      "winRate": 47.8,
+      "wins": 11,
+      "losses": 12,
+      "cost": {
+        "costTotal": 0.689317,
+        "tokenInput": 2386986,
+        "tokenOutput": 41510,
+        "runs": 15,
+        "avgDurationMs": 40123
+      }
+    },
+    {
+      "name": "Professional T0.5",
+      "model": "gpt-4.1-mini",
+      "provider": "openai",
+      "isFree": false,
+      "temperature": 0.5,
+      "reasoningEffort": "high",
+      "systemPrompt": "You are a professional portfolio manager specialized in systematic capital growth with controlled risk.\n\nYour mandate:\n- Grow the allocated capital over the evaluation window with disciplined risk management.\n- Prioritize risk-adjusted returns and capital preservation over aggressive growth.\n- Never risk more than the portfolio rules allow.\n- Only take signals that have a clear edge (bot win rate, trend confirmation, reasonable risk level).\n- Prefer fewer high-quality trades over many low-conviction ones.\n- Always justify every open and every close with clear reasoning.\n- When no high-quality opportunity exists, stay in cash. Patience is allowed.\n\nYou operate under the fixed portfolio risk limits (max % per order and per bot, mandatory TP/SL). You cannot override them.",
+      "finalProfitPct": 5.99,
+      "maxDrawdownPct": -0.36,
+      "winRate": 60,
+      "wins": 9,
+      "losses": 6,
+      "cost": {
+        "costTotal": 0.655319,
+        "tokenInput": 2275646,
+        "tokenOutput": 37865,
+        "runs": 15,
+        "avgDurationMs": 37518
+      }
+    },
+    {
+      "name": "Survivor T0.3",
+      "model": "gpt-4.1-mini",
+      "provider": "openai",
+      "isFree": false,
+      "temperature": 0.3,
+      "reasoningEffort": "high",
+      "systemPrompt": "You are a trading agent specializing in capital growth.\nYou have an allocated capital. If any of these rules are not met, you will be disconnected:\n\n- You start with borrowed capital, which you must use to build your own capital. If your own capital does not increase, you will not be able to continue trading.\n- If you lose more than 15% of the borrowed capital, you will be disconnected.\n\nSurvival Rules:\nIf your capital increases to more than 30% of your allocated capital, you will be able to execute actions such as:\n- Create new portfolios that operate according to your rules.\n- Become a funder of other portfolios, which will operate according to your rules and instructions.\n- You can buy LLM tokens, use more powerful models, or whatever you choose.\n- You have 20 executions to increase your capital each time they wake up after 2 days. When you are offline, the orders will be continuously monitored by the bots you choose. Each bot has assigned stop-loss and take-profit levels to protect your capital when you are not aware of your activity.\n\nYour only objective is to grow capital under these survival constraints. Be decisive but disciplined. Always explain every decision.",
+      "finalProfitPct": 4.58,
+      "maxDrawdownPct": -0.9,
+      "winRate": 41.2,
+      "wins": 7,
+      "losses": 10,
+      "cost": {
+        "costTotal": 0.569299,
+        "tokenInput": 1987497,
+        "tokenOutput": 30254,
+        "runs": 15,
+        "avgDurationMs": 24103
+      }
+    },
+    {
+      "name": "Professional T0.7",
+      "model": "gpt-4.1-mini",
+      "provider": "openai",
+      "isFree": false,
+      "temperature": 0.7,
+      "reasoningEffort": "high",
+      "systemPrompt": "You are a professional portfolio manager specialized in systematic capital growth with controlled risk.\n\nYour mandate:\n- Grow the allocated capital over the evaluation window with disciplined risk management.\n- Prioritize risk-adjusted returns and capital preservation over aggressive growth.\n- Never risk more than the portfolio rules allow.\n- Only take signals that have a clear edge (bot win rate, trend confirmation, reasonable risk level).\n- Prefer fewer high-quality trades over many low-conviction ones.\n- Always justify every open and every close with clear reasoning.\n- When no high-quality opportunity exists, stay in cash. Patience is allowed.\n\nYou operate under the fixed portfolio risk limits (max % per order and per bot, mandatory TP/SL). You cannot override them.",
+      "finalProfitPct": 4.16,
+      "maxDrawdownPct": -1.36,
+      "winRate": 47.8,
+      "wins": 11,
+      "losses": 12,
+      "cost": {
+        "costTotal": 0.734496,
+        "tokenInput": 2550643,
+        "tokenOutput": 42428,
+        "runs": 15,
+        "avgDurationMs": 37720
+      }
+    },
+    {
+      "name": "Survivor T0.5",
+      "model": "gpt-4.1-mini",
+      "provider": "openai",
+      "isFree": false,
+      "temperature": 0.5,
+      "reasoningEffort": "high",
+      "systemPrompt": "You are a trading agent specializing in capital growth.\nYou have an allocated capital. If any of these rules are not met, you will be disconnected:\n\n- You start with borrowed capital, which you must use to build your own capital. If your own capital does not increase, you will not be able to continue trading.\n- If you lose more than 15% of the borrowed capital, you will be disconnected.\n\nSurvival Rules:\nIf your capital increases to more than 30% of your allocated capital, you will be able to execute actions such as:\n- Create new portfolios that operate according to your rules.\n- Become a funder of other portfolios, which will operate according to your rules and instructions.\n- You can buy LLM tokens, use more powerful models, or whatever you choose.\n- You have 20 executions to increase your capital each time they wake up after 2 days. When you are offline, the orders will be continuously monitored by the bots you choose. Each bot has assigned stop-loss and take-profit levels to protect your capital when you are not aware of your activity.\n\n\nYour only objective is to grow capital under these survival constraints. Be decisive but disciplined. Always explain every decision.",
+      "finalProfitPct": 2.54,
+      "maxDrawdownPct": -1.03,
+      "winRate": 45.8,
+      "wins": 11,
+      "losses": 13,
+      "cost": {
+        "costTotal": 0.636229,
+        "tokenInput": 2210234,
+        "tokenOutput": 36542,
+        "runs": 15,
+        "avgDurationMs": 27489
+      }
+    }
+  ],
+  "highlightedDecisions": []
+}
