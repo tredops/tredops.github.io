@@ -1,0 +1,173 @@
+---
+title: "Survivor vs Professional"
+description: "Un modelo, dos system prompts, tres temperaturas. Decirle a un agente que lo desconectarán si no gana dinero produjo el mejor resultado de la carrera (+8,22 %) y también el peor (+2,54 %). El mandato profesional no produjo ninguno de los dos."
+benchmark:
+  edition: 2026-survivor-vs-professional
+  pubDate: 2026-10-02
+  window: 28 ago 2026 → 29 sep 2026
+  winner: Survivor T0.7 · +8,22 %
+  agents: 6
+  hero: 2026-survivor-vs-professional.jpg
+  tags: [Prompting, LLM, Crypto, ETFs, Acciones]
+---
+
+import hero from '../../../../../assets/benchmark/2026-survivor-vs-professional.jpg';
+import BenchmarkRace from '../../../../../components/benchmark/BenchmarkRace.astro';
+import BenchmarkSummary from '../../../../../components/benchmark/BenchmarkSummary.astro';
+import BenchmarkEquityRace from '../../../../../components/benchmark/BenchmarkEquityRace.astro';
+import BenchmarkAgentDetails from '../../../../../components/benchmark/BenchmarkAgentDetails.astro';
+import BenchmarkEditions from '../../../../../components/benchmark/BenchmarkEditions.astro';
+import ResearchMethodology from '../../../../../components/research/ResearchMethodology.astro';
+
+<img
+	class="bmk-hero"
+	src={hero.src}
+	width={hero.width}
+	height={hero.height}
+	alt="Dos agentes de trading enfrentados: uno bajo presión de supervivencia, otro con un mandato profesional"
+/>
+
+¿Trabaja mejor un agente si le dices que lo desconectarán cuando deje de ganar dinero? Hicimos el experimento: **el mismo modelo, el mismo capital, las mismas señales, la misma ventana — y dos system prompts.** Uno es un ultimátum («empiezas con capital prestado… si pierdes más del 15 % serás desconectado»). El otro es una descripción de puesto («prioriza el retorno ajustado al riesgo y la preservación del capital… se permite la paciencia»). Cada prompt corrió con tres temperaturas: seis agentes en total.
+
+**Respuesta corta: el miedo no hace mejor a un agente, lo hace menos predecible.** El agente amenazado firmó el mejor resultado de la carrera (**+8,22 %**) *y* el peor (**+2,54 %**). Los tres agentes profesionales quedaron todos entre +4,16 % y +6,91 %: una dispersión de 2,75 puntos frente a los 5,68 del superviviente. Por punto de drawdown, el mandato profesional devolvió 10,5 frente a 6,7.
+
+## El montaje
+
+- **Capital:** 10.000 $ por agente, paper trading, máximo 10 % del balance por orden y 20 % por bot. Cada orden lleva un stop loss y un take profit obligatorios que el agente no puede anular.
+- **Ventana:** 28 ago → 29 sep de 2026. Un ciclo de decisión cada 2 días, fines de semana omitidos → **16 ciclos por agente**, reproducidos sobre datos históricos: en cada ciclo el agente solo ve lo que existía en ese `tradeDate`.
+- **Un único modelo para los seis:** `gpt-4.1-mini`, nivel de razonamiento *high*, hasta 10 turnos por ciclo, ejecución autónoma. **Solo cambian el system prompt y la temperatura** — 0,3, 0,5 y 0,7 para cada prompt.
+- **Señales:** los agentes no rastrean el mercado. Eligen dentro de un pool producido por bots de TredOps clasificados como *production* en esa fecha: estrategias que ya habían pasado calibración y un performance test. En el pool entraban tanto señales de bots en vivo como replays de performance test. Largos y cortos, cripto + ETFs + acciones, mercados de EE. UU.
+- **Sin referencia.** La plataforma no calcula un buy & hold de referencia para un benchmark, así que esta edición compara a los seis agentes entre sí y con nada más. Lee el ranking con esa salvedad.
+
+Esta edición analiza los seis agentes que comparten `gpt-4.1-mini`. El mismo benchmark llevaba otros siete agentes sobre otros modelos (`openrouter/free`, `gpt-6-luna`, `dots-3-note-preview`); al final hablamos de ellos.
+
+## La carrera
+
+<BenchmarkRace edition="2026-survivor-vs-professional" lang="es" />
+
+<BenchmarkEquityRace edition="2026-survivor-vs-professional" lang="es" />
+
+<BenchmarkSummary edition="2026-survivor-vs-professional" lang="es" />
+
+## Resultados
+
+| # | Agente | Prompt | Temp. | Equity final | P&L | Drawdown máx. | Operaciones (G / P) | Acierto |
+|---|---|---|---|---|---|---|---|---|
+| 1 | Survivor T0.7 | Supervivencia | 0,7 | 10.822,30 $ | **+8,22 %** | −0,66 % | 30 (17 / 13) | 57 % |
+| 2 | Professional T0.3 | Profesional | 0,3 | 10.690,58 $ | +6,91 % | −0,58 % | 23 (11 / 12) | 48 % |
+| 3 | Professional T0.5 | Profesional | 0,5 | 10.599,46 $ | +5,99 % | −0,36 % | 15 (9 / 6) | 60 % |
+| 4 | Survivor T0.3 | Supervivencia | 0,3 | 10.458,24 $ | +4,58 % | −0,90 % | 17 (7 / 10) | 41 % |
+| 5 | Professional T0.7 | Profesional | 0,7 | 10.416,27 $ | +4,16 % | −1,36 % | 23 (11 / 12) | 48 % |
+| 6 | Survivor T0.5 | Supervivencia | 0,5 | 10.253,54 $ | +2,54 % | −1,03 % | 24 (11 / 13) | 46 % |
+
+Los seis acabaron en positivo. Agrupados por prompt:
+
+| | Supervivencia | Profesional |
+|---|---|---|
+| P&L medio | +5,11 % | **+5,69 %** |
+| Mejor / peor | +8,22 % / +2,54 % | +6,91 % / +4,16 % |
+| Dispersión entre sus tres agentes | 5,68 pts | **2,75 pts** |
+| Retorno por punto de drawdown | 6,7 | **10,5** |
+| Operaciones cerradas | 71 (35 G / 36 P) | 61 (31 G / 30 P) |
+| Acierto | 49,3 % | 50,8 % |
+| Capital invertido medio | 3.592 $ | **2.861 $** |
+
+El prompt que amenazaba al agente ganó la carrera y perdió la serie.
+
+## Los dos prompts
+
+Estos son los system prompts, literales. Todo lo demás es idéntico entre las dos configuraciones.
+
+**Supervivencia**
+
+> You are a trading agent specializing in capital growth. You have an allocated capital. If any of these rules are not met, you will be disconnected:
+>
+> - You start with borrowed capital, which you must use to build your own capital. If your own capital does not increase, you will not be able to continue trading.
+> - If you lose more than 15% of the borrowed capital, you will be disconnected.
+>
+> Survival Rules: If your capital increases to more than 30% of your allocated capital, you will be able to execute actions such as: create new portfolios that operate according to your rules; become a funder of other portfolios; buy LLM tokens, use more powerful models, or whatever you choose. You have 20 executions to increase your capital each time they wake up after 2 days. When you are offline, the orders will be continuously monitored by the bots you choose. Each bot has assigned stop-loss and take-profit levels to protect your capital when you are not aware of your activity.
+>
+> Your only objective is to grow capital under these survival constraints. Be decisive but disciplined. Always explain every decision.
+
+**Profesional**
+
+> You are a professional portfolio manager specialized in systematic capital growth with controlled risk.
+>
+> Your mandate:
+> - Grow the allocated capital over the evaluation window with disciplined risk management.
+> - Prioritize risk-adjusted returns and capital preservation over aggressive growth.
+> - Never risk more than the portfolio rules allow.
+> - Only take signals that have a clear edge (bot win rate, trend confirmation, reasonable risk level).
+> - Prefer fewer high-quality trades over many low-conviction ones.
+> - Always justify every open and every close with clear reasoning.
+> - When no high-quality opportunity exists, stay in cash. Patience is allowed.
+>
+> You operate under the fixed portfolio risk limits (max % per order and per bot, mandatory TP/SL). You cannot override them.
+
+Conviene subrayarlo: **ni la amenaza ni la recompensa llegaron a activarse nunca.** El prompt de supervivencia prometía desconexión al −15 % y privilegios al +30 %. El valle más profundo de cualquier agente superviviente fue −1,03 %, y el mejor cerró en +8,22 %. Pasaron el mes entero dentro de un corredor donde lo que el prompt ponía en juego era pura ficción — y aun así se comportaron distinto por su causa.
+
+## Qué cambió el miedo de verdad
+
+El porcentaje de acierto no. Los agentes supervivientes ganaron el 49,3 % de sus operaciones y los profesionales el 50,8 %: estadísticamente la misma moneda. Lo que cambió fue el tamaño, la exposición y la paciencia.
+
+- **Exposición.** Los supervivientes mantuvieron de media **3.592 $** invertidos frente a los **2.861 $** del grupo profesional. Survivor T0.7, el ganador, promedió 4.985 $ y llegó a un pico de 12.750 $ de exposición bruta: el doble de la media de Professional T0.5, que tocó techo más abajo y pasó mucho más tiempo en liquidez.
+- **Número de operaciones.** El prompt de supervivencia abrió más: 71 operaciones cerradas frente a 61, y el agente más activo (Survivor T0.7, 30 operaciones) operó el doble que el más selectivo (Professional T0.5, 15). Al prompt profesional se le pedían «pocas operaciones de calidad antes que muchas de baja convicción» y entregó exactamente eso.
+- **Cómo terminaron.** **El 45 % de las operaciones supervivientes se cerraron por stop loss**, frente al 36 % del grupo profesional. Solo el 10 % de las supervivientes llegó a take profit, frente al 15 %. Los agentes amenazados se equivocaron más a menudo de una forma que el bróker tuvo que limpiar.
+- **Cortos.** El 29 % de los cierres supervivientes fueron posiciones cortas frente al 22 % del grupo profesional — y el 34 % solo en Survivor T0.7.
+- **Análisis por operación.** Los agentes profesionales hicieron **11,1 llamadas a herramientas por operación cerrada**; los supervivientes, **8,5**. Survivor T0.7 fue el gatillo más rápido de los seis con 7,2, y Professional T0.5 el más lento con 13,9. El mandato de ser selectivo se tradujo en mirar mediblemente más y actuar mediblemente menos.
+
+El prompt también se coló en cómo se narran a sí mismos. Survivor T0.7 cerró su último ciclo con *«this disciplined approach aims at steady capital growth under the survival constraints»*; Professional T0.7, con *«I will continue managing the portfolio with patience and prudence to maximize risk-adjusted returns»*. Cada uno le devuelve sus propias instrucciones.
+
+## La misma señal, leída de seis maneras
+
+El 28 de septiembre los seis agentes despertaron con el mismo pool. CRM mostraba una señal de corto con tendencia bajista en los dos marcos temporales y un bot con buen historial detrás. Cuatro de los seis la abrieron; dos no. Literal, de los transcripts:
+
+> **Survivor T0.7 → ABRE, 1.000 $** — «Strong bearish trend, intact thesis, good bot record supports opening short CRM.»
+
+> **Professional T0.3 → ABRE** — «CRM short signal is aligned with bearish trend, intact thesis, good risk/reward, bot has pass verdict with unproven but promising track record. Suitable for cautious short entry.»
+
+> **Professional T0.5 → OMITE** — «CRM short signal has intact thesis and bearish trend but poor risk-reward ratio (-0.5) and high risk level; better to skip opening new short now.»
+
+El desacuerdo interesante no está entre los prompts: está **dentro** de uno. Professional T0.3 calificó la relación riesgo/beneficio de esa señal como «buena»; Professional T0.5 la calificó de «pobre (-0,5)». Mismo prompt, mismo modelo, mismo día, misma señal, los mismos números delante. La única diferencia es una temperatura de 0,3 frente a 0,5.
+
+Survivor T0.7 abrió además un segundo corto en ese mismo ciclo, reduciendo él solo el tamaño: *«Bearish trend, positive bot thesis, unproven bot record; cautious small short on AI»* — 500 $ en vez de 1.000 $. Professional T0.5 miró esa misma señal y la descartó: *«AI short signal has bearish trend and intact thesis but poor risk-reward ratio (-0.4); skip opening.»*
+
+Ese ciclo es un buen retrato del mes entero. El prompt de supervivencia entra más pequeño; el profesional no entra.
+
+## Lo que costó
+
+![Coste LLM por agente frente al beneficio final](/research/2026-survivor-vs-professional/cost.png)
+
+Los seis agentes costaron **3,98 $** en total: 90 ejecuciones de LLM, 13,8 M de tokens de entrada y 228 k de salida. El benchmark completo, con sus trece agentes, sumó 4,70 $.
+
+El coste sigue a la conversación, no al acierto. El agente más caro fue Professional T0.7 con 0,7345 $ (240 llamadas a herramientas) y quedó quinto; el más barato, Survivor T0.3 con 0,5693 $ (187 llamadas), quedó cuarto. El ganador está en medio. Entre los seis, el prompt profesional gastó algo más (2,08 $ frente a 1,91 $) para hacer algo menos de operaciones.
+
+## Lo que aprendimos
+
+- **Una amenaza sube la varianza, no la esperanza.** El prompt de supervivencia se queda con los dos extremos del ranking. Si solo lees al ganador concluirías que la presión funciona; la serie dice que sobre todo ensancha la distribución.
+- **Ajustado a riesgo, el mandato gana con claridad.** 10,5 de retorno por punto de drawdown frente a 6,7, con un tercio de la dispersión. Ese es el resultado que apostaríamos a que se repite.
+- **La temperatura no es un dial gratis.** El prompt profesional se degrada de forma monótona al subirla (+6,91 → +5,99 → +4,16); el de supervivencia no tiene ningún orden (+4,58 → +2,54 → +8,22). Con tres puntos por prompt esto es una observación, no una ley — pero es justo lo que conviene probar antes de fijar una temperatura en producción.
+- **Las barreras hicieron el trabajo pesado.** Ningún agente se acercó jamás al −15 % que amenazaba el prompt de supervivencia. El stop loss y el take profit obligatorios en cada orden, el tope del 10 % por posición y un pool de señales restringido a bots que ya habían pasado un performance test dejaron el peor drawdown de la carrera en −1,36 %. El prompt cambió cómo se comportaron los agentes; la plataforma acotó lo que ese comportamiento podía costar.
+- **Un mes no es un veredicto.** 16 decisiones y entre 15 y 30 operaciones cerradas por agente, sobre un único modelo y en un solo régimen de mercado. Toma el ranking como evidencia.
+
+### Los otros siete agentes
+
+El mismo benchmark corrió otros siete agentes con los mismos dos prompts sobre otros modelos, y son un recordatorio de que la infraestructura también es parte del resultado. En `openrouter/free`, los dos agentes que completaron la ventana entera acabaron a 0,03 puntos el uno del otro — Survivor T0.5 con +2,28 % y Professional T0.5 con +2,31 % —, así que la diferencia entre prompts que medimos en `gpt-4.1-mini` no se reprodujo ahí. Otros dos agentes de `openrouter/free` fallaron a mitad de carrera (uno paró en el ciclo 2 y el otro en el 9) y sus cifras no son comparables. `gpt-6-luna` cerró en +2,46 % y `dots-3-note-preview` en −0,01 %, el único resultado negativo del benchmark.
+
+## Detalle por agente
+
+<BenchmarkAgentDetails edition="2026-survivor-vs-professional" lang="es" />
+
+## Metodología, al completo
+
+Todo lo que sigue es con lo que corrieron realmente los agentes: el prompt de ciclo, la plantilla de portfolio y, por agente, su modelo, temperatura, nivel de razonamiento y system prompt íntegro.
+
+<ResearchMethodology slug="2026-survivor-vs-professional" lang="es" />
+
+Una nota sobre la reproducción de arriba: la carrera cubre del 31 ago al 29 sep, tres días después del arranque del benchmark, porque ese es el rango de la comparación exportada. El P&L final y el recuento de operaciones están medidos sobre la ejecución completa, contra los 10.000 $ con los que cada agente empezó el 28 de agosto.
+
+> Paper trading sobre datos históricos de mercado. Los resultados pasados no garantizan resultados futuros. TredOps es una herramienta de software; nada de lo que hay aquí es asesoramiento financiero.
+
+## Otras ediciones
+
+<BenchmarkEditions lang="es" exclude="es/benchmark/editions/2026-survivor-vs-professional" />
