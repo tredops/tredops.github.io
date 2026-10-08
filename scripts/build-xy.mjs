@@ -65,7 +65,7 @@ if (src.kind === "xy-scene") {
   out = {
     version: 1, kind: "xy-scene",
     source: { app: "tredops", name: src.source?.name ?? edition, exportedAt: src.source?.exportedAt ?? null },
-    chart: src.chart, metricKeys: src.metricKeys, metrics: src.metrics, presets: src.presets, defaults: src.defaults, range: src.range,
+    chart: src.chart, style: src.style ?? null, metricKeys: src.metricKeys, metrics: src.metrics, presets: src.presets, defaults: src.defaults, range: src.range,
     portfolios: src.portfolios.map((p) => ({ portfolioId: p.portfolioId, label: p.label, subtitle: p.subtitle ?? null, avatarUrl: p.avatarUrl ?? null, color: p.color ?? null, source: p.source ?? null })),
     frames: src.frames,
   };
@@ -128,6 +128,8 @@ if (src.kind === "xy-scene") {
     version: 1, kind: "xy-scene",
     source: { app: "tredops", name: src.source?.name ?? src.chart?.title ?? edition, exportedAt: src.source?.exportedAt ?? null },
     chart: { title: src.chart?.title ?? edition, avatarRadius: src.chart?.avatarRadius ?? 50 },
+    // No dashboard style in a race scene: the component uses its defaults (names off).
+    style: null,
     metricKeys: METRIC_KEYS, metrics: METRICS, presets: PRESETS, defaults: { x: "cost", y: "profitPct" },
     range: { from: src.frames[0]?.tradeDate, to: src.frames[src.frames.length - 1]?.tradeDate },
     portfolios, frames,
