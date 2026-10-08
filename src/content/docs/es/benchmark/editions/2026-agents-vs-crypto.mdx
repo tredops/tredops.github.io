@@ -1,0 +1,127 @@
+---
+title: "Agentes vs Crypto — 36 días, 9 agentes y una cesta Buy & Keep"
+description: "Nueve agentes LLM gestionan $10.000 cada uno con señales de cripto durante 36 días, despertando solo cuando entran cinco señales nuevas en el pool. Una cesta Buy & Keep gana con +19,38 %, pero el mejor agente hace +12,45 % con la mitad de drawdown, un cuarto del capital en riesgo y $1,63 de coste LLM."
+benchmark:
+  edition: 2026-agents-vs-crypto
+  pubDate: 2026-10-08
+  window: 1 sep 2026 → 6 oct 2026
+  winner: Buy & Keep · +19,38 % (mejor agente gpt-4.1-mini · +12,45 %)
+  agents: 9
+  hero: 2026-agents-vs-crypto.jpg
+  tags: [Crypto, Buy & Keep, Prompt vs prompt, Modelos gratis]
+---
+
+import hero from '../../../../../assets/benchmark/2026-agents-vs-crypto.jpg';
+import BenchmarkRace from '../../../../../components/benchmark/BenchmarkRace.astro';
+import BenchmarkSummary from '../../../../../components/benchmark/BenchmarkSummary.astro';
+import BenchmarkEquityRace from '../../../../../components/benchmark/BenchmarkEquityRace.astro';
+import BenchmarkXY from '../../../../../components/benchmark/BenchmarkXY.astro';
+import BenchmarkAgentDetails from '../../../../../components/benchmark/BenchmarkAgentDetails.astro';
+import BenchmarkEditions from '../../../../../components/benchmark/BenchmarkEditions.astro';
+import ResearchMethodology from '../../../../../components/research/ResearchMethodology.astro';
+
+<img
+	class="bmk-hero"
+	src={hero.src}
+	width={hero.width}
+	height={hero.height}
+	alt="Nueve agentes LLM compitiendo contra una cesta Buy & Keep de cripto durante 36 días con $10.000 cada uno"
+/>
+
+¿Qué pasa si das a **nueve agentes LLM** $10.000 a cada uno, los conectas al pool de señales de cripto durante **36 días** y los pones a competir contra la estrategia más tonta que existe: comprar seis monedas y no tocarlas? Lo hicimos entre el **1 de septiembre y el 6 de octubre de 2026**. Los agentes no iban con temporizador: cada uno despertaba **solo cuando entraban cinco señales nuevas en el pool**, decidía y volvía a dormir.
+
+**Respuesta corta: ganó la cesta. Buy & Keep cerró en +19,38 % porque la ventana pilló un rebote de cripto (AVAX +53 %, AAVE +39 %). El mejor agente —`gpt-4.1-mini` con un prompt de "riesgo moderado a alto"— hizo +12,45 % con un drawdown máximo del 5,6 % frente al 10,2 % de la cesta, nunca más de un cuarto del capital en mercado, todas las posiciones cerradas al final y una factura LLM total de $1,63.**
+
+## La configuración
+
+- **Capital:** $10.000 por agente, paper trading, máximo 10 % del balance por orden y 20 % por bot.
+- **Ventana:** 1 sep → 6 oct 2026, replay sobre datos históricos (el agente solo ve lo que existía en cada `tradeDate`). La race muestrea cada hora desde el 31 ago 22:00 hasta el 7 oct 22:00 UTC: 889 frames.
+- **Despertares:** sin cadencia fija. Un agente ejecuta un ciclo cuando han entrado **≥ 5 señales nuevas** en su pool desde su último despertar (el pool se escanea cada hora). 313 ciclos en total, 36–40 por agente.
+- **Señales:** criptomonedas, largo y corto, de todos los bots de producción *y* staging de la plataforma, más las órdenes que sus performance tests produjeron en esas mismas fechas (`marks: bot, performanceTest`). Unas pocas señales de acciones se colaron por el filtro de cripto (ANVS, TAGS, EWY, AMOM, SIRI, AI); están en los datos y las contamos.
+- **Prompt de ciclo:** "Evaluate portfolio … Review open positions, market conditions, and the sub-agent's strategy, then decide whether to open the signal … Objective: Increase capital by 10%." Hasta 7 turnos por ciclo.
+- **Dos prompts, nueve agentes.** Ocho agentes comparten un system prompt —un *Senior Crypto Portfolio Manager* con **la preservación del capital como prioridad absoluta**: 5–8 % por posición, 15–20 % por sector, abrir solo con confianza ≥ 75, "quedarse en liquidez es una decisión válida y a menudo superior". El noveno corre el mismo prompt reescrito para ser **oportunista cuando la cartera va más de un 3 % arriba**: 8–12 % por posición, 20–25 % por sector, abrir con confianza ≥ 70, "no te quedes en exceso en liquidez cuando la cartera ya es rentable". Los dos prompts están publicados íntegros más abajo.
+- **Modelos:** `gpt-4.1-mini` (dos veces, un prompt cada una), `deepseek-v4-flash`, `deepseek-reasoner` y cinco niveles gratuitos: `openai/gpt-oss-20b` y `meta/muse-glimmer-30b` en NVIDIA, `dots-studio/dots-3-note-preview:free`, `apodex/apodex-1.1-mini:free` y `liquid/lfm-2.5-2.6b:free` en OpenRouter. Temperaturas 0,35–0,45, listadas por agente.
+- **La cesta:** "Buy & Keep" es un competidor sintético valorado con los cierres horarios del broker: $10.000 repartidos entre BTC, SOL, AVAX, ETH, DOGE y AAVE en el primer frame y sin tocar después.
+
+## La carrera
+
+<BenchmarkRace edition="2026-agents-vs-crypto" lang="es" />
+
+<BenchmarkEquityRace edition="2026-agents-vs-crypto" lang="es" />
+
+<BenchmarkSummary edition="2026-agents-vs-crypto" lang="es" />
+
+## Resultados
+
+Cifras al final de la race (7 oct, 22:00 UTC); los drawdowns se miden sobre el equity horario.
+
+| # | Competidor | Prompt | Equity final | P&L | Drawdown máx. | Operaciones (G / P) | Acierto | Coste LLM |
+|---|---|---|---|---|---|---|---|---|
+| 1 | **Buy & Keep** (BTC · SOL · AVAX · ETH · DOGE · AAVE) | — | $11.937,54 | **+19,38 %** | −10,20 % | 0 (6 abiertas) | — | $0 |
+| 2 | gpt-4.1-mini · `gpt-4.1-mini` | moderado a alto · t 0,45 | $11.245,42 | **+12,45 %** | −5,56 % | 64 (27 / 37) | 42 % | $1,63 |
+| 3 | gpt-4.1-mini · `gpt-4.1-mini` | moderado · t 0,35 | $10.595,84 | +5,96 % | −1,22 % | 44 (21 / 23) | 48 % | $1,40 |
+| 4 | lfm-2.5-2.6b · `liquid/lfm-2.5-2.6b:free` | moderado · t 0,40 | $10.520,52 | +5,21 % * | −2,05 % | 1 (0 / 1), 4 abiertas | 0 % | gratis |
+| 5 | deepseek-v4-flash · `deepseek-v4-flash` | moderado · t 0,40 | $10.204,74 | +2,05 % | −0,45 % | 17 (9 / 8) | 53 % | $0,76 |
+| 6 | deepseek-reasoner · `deepseek-reasoner` | moderado · t 0,40 | $10.144,08 | +1,44 % | −1,02 % | 18 (8 / 10) | 44 % | $1,44 |
+| 7 | dots-3 · `dots-studio/dots-3-note-preview:free` | moderado · t 0,35 | $10.039,90 | +0,40 % | −0,31 % | 4 (3 / 1) | 75 % | gratis |
+| 8 | muse-glimmer-30b · `meta/muse-glimmer-30b` | moderado · t 0,40 | $10.001,44 | +0,01 % | −0,13 % | 1 (1 / 0) | 100 % | gratis |
+| 9 | apodex-1.1-mini · `apodex/apodex-1.1-mini:free` | moderado · t 0,40 | $9.978,92 | −0,21 % | −0,63 % | 12 (5 / 7) | 42 % | gratis |
+| 10 | gpt-oss-20b · `openai/gpt-oss-20b` | moderado · t 0,40 | $9.745,65 | −2,54 % | −3,31 % | 11 (3 / 8) | 27 % | gratis |
+
+\* `lfm-2.5-2.6b:free` corrió **4 ciclos** y dejó de responder (su proveedor tardaba 210 s por ejecución de media y el agente nunca terminó el quinto ciclo). Sus cuatro posiciones abiertas atravesaron el rebote de forma pasiva: un Buy & Keep accidental, no una decisión. Lo dejamos en la tabla porque es un resultado: un nivel gratuito puede pararse a mitad de carrera.
+
+Cuatro cosas llaman la atención:
+
+1. **La cesta ganó porque la ventana fue un rebote.** En estos 36 días AVAX pasó de unos $7,9 a $11,5 (+53 %), AAVE +39 %, SOL +12 %, DOGE +6 %, BTC +5 %, ETH +4 %. Ten seis de ellas y sacas +19 %. Nada de lo que hiciera un agente podía batir estar totalmente invertido en el mes correcto, pero la misma cesta llegó a estar **−10,2 %** desde su máximo en el peor momento, y había pasado la mayor parte del año cayendo antes de septiembre. Los agentes nunca tuvieron más del 20–25 % del capital en riesgo a la vez.
+2. **El prompt importó más que el modelo.** Los dos agentes `gpt-4.1-mini` vieron las mismas señales en las mismas fechas. El de "riesgo moderado a alto" (posiciones mayores con la cartera un 3 % arriba, listón de confianza más bajo) hizo **+12,45 %** con 64 operaciones; el "moderado", **+5,96 %** con 44. El agresivo también tuvo cuatro veces más drawdown (−5,6 % frente a −1,2 %): la rentabilidad extra se compró con riesgo, como debe ser.
+3. **Una operación decidió el podio.** Todos los agentes de pago entraron largos en AVAX el **18 de septiembre** a unos $7,94. El gpt-4.1-mini agresivo la dimensionó en tres patas (AVAX/USDC, AVAX/USDT, AVAX/USD) y recogió **+$452, +$376 y +$316**, cerradas por take profit el 21 de septiembre. Su gemelo conservador tomó una pata por +$174 y un stop loss una hora después. Los dos agentes de DeepSeek tomaron una pata cada uno (+$169, +$188). Misma señal, distinto tamaño, distinto ranking.
+4. **Los niveles gratuitos fueron lentos o se atascaron.** Los cinco modelos gratis tardaron de media 125–263 s por ejecución (frente a 30–60 s de los de pago), uno se paró en el ciclo 4 y entre todos cerraron 29 operaciones por −$259. `gpt-oss-20b` —el ganador de la edición de agentes gratis— acabó aquí último con 3 aciertos en 11 operaciones; su peor operación, un stop de −$155 en una señal de acciones.
+
+## Profit vs coste, profit vs drawdown
+
+Cada avatar es un competidor; arrastra la línea de tiempo para ver cómo se movió durante la ventana. Los ejes se pueden cambiar: están todas las métricas de la race.
+
+<BenchmarkXY edition="2026-agents-vs-crypto" lang="es" x="cost" y="profitPct" title="Agentes vs Crypto" />
+
+Los agentes de pago costaron **$5,22** en total por 313 ciclos (6–9 M de tokens de entrada cada uno). El gpt-4.1-mini agresivo devolvió **$763 por cada dólar** de coste LLM; el conservador, $426; deepseek-v4-flash, el modelo de pago más barato con $0,76, devolvió $269 por dólar. Los niveles gratuitos no costaron nada y, como grupo, perdieron dinero.
+
+<BenchmarkXY edition="2026-agents-vs-crypto" lang="es" x="maxDrawdownPct" y="profitPct" title="Agentes vs Crypto" />
+
+El riesgo es donde los agentes se ganan el sueldo: Buy & Keep está solo arriba a la derecha (+19 %, −10 % de drawdown); el mejor agente, en +12 % con −5,6 %; el resto de agentes, en una caja por debajo del −3,5 % de drawdown. Si la ventana hubiera sido uno de los meses de caída de 2026, la cesta sería la que está abajo.
+
+## Decisiones que merece la pena leer
+
+Los agentes escriben una justificación por cada señal que analizan. Literal:
+
+> **deepseek-reasoner · 21 sep · LTC/USD largo → OPEN** — "best structure of the event. 1H trend bullish (EMA12 58.63 > EMA26 58.20), MACDh 1H +0.064 with thesis [intact] (MACD 15/30/9 hist +0.076)…" — cerrada por take profit el mismo día con **+6,9 %**.
+
+> **CryptoExpert Deepseek (deepseek-v4-flash) · 1 oct · BTC/USD largo → OPEN** — "1H trend bullish (EMA12 84499 > EMA26 84241, price above SMA50 83896), MACDh 1H +50.38 and RSI14 1H 63.0 / RSI14 1D 66.2 with headroom…"
+
+> **deepseek-reasoner · 11 sep · DOT/USD → SKIP** — "Es la de mejor score (14.61) y fit consistent (Calib +6.28%, Test +37.17%, 4/0), pero la entrada es tardía: el bot entra a RSI 30 y sale a 60…"
+
+El último despertar de la ventana, **6 oct, 16:00 UTC**, son las mismas cinco señales para todos (XTZ, LINK/USDT, LINK/USDC, SOL, DOGE; todas largas, todas "failed breakout"). Los tres modelos de pago descartaron las cinco. El gpt-4.1-mini agresivo escribió: *"Despite the portfolio being profitable at +12.66% with solid liquidity, all these new signals exhibited bearish 1-hour trends … the portfolio's blockchain exposure is already near the maximum allowed (25%) … no new positions were opened to preserve capital."* Un prompt oportunista sigue siendo un prompt con límites.
+
+## Qué aprendimos
+
+- **Buy & Keep es el benchmark a batir, y en un mes de rebote no lo bate nadie.** Publicarlo es la idea: un agente no es magia, es una política de riesgo que ejecuta.
+- **La política de riesgo es el producto.** Mismo modelo, dos prompts, 6,5 puntos de rentabilidad de diferencia y 4× de drawdown de diferencia. Los mandos que importaron fueron el tamaño de posición y el umbral de confianza, no el modelo.
+- **Dimensionar distinto la misma señal es todo el juego.** Una señal de AVAX el 18 de septiembre explica casi toda la distancia entre el primero y el tercero entre los agentes.
+- **Los despertares por evento funcionan.** "Despierta cuando lleguen 5 señales" dio 36–40 ciclos por agente en 36 días a $0,03–0,04 por ciclo en los modelos de pago, sin ejecuciones vacías sobre pools sin señales.
+- **Los niveles gratuitos no son de carrera.** Lentos, uno atascado y negativos como grupo. Sirven para iterar prompts, no para gestionar dinero.
+- **Treinta y seis días son pocos.** De 1 a 64 operaciones cerradas por agente. Evidencia, no veredicto.
+
+## Detalle por agente
+
+<BenchmarkAgentDetails edition="2026-agents-vs-crypto" lang="es" />
+
+## Metodología completa
+
+Todo lo de abajo es lo que realmente corrieron los agentes: el prompt de ciclo, la plantilla del portfolio y, por agente, el modelo, la temperatura, el coste y el system prompt íntegro (ocho comparten el prompt de "riesgo moderado"; el agresivo es el primero de la lista, el del ganador).
+
+<ResearchMethodology slug="2026-agents-vs-crypto" lang="es" />
+
+> Paper trading sobre datos históricos de mercado. Los resultados pasados no garantizan resultados futuros. TredOps es una herramienta de software; nada de esto es asesoramiento financiero.
+
+## Otras ediciones
+
+<BenchmarkEditions lang="es" exclude="es/benchmark/editions/2026-agents-vs-crypto" />
