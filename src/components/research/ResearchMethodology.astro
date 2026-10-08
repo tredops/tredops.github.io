@@ -47,8 +47,8 @@ const tpl = m.portfolioTemplate as any;
 	<dl class="r-meth-grid">
 		<div><dt>{t.capital}</dt><dd>{usd(m.benchmark.balance, 0)}</dd></div>
 		<div><dt>{t.window}</dt><dd>{day(m.benchmark.startAt)} → {day(m.benchmark.endAt)}</dd></div>
-		<div><dt>{t.cadence}</dt><dd>{t.everyDays(m.benchmark.intervalDay)} · {m.benchmark.cyclesTotal} {t.cycles}</dd></div>
-		<div><dt>{t.stages}</dt><dd>{m.stages.join(", ") || t.na}</dd></div>
+		<div><dt>{t.cadence}</dt><dd>{m.benchmark.trigger ? `${m.benchmark.trigger.rule} · ${m.benchmark.cyclesTotal} ${t.cycles}` : `${t.everyDays(m.benchmark.intervalDay ?? 1)} · ${m.benchmark.cyclesTotal} ${t.cycles}`}</dd></div>
+		<div><dt>{t.stages}</dt><dd>{m.stages.join(", ") || t.na}{m.marks?.length ? ` · ${m.marks.join(", ")}` : ""}</dd></div>
 		<div><dt>{t.reasoning}</dt><dd>{m.reasoningLevel ?? t.inherited}</dd></div>
 		<div><dt>{t.temperature}</dt><dd>{m.temperature ?? t.inherited}</dd></div>
 		<div><dt>{t.maxTurns}</dt><dd>{m.maxTurns ?? t.na}</dd></div>

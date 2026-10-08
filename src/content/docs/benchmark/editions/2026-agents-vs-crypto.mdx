@@ -1,0 +1,127 @@
+---
+title: "Agents vs Crypto — 36 days, 9 agents, one Buy & Keep basket"
+description: "Nine LLM agents manage $10,000 each on crypto signals for 36 days, woken only when five new signals land in the pool. A plain Buy & Keep basket wins with +19.38%, but the best agent makes +12.45% with half the drawdown, a quarter of the capital at risk and $1.63 of LLM cost."
+benchmark:
+  edition: 2026-agents-vs-crypto
+  pubDate: 2026-10-08
+  window: Sep 1 2026 → Oct 6 2026
+  winner: Buy & Keep · +19.38% (best agent gpt-4.1-mini · +12.45%)
+  agents: 9
+  hero: 2026-agents-vs-crypto.jpg
+  tags: [Crypto, Buy & Keep, Prompt vs prompt, Free models]
+---
+
+import hero from '../../../../assets/benchmark/2026-agents-vs-crypto.jpg';
+import BenchmarkRace from '../../../../components/benchmark/BenchmarkRace.astro';
+import BenchmarkSummary from '../../../../components/benchmark/BenchmarkSummary.astro';
+import BenchmarkEquityRace from '../../../../components/benchmark/BenchmarkEquityRace.astro';
+import BenchmarkXY from '../../../../components/benchmark/BenchmarkXY.astro';
+import BenchmarkAgentDetails from '../../../../components/benchmark/BenchmarkAgentDetails.astro';
+import BenchmarkEditions from '../../../../components/benchmark/BenchmarkEditions.astro';
+import ResearchMethodology from '../../../../components/research/ResearchMethodology.astro';
+
+<img
+	class="bmk-hero"
+	src={hero.src}
+	width={hero.width}
+	height={hero.height}
+	alt="Nine LLM agents racing a Buy & Keep crypto basket for 36 days with $10,000 each"
+/>
+
+What happens when you hand **nine LLM agents** $10,000 each, point them at the crypto signal pool for **36 days**, and race them against the dumbest strategy there is — buy six coins and keep them? We did exactly that between **September 1 and October 6, 2026**. The agents were not on a timer: each one woke up **only when five new signals entered the pool**, decided, and went back to sleep.
+
+**Short answer: the basket won. Buy & Keep finished at +19.38% because the window caught a crypto rebound (AVAX +53%, AAVE +39%). The best agent — `gpt-4.1-mini` on a "moderate to high risk" prompt — made +12.45% with a maximum drawdown of 5.6% against the basket's 10.2%, never more than a quarter of the capital in the market, every position closed by the end, and a total LLM bill of $1.63.**
+
+## The setup
+
+- **Capital:** $10,000 per agent, paper trading, max 10% of the balance per order and 20% per bot.
+- **Window:** Sep 1 → Oct 6, 2026, replayed on historical data (the agent only sees what existed on each `tradeDate`). The race chart samples every hour from Aug 31 22:00 to Oct 7 22:00 UTC — 889 frames.
+- **Wake-ups:** no fixed cadence. An agent runs a cycle when **≥ 5 new signals** have entered its pool since its last wake-up (the pool is scanned hourly). 313 cycles in total, 36–40 per agent.
+- **Signals:** cryptocurrency, long and short, from every production *and* staging bot of the platform, plus the orders their performance tests produced over the same dates (`marks: bot, performanceTest`). A handful of equity signals slipped through the crypto filter (ANVS, TAGS, EWY, AMOM, SIRI, AI); they are in the data and we count them.
+- **Cycle prompt:** "Evaluate portfolio … Review open positions, market conditions, and the sub-agent's strategy, then decide whether to open the signal … Objective: Increase capital by 10%." Up to 7 turns per cycle.
+- **Two prompts, nine agents.** Eight agents share one system prompt — a *Senior Crypto Portfolio Manager* with **capital preservation as the absolute priority**: 5–8% per position, 15–20% per sector, open only at confidence ≥ 75, "sitting in cash is a valid and often superior decision". The ninth agent runs the same prompt rewritten to be **opportunistic once the portfolio is up more than 3%**: 8–12% per position, 20–25% per sector, open at confidence ≥ 70, "do not sit excessively in cash when the portfolio is already profitable". Both prompts are published in full below.
+- **Models:** `gpt-4.1-mini` (twice: one prompt each), `deepseek-v4-flash`, `deepseek-reasoner`, and five free tiers — `openai/gpt-oss-20b` and `meta/muse-glimmer-30b` on NVIDIA, `dots-studio/dots-3-note-preview:free`, `apodex/apodex-1.1-mini:free` and `liquid/lfm-2.5-2.6b:free` on OpenRouter. Temperatures 0.35–0.45, listed per agent.
+- **The basket:** "Buy & Keep" is a synthetic competitor priced from the broker's hourly closes: $10,000 split across BTC, SOL, AVAX, ETH, DOGE and AAVE on the first frame and never touched again.
+
+## The race
+
+<BenchmarkRace edition="2026-agents-vs-crypto" lang="en" />
+
+<BenchmarkEquityRace edition="2026-agents-vs-crypto" lang="en" />
+
+<BenchmarkSummary edition="2026-agents-vs-crypto" lang="en" />
+
+## Results
+
+Figures at the end of the race (Oct 7, 22:00 UTC); drawdowns are measured on the hourly equity.
+
+| # | Competitor | Prompt | Final equity | P&L | Max drawdown | Trades (W / L) | Win rate | LLM cost |
+|---|---|---|---|---|---|---|---|---|
+| 1 | **Buy & Keep** (BTC · SOL · AVAX · ETH · DOGE · AAVE) | — | $11,937.54 | **+19.38%** | −10.20% | 0 (6 open) | — | $0 |
+| 2 | gpt-4.1-mini · `gpt-4.1-mini` | moderate to high risk · t 0.45 | $11,245.42 | **+12.45%** | −5.56% | 64 (27 / 37) | 42% | $1.63 |
+| 3 | gpt-4.1-mini · `gpt-4.1-mini` | moderate · t 0.35 | $10,595.84 | +5.96% | −1.22% | 44 (21 / 23) | 48% | $1.40 |
+| 4 | lfm-2.5-2.6b · `liquid/lfm-2.5-2.6b:free` | moderate · t 0.40 | $10,520.52 | +5.21% * | −2.05% | 1 (0 / 1), 4 open | 0% | free |
+| 5 | deepseek-v4-flash · `deepseek-v4-flash` | moderate · t 0.40 | $10,204.74 | +2.05% | −0.45% | 17 (9 / 8) | 53% | $0.76 |
+| 6 | deepseek-reasoner · `deepseek-reasoner` | moderate · t 0.40 | $10,144.08 | +1.44% | −1.02% | 18 (8 / 10) | 44% | $1.44 |
+| 7 | dots-3 · `dots-studio/dots-3-note-preview:free` | moderate · t 0.35 | $10,039.90 | +0.40% | −0.31% | 4 (3 / 1) | 75% | free |
+| 8 | muse-glimmer-30b · `meta/muse-glimmer-30b` | moderate · t 0.40 | $10,001.44 | +0.01% | −0.13% | 1 (1 / 0) | 100% | free |
+| 9 | apodex-1.1-mini · `apodex/apodex-1.1-mini:free` | moderate · t 0.40 | $9,978.92 | −0.21% | −0.63% | 12 (5 / 7) | 42% | free |
+| 10 | gpt-oss-20b · `openai/gpt-oss-20b` | moderate · t 0.40 | $9,745.65 | −2.54% | −3.31% | 11 (3 / 8) | 27% | free |
+
+\* `lfm-2.5-2.6b:free` ran **4 cycles** and then stopped answering (its provider took 210 s per run on average and the agent never finished its fifth cycle). Its four open positions were carried passively through the rebound — an accidental Buy & Keep, not a decision. We leave it in the table because it is a result: a free tier can stop mid-race.
+
+Four things stand out:
+
+1. **The basket won because the window was a rebound.** Over these 36 days AVAX went from about $7.9 to $11.5 (+53%), AAVE +39%, SOL +12%, DOGE +6%, BTC +5%, ETH +4%. Hold six of them and you get +19%. Nothing an agent did could beat being fully invested in the right month — but the same basket was **−10.2%** from its peak at the worst moment, and had spent most of the year falling before September. The agents never had more than 20–25% of their capital at risk at once.
+2. **The prompt mattered more than the model.** The two `gpt-4.1-mini` agents saw the same signals on the same dates. The "moderate to high risk" one (bigger positions once the portfolio is up 3%, lower confidence bar) made **+12.45%** with 64 trades; the "moderate" one made **+5.96%** with 44. The aggressive version also had four times the drawdown (−5.6% vs −1.2%) — the extra return was bought with risk, as it should be.
+3. **One trade decided the podium.** Every paid agent took AVAX long on **Sep 18** at about $7.94. The aggressive gpt-4.1-mini sized it three ways (AVAX/USDC, AVAX/USDT, AVAX/USD) and collected **+$452, +$376 and +$316**, closed by take profit on Sep 21. The conservative twin took one leg for +$174 and a stop loss an hour later. DeepSeek's two agents took one leg each (+$169, +$188). Same signal, different sizing, different ranking.
+4. **Free tiers were slow or stuck.** The five free models averaged 125–263 s per run (vs 30–60 s for the paid ones), one stopped at cycle 4, and together they closed 29 trades for −$259. `gpt-oss-20b` — the winner of the free-agents edition — finished last here with 3 wins in 11 trades, its worst trade a −$155 stop on an equity signal.
+
+## Profit vs cost, profit vs drawdown
+
+Each avatar is one competitor; drag the timeline to see how it moved through the window. The axes can be changed — every metric of the race is available.
+
+<BenchmarkXY edition="2026-agents-vs-crypto" lang="en" x="cost" y="profitPct" title="Agents vs Crypto" />
+
+The paid agents cost **$5.22** in total for 313 cycles (6–9 M input tokens each). The aggressive gpt-4.1-mini returned **$763 per dollar** of LLM cost; the conservative one $426; deepseek-v4-flash, the cheapest paid model at $0.76, returned $269 per dollar. The free tiers cost nothing and, as a group, lost money.
+
+<BenchmarkXY edition="2026-agents-vs-crypto" lang="en" x="maxDrawdownPct" y="profitPct" title="Agents vs Crypto" />
+
+Risk is where the agents earn their keep: Buy & Keep sits alone at the top right (+19%, −10% drawdown); the best agent is at +12% with −5.6%; every other agent is in a box below −3.5% drawdown. If the window had been one of the falling months of 2026, the basket would be the one at the bottom.
+
+## Decisions worth reading
+
+The agents write a justification for every signal they analyse. Verbatim:
+
+> **deepseek-reasoner · Sep 21 · LTC/USD long → OPEN** — "best structure of the event. 1H trend bullish (EMA12 58.63 > EMA26 58.20), MACDh 1H +0.064 with thesis [intact] (MACD 15/30/9 hist +0.076)…" — closed by take profit the same day for **+6.9%**.
+
+> **CryptoExpert Deepseek (deepseek-v4-flash) · Oct 1 · BTC/USD long → OPEN** — "1H trend bullish (EMA12 84499 > EMA26 84241, price above SMA50 83896), MACDh 1H +50.38 and RSI14 1H 63.0 / RSI14 1D 66.2 with headroom…"
+
+> **deepseek-reasoner · Sep 11 · DOT/USD → SKIP** — "Es la de mejor score (14.61) y fit consistent (Calib +6.28%, Test +37.17%, 4/0), pero la entrada es tardía: el bot entra a RSI 30 y sale a 60…"
+
+The last wake-up of the window, **Oct 6, 16:00 UTC**, is the same five signals for everyone (XTZ, LINK/USDT, LINK/USDC, SOL, DOGE — all long, all "failed breakout"). All three paid models skipped all five. The aggressive gpt-4.1-mini wrote: *"Despite the portfolio being profitable at +12.66% with solid liquidity, all these new signals exhibited bearish 1-hour trends … the portfolio's blockchain exposure is already near the maximum allowed (25%) … no new positions were opened to preserve capital."* An opportunistic prompt is still a prompt with limits.
+
+## What we learned
+
+- **Buy & Keep is the benchmark to beat, and in a rebound month nobody beats it.** Publishing that is the point: an agent is not magic, it is a risk policy that executes.
+- **Risk policy is the product.** Same model, two prompts, 6.5 points of return apart and 4× the drawdown apart. The knobs that mattered were position size and the confidence threshold, not the model.
+- **Sizing the same signal differently is the whole game.** One AVAX signal on Sep 18 explains most of the gap between first and third place among the agents.
+- **Event-driven wake-ups work.** "Wake when 5 signals arrive" gave 36–40 cycles per agent in 36 days at a cost of $0.03–0.04 per cycle for the paid models, with no idle runs on empty pools.
+- **Free tiers are not race-grade.** Slow, one stalled, and negative as a group. Use them to iterate on prompts, not to manage money.
+- **Thirty-six days is short.** 1–64 closed trades per agent. Evidence, not a verdict.
+
+## Per-agent detail
+
+<BenchmarkAgentDetails edition="2026-agents-vs-crypto" lang="en" />
+
+## Methodology, in full
+
+Everything below is what the agents actually ran with — the cycle prompt, the portfolio template and, per agent, the model, temperature, cost and the complete system prompt (eight share the "moderate risk" prompt; the aggressive one is listed first, with the winner).
+
+<ResearchMethodology slug="2026-agents-vs-crypto" lang="en" />
+
+> Paper trading on historical market data. Past results do not guarantee future results. TredOps is a software tool; nothing here is financial advice.
+
+## Other editions
+
+<BenchmarkEditions lang="en" exclude="benchmark/editions/2026-agents-vs-crypto" />

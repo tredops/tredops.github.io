@@ -25,7 +25,13 @@ export interface MethodologyAgent {
 }
 
 export interface Methodology {
-	benchmark: { name: string; startAt: string; endAt: string; intervalDay: number; cyclesTotal: number; balance: number; status: string };
+	benchmark: {
+		name: string; startAt: string; endAt: string;
+		/** Days between wake-ups; null on an event-triggered benchmark (see `trigger`). */
+		intervalDay: number | null; cyclesTotal: number; balance: number; status: string;
+		/** Event-triggered runs: the rule that woke the agents, in words. */
+		trigger?: { type: "event"; rule: string; scanIntervalHours?: number } | null;
+	};
 	benchmarkPrompt: string;
 	mode: string | null;
 	temperature: number | null;
@@ -33,6 +39,8 @@ export interface Methodology {
 	maxTurns: number | null;
 	skipWeekends: boolean | null;
 	stages: string[];
+	/** Order marks the signal pool drew from (bot = live signals, performanceTest = replayed bot tests). */
+	marks?: string[];
 	portfolioTemplate: Record<string, unknown> | null;
 	paperTrading: boolean;
 	agents: MethodologyAgent[];

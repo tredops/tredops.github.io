@@ -110,6 +110,15 @@ export function sceneUrl(edition: string, base: string, dir: SceneDir = "benchma
 }
 
 /**
+ * Ruta pública de la escena "X vs Y": `public/benchmark/<edición>-xy.json`
+ * (`scripts/build-xy.mjs`) o `public/research/<slug>-xy.json` (lo copia
+ * tredops-research `publish.mjs` desde `npm run xy`).
+ */
+export function xySceneUrl(edition: string, base: string, dir: SceneDir = "benchmark"): string {
+	return `${base.endsWith("/") ? base : `${base}/`}${dir}/${edition}-xy.json`;
+}
+
+/**
  * Lee una escena en tiempo de build. Solo para el frontmatter de los
  * componentes `.astro`: en cliente se usa `fetch(sceneUrl(...))`.
  */

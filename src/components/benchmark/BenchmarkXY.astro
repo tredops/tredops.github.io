@@ -1,0 +1,321 @@
+---
+// "X vs Y": cada competidor es un punto (su avatar) en dos métricas cualesquiera
+// — profit vs coste LLM, profit vs drawdown máximo… — en un instante de la
+// ventana que el lector elige con una línea de tiempo. Port sin dependencias
+// del CompareScatterChart del dashboard: lee la escena "xy-scene" generada
+// con `node scripts/build-xy.mjs` (public/benchmark/<edición>-xy.json), que
+// ya trae las métricas de todos los competidores en todos los frames, así
+// que aquí no se calcula nada: solo se dibuja.
+import { xySceneUrl, type SceneDir } from "./scene";
+
+interface Props {
+	edition: string;
+	lang?: "es" | "en";
+	/** Pareja inicial de métricas (claves de la escena). Por defecto, la del export. */
+	x?: string;
+	y?: string;
+	/** Altura del área de dibujo en px. */
+	height?: number;
+	/** Título sobre el gráfico (por defecto el de la escena). */
+	title?: string;
+	/** `research` para los experimentos del blog (public/research/<slug>-xy.json). */
+	dir?: SceneDir;
+}
+
+const { edition, lang = "en", x, y, height = 420, title, dir = "benchmark" } = Astro.props;
+if (!/^[a-z0-9][a-z0-9-]*$/.test(edition)) throw new Error(`Edición no válida: "${edition}"`);
+const src = xySceneUrl(edition, import.meta.env.BASE_URL, dir);
+
+const t = {
+	es: { loading: "Cargando el gráfico…", failed: "No se pudo cargar el gráfico.", play: "Reproducir / pausar", first: "Primer instante", last: "Último instante", timeline: "Línea de tiempo", xAxis: "Eje X", yAxis: "Eje Y", names: "Nombres", hint: "Arrastra la línea de tiempo para ver cómo se mueve cada agente · pasa el ratón por un avatar", notPlotted: "Sin dato en estos ejes:" },
+	en: { loading: "Loading the chart…", failed: "Could not load the chart.", play: "Play / pause", first: "First instant", last: "Last instant", timeline: "Timeline", xAxis: "X axis", yAxis: "Y axis", names: "Names", hint: "Drag the timeline to watch every agent move · hover an avatar", notPlotted: "No data on these axes:" },
+}[lang];
+---
+
+<div class="b-xy" data-src={src} data-lang={lang} data-height={height} data-x={x ?? ""} data-y={y ?? ""} data-title={title ?? ""}>
+	<div class="b-xy-head">
+		<div>
+			<h3 class="b-xy-h3" data-title-el>{title ?? "X vs Y"}</h3>
+			<p class="b-xy-sub" data-sub></p>
+		</div>
+		<div class="b-xy-presets" data-presets></div>
+	</div>
+	<div class="b-xy-controls">
+		<label class="b-xy-sel"><span>{t.yAxis}</span><select data-y-sel></select></label>
+		<label class="b-xy-sel"><span>{t.xAxis}</span><select data-x-sel></select></label>
+		<label class="b-xy-chk"><input type="checkbox" data-names checked /> <span>{t.names}</span></label>
+	</div>
+	<div class="b-xy-card" data-card style={`min-height:${height}px`}>
+		<svg class="b-xy-svg" data-svg role="img" aria-label="X vs Y"></svg>
+		<div class="b-xy-tip" data-tip hidden></div>
+		<p class="b-xy-loading" data-loading>{t.loading}</p>
+	</div>
+	<div class="b-xy-timeline">
+		<button type="button" class="b-xy-btn" data-first aria-label={t.first}>⏮</button>
+		<button type="button" class="b-xy-btn b-xy-play" data-play aria-label={t.play}>▶</button>
+		<button type="button" class="b-xy-btn" data-last aria-label={t.last}>⏭</button>
+		<span class="b-xy-date" data-date>—</span>
+		<input type="range" class="b-xy-range" data-range min="0" max="0" value="0" step="1" aria-label={t.timeline} />
+		<span class="b-xy-count" data-count></span>
+	</div>
+	<div class="b-xy-legend" data-legend></div>
+	<p class="b-xy-np" data-np hidden></p>
+	<p class="b-xy-hint">{t.hint}</p>
+</div>
+
+<style is:global>
+	.b-xy { margin: 1.25rem 0; display: grid; gap: 0.6rem; }
+	.b-xy-head { display: flex; align-items: flex-start; justify-content: space-between; gap: 1rem; flex-wrap: wrap; padding: 0 0.25rem; }
+	.b-xy-h3 { margin: 0; font-family: var(--sl-font); font-size: 1.15rem; font-weight: 700; letter-spacing: -0.02em; color: var(--sl-color-white); }
+	.b-xy-sub { margin: 0; padding-top: 0.2rem; color: var(--sl-color-gray-3); font-size: 0.85rem; }
+	.b-xy-presets { display: flex; flex-wrap: wrap; gap: 0.25rem; }
+	.b-xy-btn, .b-xy-preset { cursor: pointer; border: 1px solid var(--sl-color-gray-5); border-radius: 999px; padding: 0.25rem 0.7rem; font: inherit; font-size: 0.75rem; font-weight: 500; color: var(--sl-color-gray-2); background: var(--sl-color-gray-6); }
+	.b-xy-preset.is-on { color: var(--sl-color-white); background: var(--sl-color-gray-5); }
+	.b-xy-controls { display: flex; flex-wrap: wrap; align-items: center; gap: 0.5rem 1rem; padding: 0 0.25rem; font-size: 0.8rem; color: var(--sl-color-gray-3); }
+	.b-xy-sel { display: inline-flex; align-items: center; gap: 0.4rem; }
+	.b-xy-sel select { font: inherit; font-size: 0.8rem; color: var(--sl-color-white); background: var(--sl-color-gray-6); border: 1px solid var(--sl-color-gray-5); border-radius: 0.4rem; padding: 0.2rem 0.4rem; }
+	.b-xy-chk { display: inline-flex; align-items: center; gap: 0.3rem; }
+	.b-xy-card { position: relative; border-radius: 0.8rem; border: 1px solid var(--sl-color-gray-5); background: var(--sl-color-gray-6); padding: 0.25rem; }
+	.b-xy-svg { display: block; width: 100%; height: auto; overflow: visible; font-family: var(--sl-font); }
+	.b-xy-svg .b-xy-grid { stroke: var(--sl-color-gray-5); stroke-dasharray: 3 3; }
+	.b-xy-svg .b-xy-zero { stroke: var(--sl-color-gray-3); stroke-dasharray: 4 4; opacity: 0.7; }
+	.b-xy-svg .b-xy-axis { fill: var(--sl-color-gray-3); font-size: 10px; }
+	.b-xy-svg .b-xy-axis-title { fill: var(--sl-color-gray-2); font-size: 11px; font-weight: 600; }
+	.b-xy-svg .b-xy-pt { cursor: pointer; transition: transform 0.45s cubic-bezier(0.22, 1, 0.36, 1); }
+	.b-xy-svg .b-xy-ring { fill: none; stroke-width: 2.5; }
+	.b-xy-svg .b-xy-fb { fill: var(--sl-color-gray-5); }
+	.b-xy-svg .b-xy-ini { fill: var(--sl-color-white); font-size: 11px; font-weight: 700; text-anchor: middle; dominant-baseline: central; }
+	.b-xy-svg .b-xy-name { fill: var(--sl-color-white); font-size: 11px; font-weight: 600; text-anchor: middle; paint-order: stroke; stroke: var(--sl-color-gray-6); stroke-width: 3px; }
+	.b-xy-svg .b-xy-subt { fill: var(--sl-color-gray-3); font-size: 9.5px; text-anchor: middle; paint-order: stroke; stroke: var(--sl-color-gray-6); stroke-width: 3px; }
+	.b-xy-loading { position: absolute; inset: 0; display: flex; align-items: center; justify-content: center; margin: 0; color: var(--sl-color-gray-3); font-size: 0.85rem; }
+	.b-xy-loading[hidden] { display: none; }
+	.b-xy-tip { position: absolute; z-index: 5; pointer-events: none; min-width: 12rem; max-width: 18rem; border-radius: 0.5rem; border: 1px solid var(--sl-color-gray-5); background: var(--sl-color-bg); padding: 0.45rem 0.6rem; font-size: 0.75rem; box-shadow: 0 6px 24px rgb(0 0 0 / 0.25); }
+	.b-xy-tip[hidden] { display: none; }
+	.b-xy-tip-n { margin: 0 0 0.3rem; font-weight: 600; color: var(--sl-color-white); }
+	.b-xy-tip-n small { font-weight: 400; color: var(--sl-color-gray-3); }
+	.b-xy-tip-r { display: flex; justify-content: space-between; gap: 0.75rem; margin: 0.1rem 0; color: var(--sl-color-gray-2); }
+	.b-xy-tip-r.is-axis { color: var(--sl-color-white); font-weight: 600; }
+	.b-xy-tip-r b { font-variant-numeric: tabular-nums; font-weight: 600; }
+	.b-xy-timeline { display: flex; align-items: center; gap: 0.5rem; padding: 0 0.25rem; font-size: 0.8rem; }
+	.b-xy-play { color: var(--sl-color-white); background: var(--sl-color-gray-5); }
+	.b-xy-date { min-width: 8.5rem; font-weight: 600; font-variant-numeric: tabular-nums; color: var(--sl-color-white); }
+	.b-xy-range { flex: 1; accent-color: var(--sl-color-accent); min-width: 6rem; }
+	.b-xy-count { min-width: 4.5rem; text-align: right; color: var(--sl-color-gray-3); font-variant-numeric: tabular-nums; }
+	.b-xy-legend { display: flex; flex-wrap: wrap; gap: 0.35rem 0.5rem; padding: 0 0.25rem; }
+	.b-xy-li { display: inline-flex; align-items: center; gap: 0.4rem; cursor: pointer; border: 1px solid var(--sl-color-gray-5); border-radius: 999px; background: var(--sl-color-gray-6); padding: 0.2rem 0.6rem 0.2rem 0.25rem; font: inherit; font-size: 0.75rem; color: var(--sl-color-white); }
+	.b-xy-li[aria-pressed="false"] { opacity: 0.4; text-decoration: line-through; }
+	.b-xy-av { display: inline-flex; align-items: center; justify-content: center; width: 1.5rem; height: 1.5rem; flex-shrink: 0; overflow: hidden; border: 2px solid; background: var(--sl-color-gray-6); font-size: 9px; font-weight: 700; color: #fff; }
+	.b-xy-av img { width: 100%; height: 100%; object-fit: contain; }
+	.b-xy-ls { color: var(--sl-color-gray-3); font-size: 0.68rem; }
+	.b-xy-np, .b-xy-hint { margin: 0; padding: 0 0.25rem; color: var(--sl-color-gray-3); font-size: 0.72rem; }
+	.b-xy-np[hidden] { display: none; }
+	@media (prefers-reduced-motion: reduce) { .b-xy-svg .b-xy-pt { transition: none; } }
+</style>
+
+<script>
+	const PAD = { top: 20, right: 28, bottom: 44, left: 60 };
+	const SIGNED = new Set(["%", "$", "x"]);
+
+	function fmt(v, unit) {
+		if (v == null || !Number.isFinite(v)) return "—";
+		if (unit === "%") return (v > 0 ? "+" : "") + v.toFixed(Math.abs(v) < 10 ? 2 : 1) + "%";
+		if (unit === "$") {
+			const a = Math.abs(v), s = v < 0 ? "-" : "";
+			if (a >= 1e6) return `${s}$${(a / 1e6).toFixed(2)}M`;
+			if (a >= 1e4) return `${s}$${(a / 1e3).toFixed(1)}k`;
+			if (a >= 100) return `${s}$${a.toFixed(0)}`;
+			return `${s}$${a.toFixed(a < 1 ? 3 : 2)}`;
+		}
+		if (unit === "x") return `${v.toFixed(1)}×`;
+		return Number.isInteger(v) ? String(v) : v.toFixed(1);
+	}
+	function niceTicks(lo, hi, n) {
+		const span = hi - lo || 1, raw = span / n, mag = Math.pow(10, Math.floor(Math.log10(raw)));
+		const step = [1, 2, 2.5, 5, 10].map((m) => m * mag).find((s) => s >= raw) || raw;
+		const out = [];
+		for (let v = Math.ceil(lo / step) * step; v <= hi + 1e-9; v += step) out.push(+v.toFixed(6));
+		return out;
+	}
+	function domain(values, unit) {
+		const nums = values.filter((v) => v != null && Number.isFinite(v));
+		if (!nums.length) return [0, 1];
+		let min = Math.min(...nums), max = Math.max(...nums);
+		if (SIGNED.has(unit)) { min = Math.min(min, 0); max = Math.max(max, 0); }
+		if (min === max) { min -= 1; max += 1; }
+		const pad = (max - min) * 0.14;
+		return [min - pad, max + pad];
+	}
+	const initialsOf = (label) => label.split(/[\s·-]+/).filter(Boolean).slice(0, 2).map((w) => w[0]?.toUpperCase() ?? "").join("");
+	const fmtDate = (iso, lang) => new Date(iso).toLocaleString(lang === "es" ? "es-ES" : "en-US", { day: "numeric", month: "short", hour: "2-digit", minute: "2-digit" });
+	const el = (name, attrs = {}) => { const n = document.createElementNS("http://www.w3.org/2000/svg", name); for (const [k, v] of Object.entries(attrs)) n.setAttribute(k, String(v)); return n; };
+
+	function mount(host, scene) {
+		const lang = host.dataset.lang || "en";
+		const H = Number(host.dataset.height) || 420;
+		const keys = scene.metricKeys;
+		const idx = Object.fromEntries(keys.map((k, i) => [k, i]));
+		const svg = host.querySelector("[data-svg]");
+		const card = host.querySelector("[data-card]");
+		const tip = host.querySelector("[data-tip]");
+		const range = host.querySelector("[data-range]");
+		const dateEl = host.querySelector("[data-date]");
+		const countEl = host.querySelector("[data-count]");
+		const legend = host.querySelector("[data-legend]");
+		const np = host.querySelector("[data-np]");
+		const xSel = host.querySelector("[data-x-sel]");
+		const ySel = host.querySelector("[data-y-sel]");
+		const names = host.querySelector("[data-names]");
+		const presets = host.querySelector("[data-presets]");
+		const titleEl = host.querySelector("[data-title-el]");
+		const subEl = host.querySelector("[data-sub]");
+		const playBtn = host.querySelector("[data-play]");
+		host.querySelector("[data-loading]")?.setAttribute("hidden", "");
+
+		let xKey = host.dataset.x && idx[host.dataset.x] != null ? host.dataset.x : scene.defaults.x;
+		let yKey = host.dataset.y && idx[host.dataset.y] != null ? host.dataset.y : scene.defaults.y;
+		let index = scene.frames.length - 1;
+		let playing = false, timer = null;
+		const hidden = new Set();
+		const radius = scene.chart?.avatarRadius ?? 50;
+		let W = card.clientWidth || 720;
+
+		for (const sel of [xSel, ySel]) {
+			sel.innerHTML = keys.map((k) => `<option value="${k}">${scene.metrics[k].label}</option>`).join("");
+		}
+		xSel.value = xKey; ySel.value = yKey;
+		presets.innerHTML = (scene.presets || []).map((p) => `<button type="button" class="b-xy-preset" data-px="${p.x}" data-py="${p.y}">${p.label}</button>`).join("");
+		range.max = String(scene.frames.length - 1);
+		range.value = String(index);
+
+		legend.innerHTML = scene.portfolios.map((p) => `<button type="button" class="b-xy-li" data-id="${p.portfolioId}" aria-pressed="true">${avatarHtml(p)}<span>${p.label}</span>${p.subtitle ? `<span class="b-xy-ls">${p.subtitle}</span>` : ""}</button>`).join("");
+		function avatarHtml(p) { return `<span class="b-xy-av" style="border-radius:${radius}%;border-color:${p.color};${p.avatarUrl ? "" : `background:${p.color}`}">${p.avatarUrl ? `<img src="${p.avatarUrl}" alt="">` : `<span>${initialsOf(p.label)}</span>`}</span>`; }
+
+		function valueOf(frame, pid, key) { const v = frame.values[pid]; return v ? v[idx[key]] : null; }
+
+		function syncHeader() {
+			const mx = scene.metrics[xKey], my = scene.metrics[yKey];
+			const custom = host.dataset.title;
+			titleEl.textContent = `${custom || scene.chart?.title || "X vs Y"} · ${my.label} vs ${mx.label}`;
+			subEl.textContent = `${my.label}: ${my.hint} ${mx.label}: ${mx.hint}`;
+			for (const b of presets.querySelectorAll(".b-xy-preset")) b.classList.toggle("is-on", b.dataset.px === xKey && b.dataset.py === yKey);
+		}
+
+		function render(animate = true) {
+			W = card.clientWidth || W;
+			const frame = scene.frames[index];
+			const mx = scene.metrics[xKey], my = scene.metrics[yKey];
+			const pts = scene.portfolios.filter((p) => !hidden.has(p.portfolioId)).map((p) => ({ p, x: valueOf(frame, p.portfolioId, xKey), y: valueOf(frame, p.portfolioId, yKey) }));
+			const plotted = pts.filter((d) => d.x != null && d.y != null);
+			const missing = pts.filter((d) => d.x == null || d.y == null);
+			// Dominio sobre TODA la ventana para los ejes elegidos: así los puntos se
+			// mueven dentro de un marco fijo mientras corre la línea de tiempo.
+			const allX = [], allY = [];
+			for (const f of scene.frames) for (const d of pts) { allX.push(valueOf(f, d.p.portfolioId, xKey)); allY.push(valueOf(f, d.p.portfolioId, yKey)); }
+			const [x0, x1] = domain(allX, mx.unit), [y0, y1] = domain(allY, my.unit);
+			const sx = (v) => PAD.left + ((v - x0) / (x1 - x0)) * (W - PAD.left - PAD.right);
+			const sy = (v) => PAD.top + (1 - (v - y0) / (y1 - y0)) * (H - PAD.top - PAD.bottom);
+
+			svg.setAttribute("viewBox", `0 0 ${W} ${H}`); svg.setAttribute("width", String(W)); svg.setAttribute("height", String(H));
+			let g = svg.querySelector("[data-axes]");
+			if (!g) { g = el("g"); g.setAttribute("data-axes", "1"); svg.appendChild(g); }
+			g.innerHTML = "";
+			for (const v of niceTicks(y0, y1, 5)) {
+				g.appendChild(el("line", { x1: PAD.left, x2: W - PAD.right, y1: sy(v), y2: sy(v), class: v === 0 && SIGNED.has(my.unit) ? "b-xy-zero" : "b-xy-grid" }));
+				const tx = el("text", { x: PAD.left - 8, y: sy(v) + 3, "text-anchor": "end", class: "b-xy-axis" }); tx.textContent = fmt(v, my.unit); g.appendChild(tx);
+			}
+			for (const v of niceTicks(x0, x1, 6)) {
+				g.appendChild(el("line", { y1: PAD.top, y2: H - PAD.bottom, x1: sx(v), x2: sx(v), class: v === 0 && SIGNED.has(mx.unit) ? "b-xy-zero" : "b-xy-grid" }));
+				const tx = el("text", { y: H - PAD.bottom + 14, x: sx(v), "text-anchor": "middle", class: "b-xy-axis" }); tx.textContent = fmt(v, mx.unit); g.appendChild(tx);
+			}
+			const xt = el("text", { x: (PAD.left + W - PAD.right) / 2, y: H - 8, "text-anchor": "middle", class: "b-xy-axis-title" }); xt.textContent = mx.axis; g.appendChild(xt);
+			const yt = el("text", { x: 14, y: (PAD.top + H - PAD.bottom) / 2, "text-anchor": "middle", class: "b-xy-axis-title", transform: `rotate(-90 14 ${(PAD.top + H - PAD.bottom) / 2})` }); yt.textContent = my.axis; g.appendChild(yt);
+
+			let layer = svg.querySelector("[data-pts]");
+			if (!layer) { layer = el("g"); layer.setAttribute("data-pts", "1"); svg.appendChild(layer); }
+			const showNames = names.checked;
+			const seen = new Set();
+			const px = 34, half = px / 2, rx = (px * radius) / 100;
+			for (const d of plotted) {
+				const id = d.p.portfolioId; seen.add(id);
+				let node = layer.querySelector(`[data-pid="${CSS.escape(id)}"]`);
+				if (!node) {
+					node = el("g", { class: "b-xy-pt" }); node.dataset.pid = id;
+					const clipId = `xyclip-${Math.random().toString(36).slice(2, 8)}`;
+					const defs = el("defs"); const clip = el("clipPath", { id: clipId }); clip.appendChild(el("rect", { x: -half, y: -half, width: px, height: px, rx, ry: rx })); defs.appendChild(clip); node.appendChild(defs);
+					node.appendChild(el("rect", { x: -half - 2, y: -half - 2, width: px + 4, height: px + 4, rx: rx + 2, ry: rx + 2, class: "b-xy-ring", stroke: d.p.color }));
+					if (d.p.avatarUrl) { const im = el("image", { href: d.p.avatarUrl, x: -half, y: -half, width: px, height: px, "clip-path": `url(#${clipId})`, preserveAspectRatio: "xMidYMid slice" }); node.appendChild(im); }
+					else { node.appendChild(el("rect", { x: -half, y: -half, width: px, height: px, rx, ry: rx, class: "b-xy-fb" })); const ini = el("text", { class: "b-xy-ini" }); ini.textContent = initialsOf(d.p.label); node.appendChild(ini); }
+					const nm = el("text", { y: half + 13, class: "b-xy-name" }); nm.dataset.name = "1"; nm.textContent = d.p.label; node.appendChild(nm);
+					const st = el("text", { y: half + 25, class: "b-xy-subt" }); st.dataset.sub = "1"; st.textContent = d.p.subtitle || ""; node.appendChild(st);
+					node.addEventListener("mouseenter", (ev) => showTip(d.p, ev));
+					node.addEventListener("mousemove", (ev) => showTip(d.p, ev));
+					node.addEventListener("mouseleave", () => { tip.hidden = true; });
+					layer.appendChild(node);
+				}
+				node.style.transition = animate ? "" : "none";
+				node.setAttribute("transform", `translate(${sx(d.x).toFixed(1)} ${sy(d.y).toFixed(1)})`);
+				node.querySelector("[data-name]").style.display = showNames ? "" : "none";
+				node.querySelector("[data-sub]").style.display = showNames ? "" : "none";
+			}
+			for (const node of [...layer.children]) if (!seen.has(node.dataset.pid)) node.remove();
+			dateEl.textContent = fmtDate(frame.tradeDate, lang);
+			countEl.textContent = `${index + 1} / ${scene.frames.length}`;
+			const labelsOf = (p) => p.label;
+			if (missing.length) { np.hidden = false; np.textContent = `${host.dataset.lang === "es" ? "Sin dato en estos ejes:" : "No data on these axes:"} ${missing.map((d) => labelsOf(d.p)).join(", ")}`; } else np.hidden = true;
+		}
+
+		function showTip(p, ev) {
+			const frame = scene.frames[index];
+			const rows = [yKey, xKey, ...keys.filter((k) => k !== xKey && k !== yKey && valueOf(frame, p.portfolioId, k) != null)];
+			tip.innerHTML = `<p class="b-xy-tip-n">${p.label}${p.subtitle ? ` <small>· ${p.subtitle}</small>` : ""}</p>` + rows.map((k) => `<div class="b-xy-tip-r${k === xKey || k === yKey ? " is-axis" : ""}"><span>${scene.metrics[k].label}</span><b>${fmt(valueOf(frame, p.portfolioId, k), scene.metrics[k].unit)}</b></div>`).join("");
+			tip.hidden = false;
+			const r = card.getBoundingClientRect();
+			const left = Math.min(ev.clientX - r.left + 14, r.width - tip.offsetWidth - 8);
+			const top = Math.min(ev.clientY - r.top + 14, r.height - tip.offsetHeight - 8);
+			tip.style.left = `${Math.max(4, left)}px`; tip.style.top = `${Math.max(4, top)}px`;
+		}
+
+		function setIndex(i, animate = true) { index = Math.max(0, Math.min(scene.frames.length - 1, i)); range.value = String(index); render(animate); }
+		function setPlaying(on) {
+			playing = on; playBtn.textContent = on ? "⏸" : "▶";
+			if (timer) { clearInterval(timer); timer = null; }
+			if (on) {
+				if (index >= scene.frames.length - 1) setIndex(0, false);
+				// ~12 s para toda la ventana, sea cual sea el número de frames.
+				const step = Math.max(1, Math.round(scene.frames.length / 120));
+				timer = setInterval(() => { if (index >= scene.frames.length - 1) setPlaying(false); else setIndex(index + step); }, 100);
+			}
+		}
+
+		range.addEventListener("input", () => { setPlaying(false); setIndex(Number(range.value), false); });
+		host.querySelector("[data-first]").addEventListener("click", () => { setPlaying(false); setIndex(0); });
+		host.querySelector("[data-last]").addEventListener("click", () => { setPlaying(false); setIndex(scene.frames.length - 1); });
+		playBtn.addEventListener("click", () => setPlaying(!playing));
+		xSel.addEventListener("change", () => { xKey = xSel.value; syncHeader(); render(); });
+		ySel.addEventListener("change", () => { yKey = ySel.value; syncHeader(); render(); });
+		names.addEventListener("change", () => render(false));
+		presets.addEventListener("click", (ev) => { const b = ev.target.closest(".b-xy-preset"); if (!b) return; xKey = b.dataset.px; yKey = b.dataset.py; xSel.value = xKey; ySel.value = yKey; syncHeader(); render(); });
+		legend.addEventListener("click", (ev) => { const b = ev.target.closest(".b-xy-li"); if (!b) return; const id = b.dataset.id; if (hidden.has(id)) hidden.delete(id); else hidden.add(id); b.setAttribute("aria-pressed", hidden.has(id) ? "false" : "true"); render(); });
+		if (typeof ResizeObserver !== "undefined") new ResizeObserver(() => render(false)).observe(card);
+		document.addEventListener("visibilitychange", () => { if (document.hidden && playing) setPlaying(false); });
+
+		syncHeader();
+		render(false);
+	}
+
+	function init() {
+		for (const host of document.querySelectorAll(".b-xy")) {
+			if (host.dataset.mounted) continue;
+			host.dataset.mounted = "1";
+			const src = host.dataset.src;
+			const load = () => fetch(src)
+				.then((r) => { if (!r.ok) throw new Error(`HTTP ${r.status}`); return r.json(); })
+				.then((scene) => mount(host, scene))
+				.catch((err) => { console.error("[benchmark] xy scene", src, err); const l = host.querySelector("[data-loading]"); if (l) l.textContent = host.dataset.lang === "es" ? "No se pudo cargar el gráfico." : "Could not load the chart."; });
+			if (typeof IntersectionObserver === "undefined") load();
+			else { const io = new IntersectionObserver((es) => { if (es.some((e) => e.isIntersecting)) { io.disconnect(); load(); } }, { rootMargin: "600px 0px" }); io.observe(host); }
+		}
+	}
+	init();
+	document.addEventListener("astro:page-load", init);
+</script>
