@@ -1,0 +1,19 @@
+---
+// Gráfico "X vs Y" de un experimento del blog (profit vs coste LLM, profit vs
+// drawdown…): el mismo componente que las ediciones del Benchmark, leyendo
+// `public/research/<slug>-xy.json` (generado por tredops-research `npm run xy`).
+import BenchmarkXY from "../benchmark/BenchmarkXY.astro";
+
+interface Props {
+	slug: string;
+	lang?: "es" | "en";
+	x?: string;
+	y?: string;
+	title?: string;
+	height?: number;
+}
+
+const { slug, lang = "en", x, y, title, height } = Astro.props;
+---
+
+<BenchmarkXY edition={slug} lang={lang} dir="research" x={x} y={y} title={title} height={height} />

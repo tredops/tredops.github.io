@@ -109,9 +109,13 @@ export function sceneUrl(edition: string, base: string, dir: SceneDir = "benchma
 	return `${base.endsWith("/") ? base : `${base}/`}${dir}/${edition}.json`;
 }
 
-/** Ruta pública de la escena "X vs Y" (`scripts/build-xy.mjs` → `public/benchmark/<edición>-xy.json`). */
-export function xySceneUrl(edition: string, base: string): string {
-	return `${base.endsWith("/") ? base : `${base}/`}benchmark/${edition}-xy.json`;
+/**
+ * Ruta pública de la escena "X vs Y": `public/benchmark/<edición>-xy.json`
+ * (`scripts/build-xy.mjs`) o `public/research/<slug>-xy.json` (lo copia
+ * tredops-research `publish.mjs` desde `npm run xy`).
+ */
+export function xySceneUrl(edition: string, base: string, dir: SceneDir = "benchmark"): string {
+	return `${base.endsWith("/") ? base : `${base}/`}${dir}/${edition}-xy.json`;
 }
 
 /**

@@ -6,7 +6,7 @@
 // con `node scripts/build-xy.mjs` (public/benchmark/<edición>-xy.json), que
 // ya trae las métricas de todos los competidores en todos los frames, así
 // que aquí no se calcula nada: solo se dibuja.
-import { xySceneUrl } from "./scene";
+import { xySceneUrl, type SceneDir } from "./scene";
 
 interface Props {
 	edition: string;
@@ -18,11 +18,13 @@ interface Props {
 	height?: number;
 	/** Título sobre el gráfico (por defecto el de la escena). */
 	title?: string;
+	/** `research` para los experimentos del blog (public/research/<slug>-xy.json). */
+	dir?: SceneDir;
 }
 
-const { edition, lang = "en", x, y, height = 420, title } = Astro.props;
+const { edition, lang = "en", x, y, height = 420, title, dir = "benchmark" } = Astro.props;
 if (!/^[a-z0-9][a-z0-9-]*$/.test(edition)) throw new Error(`Edición no válida: "${edition}"`);
-const src = xySceneUrl(edition, import.meta.env.BASE_URL);
+const src = xySceneUrl(edition, import.meta.env.BASE_URL, dir);
 
 const t = {
 	es: { loading: "Cargando el gráfico…", failed: "No se pudo cargar el gráfico.", play: "Reproducir / pausar", first: "Primer instante", last: "Último instante", timeline: "Línea de tiempo", xAxis: "Eje X", yAxis: "Eje Y", names: "Nombres", hint: "Arrastra la línea de tiempo para ver cómo se mueve cada agente · pasa el ratón por un avatar", notPlotted: "Sin dato en estos ejes:" },
