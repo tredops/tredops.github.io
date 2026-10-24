@@ -13,8 +13,10 @@ TredOps MCP es una función **Premium**. El número de conexiones que puedes man
 
 ## Conectarlo
 
-1. **Dashboard → Integraciones → ⊕ → TredOps MCP.** Dale a la conexión un nombre que diga dónde vivirá el token (por ejemplo *Claude Code en mi portátil*) y pulsa **Create connection**.
-2. **Copia el token ahora.** Se muestra solo esta vez; después solo podrás rotarlo. Tiene la forma `tredops_<id>@<secret>` y lleva los permisos `read`, `write` y `delete`.
+1. **Dashboard → Integraciones → ⊕ → TredOps MCP.** Dale a la conexión un nombre que diga dónde vivirá el token (por ejemplo *Claude Code en mi portátil*), elige su **Access** y pulsa **Create connection**.
+   - **Full access** (por defecto): leer carteras y señales, abrir y cerrar órdenes, gestionar bots y tareas de agente.
+   - **Read-only**: el agente puede analizar pero nunca operar ni cambiar nada. Ideal para clientes de research, máquinas compartidas o una primera prueba. La fila de la conexión muestra una etiqueta *Read-only* y el agente solo ve las herramientas de lectura.
+2. **Copia el token ahora.** Se muestra solo esta vez; después solo podrás rotarlo. Tiene la forma `tredops_<id>@<secret>` y lleva los permisos `read`, `write` y `delete` (solo `read` en una conexión de solo lectura). Rotar conserva el nivel de acceso.
 3. Abre **Connection instructions** y elige tu cliente. Cada pestaña trae el fragmento exacto con tu endpoint y el nombre del servidor ya rellenos.
 
 ### Claude Code

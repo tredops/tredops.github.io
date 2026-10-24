@@ -13,8 +13,10 @@ TredOps MCP is a **Premium** feature. The number of connections you may keep ope
 
 ## Connect it
 
-1. **Dashboard → Integrations → ⊕ → TredOps MCP.** Give the connection a name that says where the token will live (for example *Claude Code on my laptop*) and press **Create connection**.
-2. **Copy the token now.** It is shown only this once; later you can only rotate it. It looks like `tredops_<id>@<secret>` and carries the permissions `read`, `write` and `delete`.
+1. **Dashboard → Integrations → ⊕ → TredOps MCP.** Give the connection a name that says where the token will live (for example *Claude Code on my laptop*), choose its **Access** and press **Create connection**.
+   - **Full access** (default): read portfolios and signals, open and close orders, manage bots and agent tasks.
+   - **Read-only**: the agent can analyse but never trade or change anything. Good for research clients, shared machines, or a first try. The connection row shows a *Read-only* badge, and only the read-only tools appear to the agent.
+2. **Copy the token now.** It is shown only this once; later you can only rotate it. It looks like `tredops_<id>@<secret>` and carries the permissions `read`, `write` and `delete` (just `read` for a read-only connection). Rotating keeps the access level.
 3. Open **Connection instructions** and pick your client. Each tab has the exact snippet with your endpoint and server name already filled in.
 
 ### Claude Code
