@@ -14,6 +14,7 @@ El pilar de **Integraciones** es la capa de conexión con servicios externos que
 | **Market Data** | Datos de mercado en tiempo real e históricos | Automático (via broker) |
 | **OAuth** | Autenticación con proveedores externos (Google, etc.) | Registro/Login |
 | **Webhooks** | Notificaciones y eventos hacia sistemas externos | (próximamente) |
+| **Agentes (MCP)** | Tus propios agentes de IA trabajando sobre tu cuenta a través de la conexión [TredOps MCP](/es/integrations/tredops-mcp/) | Dashboard → Integraciones |
 
 ## Conectar tu broker
 

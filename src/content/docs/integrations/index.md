@@ -5,7 +5,7 @@ description: Connect your broker, your AI providers and your signal sources to T
 
 An integration is a connection between TredOps and a service you already use. You add it once from **Dashboard → Integrations**, and from then on the platform can execute, read or receive on your behalf, under the rules you set.
 
-## The four kinds
+## The five kinds
 
 | Kind | What it brings | Examples |
 |------|----------------|----------|
@@ -13,8 +13,9 @@ An integration is a connection between TredOps and a service you already use. Yo
 | **AI · LLM** | Models your agents think with, billed to your own account | OpenRouter, DeepSeek, OpenAI, NVIDIA |
 | **Signals** | Entries and exits decided outside TredOps | [TradingView](/integrations/tradingview/) |
 | **Notifications** | Your notifications, approvals and agent chat outside the dashboard | [Telegram](/integrations/telegram/) |
+| **Agents** | Your own AI agents (Claude Code, Cursor, OpenCode…) working on your account with a token you control | [TredOps MCP](/integrations/tredops-mcp/) |
 
-A broker integration is where your money is. An AI integration is where your agents' reasoning happens. A signal integration is where trading decisions come from. They combine: a TradingView alert can open a position that a broker executes, an agent supervises and you approve from Telegram.
+A broker integration is where your money is. An AI integration is where your agents' reasoning happens. A signal integration is where trading decisions come from. They combine: a TradingView alert can open a position that a broker executes, an agent supervises and you approve from Telegram. An agents integration turns the picture around: an assistant you already use becomes one more TredOps agent, with the same tools and the same limits.
 
 ## Connect, verify, disconnect
 

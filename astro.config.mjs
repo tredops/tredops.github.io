@@ -189,6 +189,7 @@ export default defineConfig({
 						{ label: 'Overview', translations: { es: 'Visión general' }, slug: 'integrations' },
 						{ label: 'TradingView', translations: { es: 'TradingView' }, slug: 'integrations/tradingview' },
 						{ label: 'Telegram', translations: { es: 'Telegram' }, slug: 'integrations/telegram' },
+						{ label: 'TredOps MCP', translations: { es: 'TredOps MCP' }, slug: 'integrations/tredops-mcp' },
 					],
 				},
 				{

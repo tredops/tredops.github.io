@@ -14,6 +14,7 @@ The **Integrations** pillar is the layer that connects external services to exte
 | **Market data** | Real-time and historical market data | Automatic (via broker) |
 | **OAuth** | Authentication with external providers (Google, etc.) | Sign up/Sign in |
 | **Webhooks** | Notifications and events to external systems | (coming soon) |
+| **Agents (MCP)** | Your own AI agents working on your account through the [TredOps MCP](/integrations/tredops-mcp/) connection | Dashboard → Integrations |
 
 ## Connect your broker
 
