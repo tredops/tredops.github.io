@@ -157,6 +157,7 @@ export default defineConfig({
 					items: [
 						{ label: 'Agent skills', translations: { es: 'Skills de agente' }, slug: 'features/skills' },
 						{ label: 'Trade setups', translations: { es: 'Trade setups' }, slug: 'features/trade-setups' },
+						{ label: 'Direct Signal Bot', translations: { es: 'Direct Signal Bot' }, slug: 'features/direct-signal-bot' },
 						{ label: 'Wait before to Open Orders', translations: { es: 'Wait before to Open Orders' }, slug: 'features/wait-to-open' },
 					],
 				},
