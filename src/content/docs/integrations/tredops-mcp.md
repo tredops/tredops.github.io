@@ -91,7 +91,7 @@ Expanding the connection row in the dashboard shows **Tools available to your ag
 
 ### Skills
 
-Skills are the playbooks TredOps agents follow: how to judge a signal with the logic of the strategy that produced it, how to read a portfolio context or a market data block, how to improve a bot with one hypothesis per version, how to review a closed trade, how to configure a portfolio's risk. Your MCP client sees them as prompts (in Claude Code, `/mcp__tredops__signal-judge`), as resources, and through the `listSkills` and `getSkill` tools. Load one before working on its domain; the agent then follows the same rules as the agents inside TredOps.
+Skills are the playbooks TredOps agents follow: how to judge a signal with the logic of the strategy that produced it, how to read a portfolio context or a market data block, how to improve a bot with one hypothesis per version, how to review a closed trade, how to configure a portfolio's risk. Your MCP client sees them as prompts (in Claude Code, `/mcp__tredops__signal-judge`), as resources, and through the `listSkills` and `getSkill` tools. Load one before working on its domain; the agent then follows the same rules as the agents inside TredOps. [Agent skills](/features/skills/) explains them in full, including how to reach them from the dashboard chat and from Telegram.
 
 | Skill | Use it when |
 |-------|-------------|
@@ -100,6 +100,8 @@ Skills are the playbooks TredOps agents follow: how to judge a signal with the l
 | `trade-review` | a position closed and you want to know why, and what to change |
 | `portfolio-risk-setup` | you are creating or tuning a portfolio: risk profile, order size, signal filters and sources |
 | `bots-builder-expert` | you want to diagnose, version, calibrate or promote bots |
+| `trade-setup` | you want to arm a strategy on a symbol by price levels and follow it — see [Trade setups](/features/trade-setups/) |
+| `agent-task-designer` | you are designing or auditing a scheduled or event-driven task |
 
 ## Guardrails
 

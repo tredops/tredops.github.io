@@ -98,5 +98,7 @@ Once a routine works in chat, turn it into a scheduled task:
 
 ## Next
 
+- [Agent skills](/features/skills/) — the playbooks your agent follows, and how to call one with `/`
+- [Trade setups](/features/trade-setups/) — leave a strategy armed on a symbol by price levels
 - [Scheduling tasks (AgentTask)](../agent-tasks/)
 - [Managing risk](../risk/)

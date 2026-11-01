@@ -101,5 +101,7 @@ Cuando una rutina funcione en el chat, conviértela en una tarea programada:
 
 ## Siguiente paso
 
+- [Skills de agente](/es/features/skills/) — los manuales que sigue tu agente, y cómo invocar uno con `/`
+- [Trade setups](/es/features/trade-setups/) — deja una estrategia armada sobre un símbolo por niveles de precio
 - [Programar tareas (AgentTask)](../agent-tasks/)
 - [Gestionar el riesgo](../risk/)

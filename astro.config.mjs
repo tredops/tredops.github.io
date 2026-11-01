@@ -155,6 +155,8 @@ export default defineConfig({
 					label: 'Features',
 					translations: { es: 'Funcionalidades' },
 					items: [
+						{ label: 'Agent skills', translations: { es: 'Skills de agente' }, slug: 'features/skills' },
+						{ label: 'Trade setups', translations: { es: 'Trade setups' }, slug: 'features/trade-setups' },
 						{ label: 'Wait before to Open Orders', translations: { es: 'Wait before to Open Orders' }, slug: 'features/wait-to-open' },
 					],
 				},

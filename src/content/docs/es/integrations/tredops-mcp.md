@@ -91,7 +91,7 @@ Al expandir la fila de la conexión en el dashboard verás **Tools available to 
 
 ### Skills
 
-Las skills son los playbooks que siguen los agentes de TredOps: cómo juzgar una señal con la lógica de la estrategia que la generó, cómo leer el contexto de una cartera o un bloque de datos de mercado, cómo mejorar un bot con una hipótesis por versión, cómo revisar una operación cerrada, cómo configurar el riesgo de una cartera. Tu cliente MCP las ve como prompts (en Claude Code, `/mcp__tredops__signal-judge`), como recursos y a través de las tools `listSkills` y `getSkill`. Carga una antes de trabajar en su dominio; el agente seguirá entonces las mismas reglas que los agentes internos.
+Las skills son los playbooks que siguen los agentes de TredOps: cómo juzgar una señal con la lógica de la estrategia que la generó, cómo leer el contexto de una cartera o un bloque de datos de mercado, cómo mejorar un bot con una hipótesis por versión, cómo revisar una operación cerrada, cómo configurar el riesgo de una cartera. Tu cliente MCP las ve como prompts (en Claude Code, `/mcp__tredops__signal-judge`), como recursos y a través de las tools `listSkills` y `getSkill`. Carga una antes de trabajar en su dominio; el agente seguirá entonces las mismas reglas que los agentes internos. [Skills de agente](/es/features/skills/) las explica a fondo, incluido cómo llegar a ellas desde el chat del dashboard y desde Telegram.
 
 | Skill | Úsala cuando |
 |-------|--------------|
@@ -100,6 +100,8 @@ Las skills son los playbooks que siguen los agentes de TredOps: cómo juzgar una
 | `trade-review` | una posición cerró y quieres saber por qué y qué cambiar |
 | `portfolio-risk-setup` | estás creando o ajustando una cartera: perfil de riesgo, tamaño de orden, filtros y fuentes de señal |
 | `bots-builder-expert` | quieres diagnosticar, versionar, calibrar o promover bots |
+| `trade-setup` | quieres armar una estrategia sobre un símbolo por niveles de precio y seguirla — ver [Trade setups](/es/features/trade-setups/) |
+| `agent-task-designer` | estás diseñando o auditando una tarea programada o por evento |
 
 ## Guardarraíles
 
