@@ -86,6 +86,7 @@ export default defineConfig({
 			social: [
 				{ icon: 'github', label: 'GitHub', href: 'https://github.com/tredops/tredops.github.io' },
 				{ icon: 'x.com', label: 'X / Twitter', href: 'https://x.com/tredopsAI' },
+				{ icon: 'youtube', label: 'YouTube', href: 'https://www.youtube.com/@TredOps' },
 			],
 			editLink: { enabled: false },
 			head: [
@@ -142,6 +143,7 @@ export default defineConfig({
 					translations: { es: 'Primeros pasos' },
 					items: [
 						{ label: 'Quick start', translations: { es: 'Guía rápida' }, slug: 'getting-started' },
+						{ label: 'Video course', translations: { es: 'Curso en vídeo' }, slug: 'videos' },
 						{ label: 'Your first bot', translations: { es: 'Tu primer bot' }, slug: 'guides/first-bot' },
 						{ label: 'Bot settings explained', translations: { es: 'Opciones de un bot, explicadas' }, slug: 'guides/bot-settings' },
 						{ label: 'Working with agents', translations: { es: 'Trabajar con agentes' }, slug: 'guides/first-agent' },
