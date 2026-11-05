@@ -1,0 +1,539 @@
+---
+// Biblioteca de vídeos del canal de YouTube: un reproductor arriba, el curso
+// en orden de lecciones y la lista completa del canal debajo.
+//
+// El reproductor no carga el iframe de YouTube hasta que se pulsa play: la
+// página pesa lo que pesan las miniaturas y no se instala ninguna cookie de
+// YouTube hasta entonces (el embed usa además youtube-nocookie.com).
+//
+// `?v=<id>` en la URL abre directamente ese vídeo, para poder enlazar a una
+// lección concreta.
+import {
+	CHANNEL_SUBSCRIBE_URL,
+	CHANNEL_URL,
+	COURSE,
+	LATEST,
+	thumb,
+	watchUrl,
+	type Lang,
+	type Video,
+} from "./videos";
+
+interface Props {
+	lang?: Lang;
+}
+
+const { lang = "en" } = Astro.props;
+
+const t = {
+	en: {
+		course: "Course · Getting started with TredOps",
+		courseIntro: "Watch them in order: each lesson builds on the previous one.",
+		lesson: "Lesson",
+		all: "All videos",
+		filterAll: "All",
+		filters: { tutorial: "Tutorials", overview: "Overview", benchmark: "Benchmark" },
+		spoken: { en: "EN", es: "ES" },
+		short: "Short",
+		play: "Play",
+		docs: "Read the docs",
+		youtube: "Open on YouTube",
+		subscribe: "Subscribe to the channel",
+		channel: "See the channel",
+		nowPlaying: "Now playing",
+	},
+	es: {
+		course: "Curso · Primeros pasos con TredOps",
+		courseIntro: "Míralos en orden: cada lección parte de la anterior.",
+		lesson: "Lección",
+		all: "Todos los vídeos",
+		filterAll: "Todos",
+		filters: { tutorial: "Tutoriales", overview: "Visión general", benchmark: "Benchmark" },
+		spoken: { en: "EN", es: "ES" },
+		short: "Short",
+		play: "Reproducir",
+		docs: "Ver la documentación",
+		youtube: "Abrir en YouTube",
+		subscribe: "Suscríbete al canal",
+		channel: "Ver el canal",
+		nowPlaying: "Reproduciendo",
+	},
+}[lang];
+
+const base = import.meta.env.BASE_URL.replace(/\/$/, "");
+const docsHref = (v: Video) =>
+	v.docs ? `${base}/${lang === "es" ? "es/" : ""}${v.docs}` : undefined;
+
+const dateFmt = new Intl.DateTimeFormat(lang === "en" ? "en-US" : "es-ES", {
+	year: "numeric",
+	month: "short",
+	day: "numeric",
+	timeZone: "UTC",
+});
+const fmtDate = (iso: string) => dateFmt.format(new Date(`${iso}T00:00:00Z`));
+
+const first = COURSE[0] ?? LATEST[0];
+const topics = [...new Set(LATEST.map((v) => v.topic))];
+
+// Datos que el script necesita para rellenar el reproductor al cambiar de vídeo.
+const catalog = Object.fromEntries(
+	LATEST.map((v) => [
+		v.id,
+		{
+			title: v.title,
+			summary: v.summary,
+			short: !!v.short,
+			docs: docsHref(v) ?? "",
+			watch: watchUrl(v.id),
+			meta: [
+				v.lesson ? `${t.lesson} ${v.lesson}` : "",
+				fmtDate(v.published),
+				t.spoken[v.lang],
+				v.short ? t.short : "",
+			]
+				.filter(Boolean)
+				.join(" · "),
+		},
+	]),
+);
+const firstMeta = catalog[first.id];
+---
+
+<div class="vl not-content" data-catalog={JSON.stringify(catalog)}>
+	<section class="vl-player" aria-label={t.nowPlaying}>
+		<div class="vl-frame" data-short={first.short ? "" : undefined}>
+			<button class="vl-poster" type="button" data-id={first.id} aria-label={`${t.play}: ${first.title}`}>
+				<img src={thumb(first.id)} alt="" width="480" height="360" />
+				<span class="vl-play" aria-hidden="true">
+					<svg viewBox="0 0 68 48" width="68" height="48"><path d="M66.5 7.7a8.5 8.5 0 0 0-6-6C55.2.3 34 .3 34 .3s-21.2 0-26.5 1.4a8.5 8.5 0 0 0-6 6C.1 13 .1 24 .1 24s0 11 1.4 16.3a8.5 8.5 0 0 0 6 6C12.8 47.7 34 47.7 34 47.7s21.2 0 26.5-1.4a8.5 8.5 0 0 0 6-6C67.9 35 67.9 24 67.9 24s0-11-1.4-16.3Z" fill="var(--sl-color-accent)"/><path d="M45 24 27 14v20z" fill="#fff"/></svg>
+				</span>
+			</button>
+		</div>
+		<div class="vl-info">
+			<p class="vl-meta" data-slot="meta">{firstMeta.meta}</p>
+			<h2 class="vl-title" data-slot="title">{first.title}</h2>
+			<p class="vl-summary" data-slot="summary">{first.summary}</p>
+			<p class="vl-links">
+				<a data-slot="docs" href={firstMeta.docs || undefined} hidden={!firstMeta.docs}>{t.docs} →</a>
+				<a data-slot="watch" href={firstMeta.watch} target="_blank" rel="noopener">{t.youtube} ↗</a>
+			</p>
+		</div>
+	</section>
+
+	{
+		COURSE.length > 0 && (
+			<section class="vl-section">
+				<h2>{t.course}</h2>
+				<p class="vl-intro">{t.courseIntro}</p>
+				<ol class="vl-course">
+					{COURSE.map((v) => (
+						<li>
+							<button class="vl-lesson" type="button" data-id={v.id}>
+								<span class="vl-num">{v.lesson}</span>
+								<img src={thumb(v.id)} alt="" width="160" height="90" loading="lazy" />
+								<span class="vl-lesson-text">
+									<span class="vl-lesson-title">{v.title}</span>
+									<span class="vl-card-meta">
+										{t.lesson} {v.lesson} · {fmtDate(v.published)}
+									</span>
+								</span>
+							</button>
+						</li>
+					))}
+				</ol>
+			</section>
+		)
+	}
+
+	<section class="vl-section">
+		<div class="vl-head">
+			<h2>{t.all}</h2>
+			<div class="vl-filters" role="group" aria-label={t.all}>
+				<button type="button" data-filter="" aria-pressed="true">{t.filterAll}</button>
+				{topics.map((tp) => (
+					<button type="button" data-filter={tp} aria-pressed="false">{t.filters[tp]}</button>
+				))}
+			</div>
+		</div>
+		<ul class="vl-grid">
+			{
+				LATEST.map((v) => (
+					<li data-topic={v.topic}>
+						<button class="vl-card" type="button" data-id={v.id}>
+							<span class="vl-thumb">
+								<img src={thumb(v.id)} alt="" width="480" height="360" loading="lazy" />
+								<span class="vl-badges">
+									<span class="vl-badge">{t.spoken[v.lang]}</span>
+									{v.short && <span class="vl-badge">{t.short}</span>}
+									{v.lesson && <span class="vl-badge vl-badge-accent">{t.lesson} {v.lesson}</span>}
+								</span>
+							</span>
+							<span class="vl-card-title">{v.title}</span>
+							<span class="vl-card-meta">
+								{t.filters[v.topic]} · {fmtDate(v.published)}
+							</span>
+						</button>
+					</li>
+				))
+			}
+		</ul>
+	</section>
+
+	<p class="vl-cta">
+		<a class="vl-subscribe" href={CHANNEL_SUBSCRIBE_URL} target="_blank" rel="noopener">{t.subscribe}</a>
+		<a href={CHANNEL_URL} target="_blank" rel="noopener">{t.channel} ↗</a>
+	</p>
+</div>
+
+<script>
+	type Entry = {
+		title: string;
+		summary: string;
+		short: boolean;
+		docs: string;
+		watch: string;
+		meta: string;
+	};
+
+	for (const root of document.querySelectorAll<HTMLElement>(".vl")) {
+		const catalog: Record<string, Entry> = JSON.parse(root.dataset.catalog ?? "{}");
+		const frame = root.querySelector<HTMLElement>(".vl-frame")!;
+		const slot = (name: string) => root.querySelector<HTMLElement>(`[data-slot="${name}"]`)!;
+		const buttons = root.querySelectorAll<HTMLButtonElement>(".vl-lesson, .vl-card");
+
+		const markCurrent = (id: string) => {
+			for (const b of buttons) {
+				if (b.dataset.id === id) b.setAttribute("aria-current", "true");
+				else b.removeAttribute("aria-current");
+			}
+		};
+
+		const play = (id: string, autoplay: boolean) => {
+			const v = catalog[id];
+			if (!v) return;
+			if (v.short) frame.setAttribute("data-short", "");
+			else frame.removeAttribute("data-short");
+
+			const iframe = document.createElement("iframe");
+			iframe.src = `https://www.youtube-nocookie.com/embed/${id}?rel=0&modestbranding=1${autoplay ? "&autoplay=1" : ""}`;
+			iframe.title = v.title;
+			iframe.allow = "accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share";
+			iframe.allowFullscreen = true;
+			iframe.referrerPolicy = "strict-origin-when-cross-origin";
+			frame.replaceChildren(iframe);
+
+			slot("title").textContent = v.title;
+			slot("summary").textContent = v.summary;
+			slot("meta").textContent = v.meta;
+			const docs = slot("docs") as HTMLAnchorElement;
+			docs.hidden = !v.docs;
+			if (v.docs) docs.href = v.docs;
+			(slot("watch") as HTMLAnchorElement).href = v.watch;
+			markCurrent(id);
+
+			const url = new URL(location.href);
+			url.searchParams.set("v", id);
+			history.replaceState(null, "", url);
+		};
+
+		root.querySelector<HTMLButtonElement>(".vl-poster")?.addEventListener("click", (e) => {
+			play((e.currentTarget as HTMLButtonElement).dataset.id!, true);
+		});
+
+		for (const b of buttons) {
+			b.addEventListener("click", () => {
+				play(b.dataset.id!, true);
+				root.querySelector(".vl-player")!.scrollIntoView({ behavior: "smooth", block: "start" });
+			});
+		}
+
+		// Filtros por tema de la lista completa.
+		const filters = root.querySelectorAll<HTMLButtonElement>("[data-filter]");
+		for (const f of filters) {
+			f.addEventListener("click", () => {
+				const topic = f.dataset.filter;
+				for (const o of filters) o.setAttribute("aria-pressed", String(o === f));
+				for (const li of root.querySelectorAll<HTMLElement>(".vl-grid > li")) {
+					li.hidden = !!topic && li.dataset.topic !== topic;
+				}
+			});
+		}
+
+		// Enlace directo a un vídeo: se carga sin autoplay (los navegadores lo
+		// bloquean sin interacción, y abrir una página sonando no es lo esperado).
+		const linked = new URLSearchParams(location.search).get("v");
+		if (linked && catalog[linked]) play(linked, false);
+		else markCurrent(root.querySelector<HTMLElement>(".vl-poster")?.dataset.id ?? "");
+	}
+</script>
+
+<style>
+	.vl {
+		--vl-radius: 0.6rem;
+		display: grid;
+		gap: 2.5rem;
+		margin-top: 1.5rem;
+	}
+	.vl h2 {
+		font-size: var(--sl-text-h3);
+		color: var(--sl-color-white);
+		margin: 0;
+	}
+	.vl button {
+		font: inherit;
+		color: inherit;
+		cursor: pointer;
+	}
+	.vl img {
+		display: block;
+		width: 100%;
+		object-fit: cover;
+	}
+	.vl a {
+		color: var(--sl-color-text-accent);
+	}
+
+	/* ── Reproductor ─────────────────────────────────────────── */
+	.vl-player {
+		display: grid;
+		gap: 1rem;
+		scroll-margin-top: calc(var(--sl-nav-height, 4rem) + 1rem);
+	}
+	.vl-frame {
+		position: relative;
+		aspect-ratio: 16 / 9;
+		width: 100%;
+		border-radius: var(--vl-radius);
+		overflow: hidden;
+		background: #000;
+		border: 1px solid var(--sl-color-hairline);
+	}
+	.vl-frame[data-short] {
+		aspect-ratio: 9 / 16;
+		max-height: 75vh;
+		width: auto;
+		margin-inline: auto;
+	}
+	.vl-frame iframe,
+	.vl-poster {
+		position: absolute;
+		inset: 0;
+		width: 100%;
+		height: 100%;
+		border: 0;
+		padding: 0;
+		background: none;
+	}
+	.vl-poster img {
+		height: 100%;
+	}
+	.vl-play {
+		position: absolute;
+		inset: 0;
+		display: grid;
+		place-items: center;
+		background: linear-gradient(transparent 60%, rgb(0 0 0 / 0.35));
+		transition: background 0.2s;
+	}
+	.vl-play svg {
+		filter: drop-shadow(0 4px 12px rgb(0 0 0 / 0.4));
+		transition: transform 0.2s;
+	}
+	.vl-poster:hover .vl-play svg,
+	.vl-poster:focus-visible .vl-play svg {
+		transform: scale(1.1);
+	}
+	.vl-info {
+		display: grid;
+		gap: 0.35rem;
+	}
+	.vl-meta,
+	.vl-card-meta {
+		font-size: var(--sl-text-xs);
+		color: var(--sl-color-gray-3);
+		margin: 0;
+	}
+	.vl-title {
+		font-size: var(--sl-text-h4) !important;
+	}
+	.vl-summary {
+		margin: 0;
+		color: var(--sl-color-text);
+	}
+	.vl-links {
+		display: flex;
+		flex-wrap: wrap;
+		gap: 1.25rem;
+		margin: 0.25rem 0 0;
+		font-size: var(--sl-text-sm);
+	}
+
+	/* ── Secciones ───────────────────────────────────────────── */
+	.vl-section {
+		display: grid;
+		gap: 0.75rem;
+	}
+	.vl-intro {
+		margin: 0;
+		color: var(--sl-color-gray-3);
+	}
+	.vl-head {
+		display: flex;
+		flex-wrap: wrap;
+		align-items: center;
+		justify-content: space-between;
+		gap: 0.75rem;
+	}
+	.vl-filters {
+		display: flex;
+		flex-wrap: wrap;
+		gap: 0.4rem;
+	}
+	.vl-filters button {
+		border: 1px solid var(--sl-color-hairline-light);
+		background: transparent;
+		border-radius: 999px;
+		padding: 0.2rem 0.8rem;
+		font-size: var(--sl-text-sm);
+	}
+	.vl-filters button[aria-pressed="true"] {
+		background: var(--sl-color-accent-low);
+		border-color: var(--sl-color-accent);
+		color: var(--sl-color-white);
+	}
+
+	/* ── Curso ───────────────────────────────────────────────── */
+	.vl-course {
+		list-style: none;
+		margin: 0;
+		padding: 0;
+		display: grid;
+		gap: 0.5rem;
+	}
+	.vl-lesson {
+		width: 100%;
+		display: grid;
+		grid-template-columns: 2rem 8rem 1fr;
+		align-items: center;
+		gap: 0.9rem;
+		text-align: start;
+		padding: 0.6rem;
+		border: 1px solid var(--sl-color-hairline);
+		border-radius: var(--vl-radius);
+		background: var(--sl-color-bg-nav);
+		transition: border-color 0.15s;
+	}
+	.vl-lesson img {
+		aspect-ratio: 16 / 9;
+		border-radius: 0.35rem;
+	}
+	.vl-num {
+		display: grid;
+		place-items: center;
+		width: 2rem;
+		height: 2rem;
+		border-radius: 50%;
+		background: var(--sl-color-accent-low);
+		color: var(--sl-color-accent-high);
+		font-weight: 600;
+	}
+	.vl-lesson-text {
+		display: grid;
+		gap: 0.2rem;
+	}
+	.vl-lesson-title,
+	.vl-card-title {
+		color: var(--sl-color-white);
+		font-weight: 500;
+		line-height: 1.35;
+	}
+
+	/* ── Rejilla ─────────────────────────────────────────────── */
+	.vl-grid {
+		list-style: none;
+		margin: 0;
+		padding: 0;
+		display: grid;
+		grid-template-columns: repeat(auto-fill, minmax(14rem, 1fr));
+		gap: 1.25rem 1rem;
+	}
+	.vl-grid > li[hidden] {
+		display: none;
+	}
+	.vl-card {
+		width: 100%;
+		display: grid;
+		gap: 0.45rem;
+		text-align: start;
+		padding: 0;
+		border: 0;
+		background: none;
+	}
+	.vl-thumb {
+		position: relative;
+		display: block;
+		border-radius: var(--vl-radius);
+		overflow: hidden;
+		border: 2px solid transparent;
+		transition: border-color 0.15s;
+	}
+	.vl-thumb img {
+		aspect-ratio: 16 / 9;
+		transition: transform 0.25s;
+	}
+	.vl-card:hover .vl-thumb img {
+		transform: scale(1.04);
+	}
+	.vl-badges {
+		position: absolute;
+		inset: auto 0.4rem 0.4rem auto;
+		display: flex;
+		gap: 0.3rem;
+	}
+	.vl-badge {
+		background: rgb(0 0 0 / 0.75);
+		color: #fff;
+		font-size: 0.7rem;
+		font-weight: 600;
+		padding: 0.1rem 0.4rem;
+		border-radius: 0.25rem;
+	}
+	.vl-badge-accent {
+		background: var(--sl-color-accent);
+	}
+
+	/* Vídeo actual y foco */
+	.vl-lesson:hover,
+	.vl-lesson[aria-current="true"] {
+		border-color: var(--sl-color-accent);
+	}
+	.vl-card[aria-current="true"] .vl-thumb,
+	.vl-card:focus-visible .vl-thumb {
+		border-color: var(--sl-color-accent);
+	}
+
+	.vl-cta {
+		display: flex;
+		flex-wrap: wrap;
+		align-items: center;
+		gap: 1.25rem;
+		margin: 0;
+	}
+	.vl-subscribe {
+		background: var(--sl-color-accent);
+		color: #fff !important;
+		text-decoration: none;
+		font-weight: 600;
+		padding: 0.5rem 1.1rem;
+		border-radius: 0.4rem;
+	}
+
+	@media (max-width: 40rem) {
+		.vl-lesson {
+			grid-template-columns: 2rem 1fr;
+		}
+		.vl-lesson img {
+			display: none;
+		}
+	}
+</style>
